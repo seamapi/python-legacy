@@ -10,6 +10,7 @@ DeviceId = str
 @dataclass
 class Device:
     device_id: DeviceId
+    name: Optional[str]
 
 
 @dataclass
@@ -22,6 +23,11 @@ class ActionAttempt:
 class Workspace:
     workspace_id: str
     name: str
+
+
+@dataclass
+class ConnectWebview:
+    connect_webview_id: str
 
 
 @dataclass
@@ -74,4 +80,12 @@ class AbstractWorkspaces(abc.ABC):
     def reset_sandbox(
         self, workspace_id: Optional[str] = None, sandbox_type: Optional[str] = None
     ) -> None:
+        raise NotImplementedError
+
+
+class AbstractConnectWebviews(abc.ABC):
+    def list(self) -> List[ConnectWebview]:
+        raise NotImplementedError
+
+    def get(self, workspace_id: Optional[str] = None) -> ConnectWebview:
         raise NotImplementedError
