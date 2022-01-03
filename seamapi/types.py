@@ -23,6 +23,7 @@ class ActionAttempt:
 class Workspace:
     workspace_id: str
     name: str
+    is_sandbox: bool
 
 
 @dataclass
@@ -30,53 +31,54 @@ class ConnectWebview:
     connect_webview_id: str
 
 
-@dataclass
-class AbstractSeam(abc.ABC):
-    api_key: str
-    api_url: str
-
-    @abc.abstractmethod
-    def __init__(self, api_key: Optional[str] = None):
-        raise NotImplementedError
-
-
 class AbstractLocks(abc.ABC):
+    @abc.abstractmethod
     def list(self) -> List[Device]:
         raise NotImplementedError
 
-    def get(self, workspace_id: Optional[str] = None) -> Device:
+    @abc.abstractmethod
+    def get(self, device: Union[DeviceId, Device]) -> Device:
         raise NotImplementedError
 
+    @abc.abstractmethod
     def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         raise NotImplementedError
 
+    @abc.abstractmethod
     def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         raise NotImplementedError
 
 
 class AbstractActionAttempt(abc.ABC):
+    @abc.abstractmethod
     def list(self) -> List[ActionAttempt]:
         raise NotImplementedError
 
+    @abc.abstractmethod
     def get(self, workspace_id: Optional[str] = None) -> ActionAttempt:
         raise NotImplementedError
 
 
 class AbstractDevices(abc.ABC):
+    @abc.abstractmethod
     def list(self) -> List[Device]:
         raise NotImplementedError
 
-    def get(self, workspace_id: Optional[str] = None) -> Device:
+    @abc.abstractmethod
+    def get(self, device: Union[DeviceId, Device]) -> Device:
         raise NotImplementedError
 
 
 class AbstractWorkspaces(abc.ABC):
+    @abc.abstractmethod
     def list(self) -> List[Workspace]:
         raise NotImplementedError
 
+    @abc.abstractmethod
     def get(self, workspace_id: Optional[str] = None) -> Workspace:
         raise NotImplementedError
 
+    @abc.abstractmethod
     def reset_sandbox(
         self, workspace_id: Optional[str] = None, sandbox_type: Optional[str] = None
     ) -> None:
@@ -84,8 +86,29 @@ class AbstractWorkspaces(abc.ABC):
 
 
 class AbstractConnectWebviews(abc.ABC):
+    @abc.abstractmethod
     def list(self) -> List[ConnectWebview]:
         raise NotImplementedError
 
-    def get(self, workspace_id: Optional[str] = None) -> ConnectWebview:
+    @abc.abstractmethod
+    def get(self, connect_webview_id: str) -> ConnectWebview:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def create(self) -> ConnectWebview:
+        raise NotImplementedError
+
+
+@dataclass
+class AbstractSeam(abc.ABC):
+    api_key: str
+    api_url: str
+
+    workspaces: AbstractWorkspaces
+    connect_webviews: AbstractConnectWebviews
+    locks: AbstractLocks
+    devices: AbstractDevices
+
+    @abc.abstractmethod
+    def __init__(self, api_key: Optional[str] = None):
         raise NotImplementedError

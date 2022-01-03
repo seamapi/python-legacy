@@ -1,6 +1,9 @@
 import os
 from typing import Optional
 from .workspaces import Workspaces
+from .devices import Devices
+from .connect_webviews import ConnectWebviews
+from .locks import Locks
 from .types import AbstractSeam
 
 
@@ -16,5 +19,8 @@ class Seam(AbstractSeam):
                 "SEAM_API_KEY not found in environment, and api_key not provided"
             )
         self.api_key = api_key
-        self.api_url = os.environ.get("api_url", self.api_url)
+        self.api_url = os.environ.get("SEAM_API_URL", self.api_url)
         self.workspaces = Workspaces(seam=self)
+        self.connect_webviews = ConnectWebviews(seam=self)
+        self.devices = Devices(seam=self)
+        self.locks = Locks(seam=self)
