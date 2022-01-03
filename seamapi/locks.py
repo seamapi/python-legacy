@@ -1,4 +1,10 @@
-from seamapi.types import AbstractLocks, Device, DeviceId, ActionAttempt
+from seamapi.types import (
+    AbstractLocks,
+    Device,
+    DeviceId,
+    ActionAttempt,
+    AbstractSeam as Seam,
+)
 from typing import List, Union
 import requests
 
@@ -9,7 +15,12 @@ def to_device_id(device: Union[DeviceId, Device]) -> str:
     return device.device_id
 
 
-class AbstractLocks(AbstractLocks):
+class Locks(AbstractLocks):
+    seam: Seam
+
+    def __init__(self, seam: Seam):
+        self.seam = seam
+
     def list(self) -> List[Device]:
         raise NotImplementedError
 
