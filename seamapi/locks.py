@@ -22,16 +22,45 @@ class Locks(AbstractLocks):
         self.seam = seam
 
     def list(self) -> List[Device]:
-        raise NotImplementedError
+        res = requests.post(
+            f"{self.seam.api_url}/locks/list",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        )
+        if not res.ok:
+            raise Exception(res.text)
+        json_locks = res.json()["locks"]
+        return [Device(device_id=d["device_id"], name=d["name"]) for d in json_locks]
 
     def get(self, device: Union[DeviceId, Device]) -> Device:
         device_id = to_device_id(device)
-        raise NotImplementedError
+        res = requests.post(
+            f"{self.seam.api_url}/locks/get",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            params={"device_id": device_id},
+        )
+        if not res.ok:
+            raise Exception(res.text)
+        json_lock = res.json()["lock"]
+        return Device(device_id=json_lock["device_id"], name=json_lock["name"])
 
     def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         device_id = to_device_id(device)
-        raise NotImplementedError
+        res = requests.post(
+            f"{self.seam.api_url}/locks/lock_door",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            json={"device_id": device_id},
+        )
+        if not res.ok:
+            raise Exception(res.text)
+        return ActionAttempt(action_attempt_id="", status="pending")
 
     def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         device_id = to_device_id(device)
-        raise NotImplementedError
+        res = requests.post(
+            f"{self.seam.api_url}/locks/lock_door",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            json={"device_id": device_id},
+        )
+        if not res.ok:
+            raise Exception(res.text)
+        return ActionAttempt(action_attempt_id="", status="pending")

@@ -5,6 +5,7 @@ from typing import List, Optional, Union, Literal
 from dataclasses import dataclass
 
 DeviceId = str
+AcceptedProvider = Union[Literal["noiseaware"], Literal["august"]]
 
 
 @dataclass
@@ -95,7 +96,9 @@ class AbstractConnectWebviews(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def create(self) -> ConnectWebview:
+    def create(
+        self, accepted_providers: Optional[List[AcceptedProvider]] = None
+    ) -> ConnectWebview:
         raise NotImplementedError
 
 

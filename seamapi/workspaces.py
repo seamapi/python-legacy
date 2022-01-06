@@ -32,4 +32,10 @@ class Workspaces(AbstractWorkspaces):
     def reset_sandbox(
         self, workspace_id: Optional[str] = None, sandbox_type: Optional[str] = None
     ) -> None:
-        raise NotImplementedError
+        res = requests.post(
+            f"{self.seam.api_url}/workspaces/reset_sandbox",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        )
+        if not res.ok:
+            raise Exception(res.text)
+        return None
