@@ -16,10 +16,13 @@ from seamapi import Seam
 # export SEAM_API_KEY=***
 seam = Seam()
 
-some_lock = seam.locks.get(
-  name="Front Door",
-  location="123 Amy Lane"
-)
+some_lock = seam.locks.list()[0]
+
+# TODO this syntax soon
+#some_lock = seam.locks.get(
+#  name="Front Door",
+#  location="123 Amy Lane"
+#)
 
 seam.locks.lock_door(some_lock)
 ```
