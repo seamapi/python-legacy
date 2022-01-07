@@ -1,6 +1,6 @@
 """
 This program resets a sandbox, creates a webview, asks a user to login to
-that webview, retrieves the locks they own, unlocks and relocks a lock.
+that webview, retrieves the locks they own, and locks a lock.
 """
 from seamapi import Seam
 from dotenv import load_dotenv
