@@ -28,8 +28,8 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
-        json_locks = res.json()["locks"]
-        return [Device(device_id=d["device_id"], name=d["name"]) for d in json_locks]
+        json_locks = res.json()["devices"]
+        return [Device.from_dict(d) for d in json_locks]
 
     def get(self, device: Union[DeviceId, Device]) -> Device:
         device_id = to_device_id(device)
@@ -40,8 +40,8 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
-        json_lock = res.json()["lock"]
-        return Device(device_id=json_lock["device_id"], name=json_lock["name"])
+        json_lock = res.json()["device"]
+        return Device.from_dict(json_lock)
 
     def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         device_id = to_device_id(device)

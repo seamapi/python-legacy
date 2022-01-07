@@ -26,7 +26,13 @@ class ConnectWebviews(AbstractConnectWebviews):
         if not res.ok:
             raise Exception(res.text)
         json_webview = res.json()["connect_webview"]
-        return ConnectWebview(connect_webview_id=json_webview["connect_webview_id"])
+        return ConnectWebview(
+            connect_webview_id=json_webview["connect_webview_id"],
+            status=json_webview["status"],
+            url=json_webview["url"],
+            login_successful=json_webview["login_successful"],
+            third_party_account_id=json_webview["third_party_account_id"],
+        )
 
     def create(
         self, accepted_providers: Optional[List[AcceptedProvider]] = []
@@ -39,4 +45,10 @@ class ConnectWebviews(AbstractConnectWebviews):
         if not res.ok:
             raise Exception(res.text)
         json_webview = res.json()["connect_webview"]
-        return ConnectWebview(connect_webview_id=json_webview["connect_webview_id"])
+        return ConnectWebview(
+            connect_webview_id=json_webview["connect_webview_id"],
+            status=json_webview["status"],
+            url=json_webview["url"],
+            login_successful=json_webview["login_successful"],
+            third_party_account_id=None,
+        )
