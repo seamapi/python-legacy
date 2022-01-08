@@ -57,7 +57,7 @@ class Locks(AbstractLocks):
     def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         device_id = to_device_id(device)
         res = requests.post(
-            f"{self.seam.api_url}/locks/lock_door",
+            f"{self.seam.api_url}/locks/unlock_door",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
             json={"device_id": device_id},
         )

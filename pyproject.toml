@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "seamapi"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Python Library for Seam's API https://getseam.com"
 authors = ["Severin Ibarluzea <seveibar@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.7"
 requests = "^2.26.0"
 python-dotenv = "^0.19.2"
 dataclasses-json = "^0.5.6"
