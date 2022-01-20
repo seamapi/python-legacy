@@ -43,6 +43,14 @@ class ConnectWebview:
     third_party_account_id: Optional[str]
 
 
+@dataclass_json
+@dataclass
+class AccessCode:
+    access_code_id: str
+    type: str
+    code: str
+
+
 class AbstractLocks(abc.ABC):
     @abc.abstractmethod
     def list(self) -> List[Device]:
@@ -58,6 +66,18 @@ class AbstractLocks(abc.ABC):
 
     @abc.abstractmethod
     def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
+        raise NotImplementedError
+
+
+class AbstractAccessCodes(abc.ABC):
+    @abc.abstractmethod
+    def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def create(
+        self, device: Union[DeviceId, Device], name: str, code: str
+    ) -> ActionAttempt:
         raise NotImplementedError
 
 
@@ -122,6 +142,7 @@ class AbstractSeam(abc.ABC):
     connect_webviews: AbstractConnectWebviews
     locks: AbstractLocks
     devices: AbstractDevices
+    access_codes: AbstractAccessCodes
 
     @abc.abstractmethod
     def __init__(self, api_key: Optional[str] = None):

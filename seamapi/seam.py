@@ -4,6 +4,7 @@ from .workspaces import Workspaces
 from .devices import Devices
 from .connect_webviews import ConnectWebviews
 from .locks import Locks
+from .access_codes import AccessCodes
 from .types import AbstractSeam
 
 
@@ -24,3 +25,4 @@ class Seam(AbstractSeam):
         self.connect_webviews = ConnectWebviews(seam=self)
         self.devices = Devices(seam=self)
         self.locks = Locks(seam=self)
+        self.access_codes = AccessCodes(seam=self)
