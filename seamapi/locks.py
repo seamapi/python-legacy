@@ -2,7 +2,6 @@ from seamapi.types import (
     AbstractLocks,
     Device,
     DeviceId,
-    ActionAttempt,
     AbstractSeam as Seam,
 )
 from typing import List, Union
@@ -43,7 +42,7 @@ class Locks(AbstractLocks):
         json_lock = res.json()["device"]
         return Device.from_dict(json_lock)
 
-    def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
+    def lock_door(self, device: Union[DeviceId, Device]) -> None:
         device_id = to_device_id(device)
         res = requests.post(
             f"{self.seam.api_url}/locks/lock_door",
@@ -52,9 +51,8 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
-        return ActionAttempt(action_attempt_id="", status="pending")
 
-    def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
+    def unlock_door(self, device: Union[DeviceId, Device]) -> None:
         device_id = to_device_id(device)
         res = requests.post(
             f"{self.seam.api_url}/locks/unlock_door",
@@ -63,4 +61,3 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
-        return ActionAttempt(action_attempt_id="", status="pending")

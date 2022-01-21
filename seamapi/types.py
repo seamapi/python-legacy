@@ -49,6 +49,7 @@ class AccessCode:
     access_code_id: str
     type: str
     code: str
+    name: Optional[str] = ""
 
 
 class AbstractLocks(abc.ABC):
@@ -61,11 +62,11 @@ class AbstractLocks(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
+    def lock_door(self, device: Union[DeviceId, Device]) -> None:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
+    def unlock_door(self, device: Union[DeviceId, Device]) -> None:
         raise NotImplementedError
 
 
@@ -75,9 +76,7 @@ class AbstractAccessCodes(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def create(
-        self, device: Union[DeviceId, Device], name: str, code: str
-    ) -> ActionAttempt:
+    def create(self, device: Union[DeviceId, Device], name: str, code: str) -> None:
         raise NotImplementedError
 
 

@@ -3,7 +3,6 @@ from seamapi.types import (
     AccessCode,
     Device,
     DeviceId,
-    ActionAttempt,
     AbstractSeam as Seam,
 )
 from typing import List, Union
@@ -33,9 +32,7 @@ class AccessCodes(AbstractAccessCodes):
         access_codes = res.json()["access_codes"]
         return [AccessCode.from_dict(ac) for ac in access_codes]
 
-    def create(
-        self, device: Union[DeviceId, Device], name: str, code: str
-    ) -> ActionAttempt:
+    def create(self, device: Union[DeviceId, Device], name: str, code: str) -> None:
         device_id = to_device_id(device)
         res = requests.post(
             f"{self.seam.api_url}/access_codes/create",
@@ -48,4 +45,3 @@ class AccessCodes(AbstractAccessCodes):
         )
         if not res.ok:
             raise Exception(res.text)
-        return ActionAttempt(action_attempt_id="", status="pending")
