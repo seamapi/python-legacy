@@ -15,7 +15,23 @@ class ConnectWebviews(AbstractConnectWebviews):
         self.seam = seam
 
     def list(self) -> List[ConnectWebview]:
-        raise NotImplementedError
+        res = requests.post(
+            f"{self.seam.api_url}/connect_webviews/list",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        )
+        if not res.ok:
+            raise Exception(res.text)
+        json_webviews = res.json()["connect_webviews"]
+        return [
+            ConnectWebview(
+                connect_webview_id=json_webview["connect_webview_id"],
+                status=json_webview["status"],
+                url=json_webview["url"],
+                login_successful=json_webview["login_successful"],
+                connected_account_id=json_webview["connected_account_id"],
+            )
+            for json_webview in json_webviews
+        ]
 
     def get(self, connect_webview_id: str) -> ConnectWebview:
         res = requests.post(
@@ -31,7 +47,7 @@ class ConnectWebviews(AbstractConnectWebviews):
             status=json_webview["status"],
             url=json_webview["url"],
             login_successful=json_webview["login_successful"],
-            third_party_account_id=json_webview["third_party_account_id"],
+            connected_account_id=json_webview["connected_account_id"],
         )
 
     def create(
@@ -50,5 +66,5 @@ class ConnectWebviews(AbstractConnectWebviews):
             status=json_webview["status"],
             url=json_webview["url"],
             login_successful=json_webview["login_successful"],
-            third_party_account_id=None,
+            connected_account_id=None,
         )

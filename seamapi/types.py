@@ -40,7 +40,7 @@ class ConnectWebview:
     status: str
     url: str
     login_successful: bool
-    third_party_account_id: Optional[str]
+    connected_account_id: Optional[str]
 
 
 @dataclass_json
@@ -54,7 +54,7 @@ class AccessCode:
 
 class AbstractLocks(abc.ABC):
     @abc.abstractmethod
-    def list(self) -> List[Device]:
+    def list(self, connected_account: Optional[str] = None) -> List[Device]:
         raise NotImplementedError
 
     @abc.abstractmethod

@@ -4,7 +4,7 @@ from seamapi.types import (
     DeviceId,
     AbstractSeam as Seam,
 )
-from typing import List, Union
+from typing import List, Union, Optional
 import requests
 
 
@@ -20,9 +20,10 @@ class Locks(AbstractLocks):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def list(self) -> List[Device]:
+    def list(self, connected_account: Optional[str] = None) -> List[Device]:
         res = requests.post(
             f"{self.seam.api_url}/locks/list",
+            params={"connected_account_id": connected_account},
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
         )
         if not res.ok:
