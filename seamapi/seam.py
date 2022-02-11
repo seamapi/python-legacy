@@ -2,6 +2,7 @@ import os
 from typing import Optional
 from .workspaces import Workspaces
 from .devices import Devices
+from .connected_accounts import ConnectedAccounts
 from .connect_webviews import ConnectWebviews
 from .locks import Locks
 from .access_codes import AccessCodes
@@ -22,6 +23,7 @@ class Seam(AbstractSeam):
         self.api_key = api_key
         self.api_url = os.environ.get("SEAM_API_URL", self.api_url)
         self.workspaces = Workspaces(seam=self)
+        self.connected_accounts = ConnectedAccounts(seam=self)
         self.connect_webviews = ConnectWebviews(seam=self)
         self.devices = Devices(seam=self)
         self.locks = Locks(seam=self)

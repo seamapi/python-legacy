@@ -45,6 +45,15 @@ class ConnectWebview:
 
 @dataclass_json
 @dataclass
+class ConnectedAccount:
+    connected_account_id: str
+    created_at: str
+    user_identifier: str
+    account_type: str
+
+
+@dataclass_json
+@dataclass
 class AccessCode:
     access_code_id: str
     type: str
@@ -129,6 +138,16 @@ class AbstractConnectWebviews(abc.ABC):
     def create(
         self, accepted_providers: Optional[List[AcceptedProvider]] = None
     ) -> ConnectWebview:
+        raise NotImplementedError
+
+
+class AbstractConnectedAccounts(abc.ABC):
+    @abc.abstractmethod
+    def list(self) -> List[ConnectedAccount]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get(self, connected_account_id: str) -> ConnectedAccount:
         raise NotImplementedError
 
 
