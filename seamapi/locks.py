@@ -52,6 +52,8 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
+        action_attempt_id = res.json()["action_attempt"]["action_attempt_id"]
+        return action_attempt_id
 
     def unlock_door(self, device: Union[DeviceId, Device]) -> None:
         device_id = to_device_id(device)

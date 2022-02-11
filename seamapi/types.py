@@ -5,6 +5,7 @@ from typing import List, Optional, Union, Dict, Any
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 
+ActionAttemptId = str
 DeviceId = str
 AcceptedProvider = str  # e.g. august or noiseaware
 
@@ -20,9 +21,19 @@ class Device:
 
 @dataclass_json
 @dataclass
+class ActionAttemptError:
+    type: str
+    message: str
+
+
+@dataclass_json
+@dataclass
 class ActionAttempt:
     action_attempt_id: str
+    action_type: str
     status: str
+    result: Optional[Any]
+    error: Optional[ActionAttemptError]
 
 
 @dataclass_json
@@ -59,6 +70,14 @@ class AccessCode:
     type: str
     code: str
     name: Optional[str] = ""
+
+
+class AbstractActionAttempts(abc.ABC):
+    @abc.abstractmethod
+    def get(
+        self, action_attempt: Union[ActionAttemptId, ActionAttempt]
+    ) -> ActionAttempt:
+        raise NotImplementedError
 
 
 class AbstractLocks(abc.ABC):
@@ -161,6 +180,7 @@ class AbstractSeam(abc.ABC):
     locks: AbstractLocks
     devices: AbstractDevices
     access_codes: AbstractAccessCodes
+    action_attempts: AbstractActionAttempts
 
     @abc.abstractmethod
     def __init__(self, api_key: Optional[str] = None):
