@@ -113,13 +113,21 @@ class AbstractAccessCodes(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def create(self, device: Union[DeviceId, Device], name: str, code: str) -> None:
+    def get(
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+    ) -> AccessCode:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def create(
+        self, device: Union[DeviceId, Device], name: str, code: str
+    ) -> AccessCode:
         raise NotImplementedError
 
     @abc.abstractmethod
     def delete(
         self,
-        device: Union[DeviceId, Device],
         access_code: Union[AccessCodeId, AccessCode],
     ) -> None:
         raise NotImplementedError
