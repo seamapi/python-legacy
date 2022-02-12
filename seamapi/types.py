@@ -18,6 +18,7 @@ class Device:
     device_type: str
     location: Optional[Dict[str, Any]]
     properties: Dict[str, Any]
+    capabilities_supported: List[str]
 
 
 @dataclass_json
