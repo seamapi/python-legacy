@@ -30,10 +30,10 @@ class Workspaces(AbstractWorkspaces):
         )
 
     def reset_sandbox(
-        self, workspace_id: Optional[str] = None, sandbox_type: Optional[str] = None
+        self, workspace_id: str
     ) -> None:
         res = requests.post(
-            f"{self.seam.api_url}/workspaces/reset_sandbox",
+            f"{self.seam.api_url}/workspaces/reset_sandbox?workspace_id={workspace_id}",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
         )
         if not res.ok:
