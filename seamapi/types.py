@@ -5,6 +5,7 @@ from typing import List, Optional, Union, Dict, Any
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
 
+AccessCodeId = str
 ActionAttemptId = str
 DeviceId = str
 AcceptedProvider = str  # e.g. august or noiseaware
@@ -69,6 +70,8 @@ class AccessCode:
     access_code_id: str
     type: str
     code: str
+    starts_at: Optional[str]
+    ends_at: Optional[str]
     name: Optional[str] = ""
 
 

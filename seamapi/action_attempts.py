@@ -6,10 +6,12 @@ from seamapi.types import (
     ActionAttemptId,
 )
 import requests
-from typing import List, Optional, Union
+from typing import Union
 
 
-def to_action_attempt_id(action_attempt: Union[ActionAttemptId, ActionAttempt]) -> str:
+def to_action_attempt_id(
+    action_attempt: Union[ActionAttemptId, ActionAttempt]
+) -> str:
     if isinstance(action_attempt, str):
         return action_attempt
     return action_attempt.action_attempt_id
