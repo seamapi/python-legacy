@@ -70,8 +70,8 @@ class AccessCode:
     access_code_id: str
     type: str
     code: str
-    starts_at: Optional[str]
-    ends_at: Optional[str]
+    starts_at: Optional[str] = None
+    ends_at: Optional[str] = None
     name: Optional[str] = ""
 
 
