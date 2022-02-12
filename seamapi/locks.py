@@ -11,7 +11,7 @@ import requests
 def to_device_id(device: Union[DeviceId, Device]) -> str:
     if isinstance(device, str):
         return device
-    return device.device_id
+    return device["device_id"]
 
 
 class Locks(AbstractLocks):
@@ -52,8 +52,8 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
-        action_attempt_id = res.json()["action_attempt"]["action_attempt_id"]
-        return action_attempt_id
+        action_attempt = res.json()["action_attempt"]
+        return action_attempt
 
     def unlock_door(self, device: Union[DeviceId, Device]) -> None:
         device_id = to_device_id(device)
@@ -64,3 +64,5 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
+        action_attempt = res.json()["action_attempt"]
+        return action_attempt
