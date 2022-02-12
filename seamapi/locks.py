@@ -1,10 +1,12 @@
 from seamapi.types import (
     AbstractLocks,
+    ActionAttempt,
     Device,
     DeviceId,
     AbstractSeam as Seam,
 )
-from typing import List, Union, Optional
+import time
+from typing import List, Union, Optional, cast
 import requests
 
 
@@ -43,7 +45,7 @@ class Locks(AbstractLocks):
         json_lock = res.json()["device"]
         return Device.from_dict(json_lock)
 
-    def lock_door(self, device: Union[DeviceId, Device]) -> None:
+    def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         device_id = to_device_id(device)
         res = requests.post(
             f"{self.seam.api_url}/locks/lock_door",
@@ -52,8 +54,11 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
+        return self.seam.action_attempts.poll_until_ready(
+            res.json()["action_attempt"]["action_attempt_id"]
+        )
 
-    def unlock_door(self, device: Union[DeviceId, Device]) -> None:
+    def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         device_id = to_device_id(device)
         res = requests.post(
             f"{self.seam.api_url}/locks/unlock_door",
@@ -62,3 +67,6 @@ class Locks(AbstractLocks):
         )
         if not res.ok:
             raise Exception(res.text)
+        return self.seam.action_attempts.poll_until_ready(
+            res.json()["action_attempt"]["action_attempt_id"]
+        )
