@@ -6,7 +6,7 @@ import requests
 def to_device_id(device: Union[DeviceId, Device]) -> str:
     if isinstance(device, str):
         return device
-    return device["device_id"]
+    return device.device_id
 
 
 class Devices(AbstractDevices):
@@ -23,7 +23,7 @@ class Devices(AbstractDevices):
         if not res.ok:
             raise Exception(res.text)
         devices = res.json()["devices"]
-        return devices
+        return [Device.from_dict(d) for d in devices]
 
     def get(self, device: Union[DeviceId, Device]) -> Device:
         device_id = to_device_id(device)

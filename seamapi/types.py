@@ -82,6 +82,12 @@ class AbstractActionAttempts(abc.ABC):
     ) -> ActionAttempt:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def poll_until_ready(
+        self, action_attempt: Union[ActionAttemptId, ActionAttempt]
+    ) -> ActionAttempt:
+        raise NotImplementedError
+
 
 class AbstractLocks(abc.ABC):
     @abc.abstractmethod
@@ -93,11 +99,11 @@ class AbstractLocks(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def lock_door(self, device: Union[DeviceId, Device]) -> None:
+    def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def unlock_door(self, device: Union[DeviceId, Device]) -> None:
+    def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         raise NotImplementedError
 
 
@@ -110,14 +116,12 @@ class AbstractAccessCodes(abc.ABC):
     def create(self, device: Union[DeviceId, Device], name: str, code: str) -> None:
         raise NotImplementedError
 
-
-class AbstractActionAttempt(abc.ABC):
     @abc.abstractmethod
-    def list(self) -> List[ActionAttempt]:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def get(self, workspace_id: Optional[str] = None) -> ActionAttempt:
+    def delete(
+        self,
+        device: Union[DeviceId, Device],
+        access_code: Union[AccessCodeId, AccessCode],
+    ) -> None:
         raise NotImplementedError
 
 
@@ -141,9 +145,7 @@ class AbstractWorkspaces(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def reset_sandbox(
-        self, workspace_id: Optional[str] = None, sandbox_type: Optional[str] = None
-    ) -> None:
+    def reset_sandbox(self) -> None:
         raise NotImplementedError
 
 
