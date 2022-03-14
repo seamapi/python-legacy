@@ -7,6 +7,7 @@ from typing import Any
 from dataclasses import dataclass
 from testcontainers.postgres import PostgresContainer
 from testcontainers.core.container import DockerContainer
+from testcontainers.core.waiting_utils import wait_for_logs
 
 
 @pytest.fixture(autouse=True)
@@ -22,23 +23,29 @@ class SeamBackend:
 
 @pytest.fixture
 def seam_backend():
-    with PostgresContainer("postgres:13", port=5499) as pg:
+    with PostgresContainer("postgres:13", dbname="postgres") as pg:
+        db_host = "host.docker.internal" if sys.platform == "darwin" else "172.17.0.1"
+        db_url = f"postgresql://test:test@{db_host}:{pg.get_exposed_port(pg.port_to_expose)}/seam_api"
         with DockerContainer("seam-connect").with_env(
-            "DATABASE_URL", pg.get_connection_url()
-        ).with_env("NODE_ENV", "test").with_env(
+            "DATABASE_URL",
+            # TODO on mac us docker.host.internal instead of 172.17.0.1 when someone
+            # with a mac needs to run tests
+            db_url,
+        ).with_env("DATABASE_NAME", "seam_api").with_env("NODE_ENV", "test").with_env(
+            "POSTGRES_HOST", db_host
+        ).with_env(
             "SERVER_BASE_URL", "http://localhost:3021"
         ).with_env(
             "SEAMTEAM_ADMIN_PASSWORD", "1234"
         ).with_bind_ports(
-            3020, 3021
+            3000, 4020
         ).with_command(
             "start:for-integration-testing"
         ) as sc_container:
-            # print(pg.get_connection_url())
-            time.sleep(200)  # TODO wait for log message "ready - started server"
-            requests.get("http://localhost:3021/health")
+            wait_for_logs(sc_container, r"started server", timeout=20)
+            requests.get("http://localhost:4020/health")
             yield SeamBackend(
-                url="http://localhost:3021",
+                url="http://localhost:4020",
                 sandbox_api_key="seam_sandykey_0000000000000000000sand",
             )
 
