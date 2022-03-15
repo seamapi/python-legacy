@@ -40,11 +40,15 @@ class Devices(AbstractDevices):
         device: Optional[Union[DeviceId, Device]] = None,
         name: Optional[str] = None,
     ) -> Device:
-        device_id = to_device_id(device)
+        params = {}
+        if device:
+            params["device_id"] = to_device_id(device)
+        if name:
+            params["name"] = name
         res = requests.get(
             f"{self.seam.api_url}/devices/get",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params={"device_id": device_id},
+            params=params,
         )
         if not res.ok:
             raise Exception(res.text)

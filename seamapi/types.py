@@ -12,7 +12,6 @@ DeviceId = str
 AcceptedProvider = str  # e.g. august or noiseaware
 
 
-@dataclass_json
 @dataclass
 class Device:
     device_id: DeviceId

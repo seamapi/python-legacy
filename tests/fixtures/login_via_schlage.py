@@ -5,8 +5,6 @@ import requests
 
 def login_via_schlage(seam: Seam):
     webview = seam.connect_webviews.create(accepted_providers=["schlage"])
-    print(seam.workspaces.get())
-    print(webview)
 
     # This is an internal endpoint that will be removed, don't use it, see how
     # it says "internal" there? It's not going to stick around.
