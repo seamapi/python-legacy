@@ -35,7 +35,11 @@ class Devices(AbstractDevices):
         devices = res.json()["devices"]
         return [Device.from_dict(d) for d in devices]
 
-    def get(self, device: Union[DeviceId, Device]) -> Device:
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        name: Optional[str] = None,
+    ) -> Device:
         device_id = to_device_id(device)
         res = requests.get(
             f"{self.seam.api_url}/devices/get",

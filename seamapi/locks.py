@@ -43,12 +43,20 @@ class Locks(AbstractLocks):
         json_locks = res.json()["devices"]
         return [Device.from_dict(d) for d in json_locks]
 
-    def get(self, device: Union[DeviceId, Device]) -> Device:
-        device_id = to_device_id(device)
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        name: Optional[str] = None,
+    ) -> Device:
+        params = {}
+        if device:
+            params["device_id"] = to_device_id(device)
+        if name:
+            params["name"] = name
         res = requests.post(
             f"{self.seam.api_url}/locks/get",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params={"device_id": device_id},
+            params=params,
         )
         if not res.ok:
             raise Exception(res.text)
