@@ -4,6 +4,7 @@ import abc
 from typing import List, Optional, Union, Dict, Any
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
+from seamapi.utils.deep_attr_dict import DeepAttrDict
 
 AccessCodeId = str
 ActionAttemptId = str
@@ -17,8 +18,18 @@ class Device:
     device_id: DeviceId
     device_type: str
     location: Optional[Dict[str, Any]]
-    properties: Dict[str, Any]
+    properties: Any
     capabilities_supported: List[str]
+
+    @staticmethod
+    def from_dict(d: Dict[str, Any]):
+        return Device(
+            device_id=d["device_id"],
+            device_type=d["device_type"],
+            location=d.get("location", None),
+            properties=DeepAttrDict(d["properties"]),
+            capabilities_supported=d["capabilities_supported"],
+        )
 
 
 @dataclass_json

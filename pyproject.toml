@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "seamapi"
-version = "0.4.1"
+version = "0.4.2"
 description = "A Python Library for Seam's API https://getseam.com"
 authors = ["Severin Ibarluzea <seveibar@gmail.com>"]
 license = "MIT"
@@ -10,6 +10,7 @@ python = "^3.7"
 requests = "^2.26.0"
 python-dotenv = "^0.19.2"
 dataclasses-json = "^0.5.6"
+testcontainers = {extras = ["postgresql"], version = "^3.4.2"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"

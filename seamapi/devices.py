@@ -1,5 +1,5 @@
 from seamapi.types import AbstractDevices, Device, DeviceId, AbstractSeam as Seam
-from typing import List, Union
+from typing import List, Union, Optional
 import requests
 
 
@@ -15,9 +15,19 @@ class Devices(AbstractDevices):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def list(self) -> List[Device]:
+    def list(
+        self,
+        connected_account: Optional[str] = None,
+        connect_webview: Optional[str] = None,
+    ) -> List[Device]:
+        params = {}
+        if connected_account:
+            params["connected_account_id"] = connected_account
+        if connect_webview:
+            params["connect_webview_id"] = connect_webview
         res = requests.get(
             f"{self.seam.api_url}/devices/list",
+            params=params,
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
         )
         if not res.ok:
