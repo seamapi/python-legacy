@@ -5,6 +5,7 @@ import requests
 from dotenv import load_dotenv
 from typing import Any
 from dataclasses import dataclass
+import sys
 from testcontainers.postgres import PostgresContainer
 from testcontainers.core.container import DockerContainer
 from testcontainers.core.waiting_utils import wait_for_logs
@@ -21,7 +22,7 @@ class SeamBackend:
     sandbox_api_key: str
 
 
-@pytest.fixture
+@pytest.fixture(scope="session")
 def seam_backend():
     with PostgresContainer("postgres:13", dbname="postgres") as pg:
         db_host = "host.docker.internal" if sys.platform == "darwin" else "172.17.0.1"
@@ -34,18 +35,18 @@ def seam_backend():
         ).with_env("DATABASE_NAME", "seam_api").with_env("NODE_ENV", "test").with_env(
             "POSTGRES_HOST", db_host
         ).with_env(
-            "SERVER_BASE_URL", "http://localhost:3021"
+            "SERVER_BASE_URL", "http://localhost:3000"
         ).with_env(
             "SEAMTEAM_ADMIN_PASSWORD", "1234"
         ).with_bind_ports(
-            3000, 4020
+            3000, 3000
         ).with_command(
             "start:for-integration-testing"
         ) as sc_container:
             wait_for_logs(sc_container, r"started server", timeout=20)
-            requests.get("http://localhost:4020/health")
+            requests.get("http://localhost:3000/health")
             yield SeamBackend(
-                url="http://localhost:4020",
+                url="http://localhost:3000",
                 sandbox_api_key="seam_sandykey_0000000000000000000sand",
             )
 

@@ -34,7 +34,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         ]
 
     def get(self, connect_webview_id: str) -> ConnectWebview:
-        res = requests.post(
+        res = requests.get(
             f"{self.seam.api_url}/connect_webviews/get",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
             params={"connect_webview_id": connect_webview_id},

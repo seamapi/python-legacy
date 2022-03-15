@@ -12,7 +12,6 @@ DeviceId = str
 AcceptedProvider = str  # e.g. august or noiseaware
 
 
-@dataclass_json
 @dataclass
 class Device:
     device_id: DeviceId
@@ -151,7 +150,11 @@ class AbstractDevices(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get(self, device: Union[DeviceId, Device]) -> Device:
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        name: Optional[str] = None,
+    ) -> Device:
         raise NotImplementedError
 
 
