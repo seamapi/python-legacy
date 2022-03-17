@@ -32,7 +32,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         ]
 
     def get(self, connected_account_id: str) -> ConnectedAccount:
-        res = requests.post(
+        res = requests.get(
             f"{self.seam.api_url}/connected_accounts/get",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
             params={"connected_account_id": connected_account_id},
