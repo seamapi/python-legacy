@@ -13,4 +13,3 @@ def test_workspaces(seam: Seam):
 
     ws_list = seam.workspaces.list()
     assert len(ws_list) > 0
-    print(ws_list)
