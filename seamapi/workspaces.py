@@ -9,8 +9,18 @@ class Workspaces(AbstractWorkspaces):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def list(self) -> List[Workspace]:
-        raise NotImplementedError
+    def list(self, workspace_id: Optional[str] = None) -> List[Workspace]:
+        res = requests.get(
+            f"{self.seam.api_url}/workspaces/list",
+            params={"workspace_id": workspace_id},
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        )
+        if res.status_code == 404:
+            raise Exception("workspaces not found")  # TODO custom exception
+        if res.status_code != 200:
+            raise Exception(res.text)
+        res_json = res.json()
+        return res_json['workspaces']
 
     def get(self, workspace_id: Optional[str] = None) -> Workspace:
         res = requests.get(
