@@ -34,7 +34,7 @@ class AccessCodes(AbstractAccessCodes):
     Attributes
     ----------
     seam : dict
-        Intial seam class
+        Initial seam class
 
     Methods
     -------
