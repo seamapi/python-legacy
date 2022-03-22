@@ -25,11 +25,57 @@ def to_device_id(device: Union[DeviceId, Device]) -> str:
 
 class AccessCodes(AbstractAccessCodes):
     seam: Seam
+    """
+    A class used to retreive access code data
+    through interaction with Seam API
+
+    ...
+
+    Attributes
+    ----------
+    seam : dict
+        Intial seam class
+
+    Methods
+    -------
+    list(device)
+        Gets a list of access codes for a device
+    get(access_code)
+        Gets a certain access code of a device
+    create(device, name, code=None, starts_at=None, ends_at=None)
+        Creates an access code on a device
+    delete(access_code)
+        Deletes an access code on a device
+    """
 
     def __init__(self, seam: Seam):
+        """
+        Parameters
+        ----------
+        seam : dict
+          Intial seam class
+        """
+
         self.seam = seam
 
     def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
+        """Gets a list of access codes for a device.
+
+        Parameters
+        ----------
+        device : str or dict
+            Device id or device dict
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            A list of access codes for a device
+        """
+
         device_id = to_device_id(device)
         res = requests.get(
             f"{self.seam.api_url}/access_codes/list?device_id={device_id}",
@@ -41,6 +87,23 @@ class AccessCodes(AbstractAccessCodes):
         return [AccessCode.from_dict(ac) for ac in access_codes]
 
     def get(self, access_code: Union[AccessCodeId, AccessCode]) -> AccessCode:
+        """Gets a certain access code of a device.
+
+        Parameters
+        ----------
+        access_code : str or dict
+            Access code id or access code dict
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            An access code dict
+        """
+
         access_code_id = to_access_code_id(access_code)
         res = requests.get(
             f"{self.seam.api_url}/access_codes/get",
@@ -59,6 +122,31 @@ class AccessCodes(AbstractAccessCodes):
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
     ) -> AccessCode:
+        """Creates an access code on a device.
+
+        Parameters
+        ----------
+        device : str or dict
+            Device id or device dict
+        name : str
+            Access code name
+        code : str, optional
+            Access code value
+        starts_at : str, optional
+            Time when access code becomes effective
+        ends_at : str, optional
+            Time when access code ceases to be effective
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            Access code dict
+        """
+
         device_id = to_device_id(device)
         create_payload = {"device_id": device_id, "name": name}
         if code is not None:
@@ -81,6 +169,25 @@ class AccessCodes(AbstractAccessCodes):
         return AccessCode.from_dict(success_res["access_code"])
 
     def delete(self, access_code: Union[AccessCodeId, AccessCode]) -> ActionAttempt:
+        """Deletes an access code on a device.
+
+        Parameters
+        ----------
+        access_code : str or dict
+            Access code id or access code dict
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+        Exception
+            If action attempt failed.
+
+        Returns
+        ------
+            An access code dict
+        """
+
         access_code_id = to_access_code_id(access_code)
         res = requests.delete(
             (f"{self.seam.api_url}/access_codes/delete"),
