@@ -25,7 +25,7 @@ class ActionAttempts(AbstractActionAttempts):
 
     Attributes
     ----------
-    seam : dict
+    seam : Seam
         Initial seam class
 
     Methods
@@ -42,7 +42,7 @@ class ActionAttempts(AbstractActionAttempts):
         """
         Parameters
         ----------
-        seam : dict
+        seam : Seam
           Intial seam class
         """
         
@@ -55,8 +55,8 @@ class ActionAttempts(AbstractActionAttempts):
 
         Parameters
         ----------
-        action_attempt : str or dict
-            Action attempt id or action attempt dict
+        action_attempt : str or ActionAttempt
+            Action attempt id or ActionAttempt to get latest state of
 
         Raises
         ------
@@ -65,7 +65,7 @@ class ActionAttempts(AbstractActionAttempts):
 
         Returns
         ------
-            An action attempt dict.
+            ActionAttempt
         """
 
         action_attempt_id = to_action_attempt_id(action_attempt)
@@ -99,12 +99,12 @@ class ActionAttempts(AbstractActionAttempts):
 
         Parameters
         ----------
-        action_attempt : str or dict
-            Action attempt id or action attempt dict
+        action_attempt : str or ActionAttempt
+            Action attempt id or ActionAttempt to be polled
 
         Returns
         ------
-            An action attempt dict.
+            ActionAttempt
         """
 
         updated_action_attempt = None

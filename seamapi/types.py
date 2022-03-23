@@ -10,6 +10,7 @@ AccessCodeId = str
 ActionAttemptId = str
 DeviceId = str
 AcceptedProvider = str  # e.g. august or noiseaware
+ConnectWebviewId = str
 
 
 @dataclass

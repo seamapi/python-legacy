@@ -3,9 +3,17 @@ from seamapi.types import (
     ConnectWebview,
     AbstractSeam as Seam,
     AcceptedProvider,
+    ConnectWebviewId
 )
 import requests
-from typing import List, Optional
+from typing import List, Optional, Union
+
+def to_connect_webview_id(
+  connect_webview: Union[ConnectWebviewId, ConnectWebview]
+) -> str:
+    if isinstance(connect_webview, str):
+        return connect_webview
+    return connect_webview.connect_webview_id
 
 
 class ConnectWebviews(AbstractConnectWebviews):
@@ -17,16 +25,16 @@ class ConnectWebviews(AbstractConnectWebviews):
 
     Attributes
     ----------
-    seam : dict
+    seam : Seam
         Initial seam class
 
     Methods
     -------
     list()
         Gets a list of connect webviews
-    get(connect_webview_id)
+    get(connect_webview)
         Gets a connect webview
-    create(accepted_providers=[])
+    create(accepted_providers)
         Creates a connect webview
     """
 
@@ -36,7 +44,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         """
         Parameters
         ----------
-        seam : dict
+        seam : Seam
           Intial seam class
         """
 
@@ -52,7 +60,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         Returns
         ------
-            A list of connect webviews.
+            A list of connect webviews
         """
 
         res = requests.post(
@@ -73,13 +81,16 @@ class ConnectWebviews(AbstractConnectWebviews):
             for json_webview in json_webviews
         ]
 
-    def get(self, connect_webview_id: str) -> ConnectWebview:
+    def get(
+      self,
+      connect_webview: Union[ConnectWebviewId, ConnectWebview]
+    ) -> ConnectWebview:
         """Gets a connect webview.
 
         Parameters
         ----------
-        connect_webview_id : str
-            Connect webview id
+        connect_webview_id : str or ConnectWebview
+            Connect webview id or ConnectWebview to get latest version of
 
         Raises
         ------
@@ -88,9 +99,10 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         Returns
         ------
-            A connect webview dict.
+            ConnectWebview
         """
 
+        connect_webview_id = to_connect_webview_id(connect_webview)
         res = requests.get(
             f"{self.seam.api_url}/connect_webviews/get",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
@@ -108,7 +120,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         )
 
     def create(
-        self, accepted_providers: Optional[List[AcceptedProvider]] = []
+        self, accepted_providers: List[AcceptedProvider]
     ) -> ConnectWebview:
         """Creates a connect webview.
 
@@ -124,7 +136,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         Returns
         ------
-            A connect webview dict.
+            ConnectWebview
         """
 
         res = requests.post(
