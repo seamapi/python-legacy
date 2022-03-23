@@ -17,14 +17,57 @@ def to_action_attempt_id(action_attempt: Union[ActionAttemptId, ActionAttempt]) 
 
 
 class ActionAttempts(AbstractActionAttempts):
+    """
+    A class used to retreive action attempt data
+    through interaction with Seam API
+
+    ...
+
+    Attributes
+    ----------
+    seam : dict
+        Initial seam class
+
+    Methods
+    -------
+    get(action_attempt)
+        Gets data about an action attempt
+    poll_until_ready(action_attempt)
+        Polls an action attempt until its status is 'success' or 'error'
+    """
+
     seam: Seam
 
     def __init__(self, seam: Seam):
+        """
+        Parameters
+        ----------
+        seam : dict
+          Intial seam class
+        """
+        
         self.seam = seam
 
     def get(
         self, action_attempt: Union[ActionAttemptId, ActionAttempt]
     ) -> ActionAttempt:
+        """Gets data about an action attempt.
+
+        Parameters
+        ----------
+        action_attempt : str or dict
+            Action attempt id or action attempt dict
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            An action attempt dict.
+        """
+
         action_attempt_id = to_action_attempt_id(action_attempt)
         res = requests.get(
             f"{self.seam.api_url}/action_attempts/get",
@@ -51,6 +94,19 @@ class ActionAttempts(AbstractActionAttempts):
     def poll_until_ready(
         self, action_attempt: Union[ActionAttemptId, ActionAttempt]
     ) -> ActionAttempt:
+        """
+        Polls an action attempt until its status is 'success' or 'error'.
+
+        Parameters
+        ----------
+        action_attempt : str or dict
+            Action attempt id or action attempt dict
+
+        Returns
+        ------
+            An action attempt dict.
+        """
+
         updated_action_attempt = None
         while (
             updated_action_attempt is None or updated_action_attempt.status == "pending"

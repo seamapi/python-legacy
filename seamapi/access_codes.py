@@ -24,7 +24,6 @@ def to_device_id(device: Union[DeviceId, Device]) -> str:
 
 
 class AccessCodes(AbstractAccessCodes):
-    seam: Seam
     """
     A class used to retreive access code data
     through interaction with Seam API
@@ -47,6 +46,8 @@ class AccessCodes(AbstractAccessCodes):
     delete(access_code)
         Deletes an access code on a device
     """
+    
+    seam: Seam
 
     def __init__(self, seam: Seam):
         """
@@ -73,7 +74,7 @@ class AccessCodes(AbstractAccessCodes):
 
         Returns
         ------
-            A list of access codes for a device
+            A list of access codes for a device.
         """
 
         device_id = to_device_id(device)
@@ -101,7 +102,7 @@ class AccessCodes(AbstractAccessCodes):
 
         Returns
         ------
-            An access code dict
+            An access code dict.
         """
 
         access_code_id = to_access_code_id(access_code)
@@ -144,7 +145,7 @@ class AccessCodes(AbstractAccessCodes):
 
         Returns
         ------
-            Access code dict
+            An access code dict.
         """
 
         device_id = to_device_id(device)
@@ -185,7 +186,7 @@ class AccessCodes(AbstractAccessCodes):
 
         Returns
         ------
-            An access code dict
+            An access code dict.
         """
 
         access_code_id = to_access_code_id(access_code)

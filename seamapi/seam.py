@@ -11,6 +11,33 @@ from .types import AbstractSeam
 
 
 class Seam(AbstractSeam):
+    """
+    Initial Seam class used to interact with Seam API
+
+    ...
+
+    Attributes
+    ----------
+    api_key : str
+        API key (default None)
+    api_url : str
+        API url (default None)
+    workspaces : type
+        Workspaces class
+    connected_accounts : type
+        Connected accounts class
+    connect_webviews : type
+        Connect webviews class
+    devices : type
+        Devices class
+    locks : type
+        Locks class
+    access_codes : type
+        Access codes class
+    action_attempts : type
+        Action attempts class
+    """
+  
     api_key: str
     api_url: str = "https://connect.getseam.com"
 
@@ -19,6 +46,15 @@ class Seam(AbstractSeam):
         api_key: Optional[str] = None,
         api_url: Optional[str] = None,
     ):
+        """
+        Parameters
+        ----------
+        api_key : str, optional
+          API key
+        api_url : str, optional
+          API url
+        """
+
         if api_key is None:
             api_key = os.environ.get("SEAM_API_KEY", None)
         if api_key is None:
