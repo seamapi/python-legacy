@@ -26,7 +26,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         Gets a list of connect webviews
     get(connect_webview_id)
         Gets a connect webview
-    create(accepted_providers)
+    create(accepted_providers=[])
         Creates a connect webview
     """
 

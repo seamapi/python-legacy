@@ -186,7 +186,7 @@ class AccessCodes(AbstractAccessCodes):
 
         Returns
         ------
-            An access code dict.
+            An action attempt dict.
         """
 
         access_code_id = to_access_code_id(access_code)

@@ -23,7 +23,7 @@ class Devices(AbstractDevices):
 
     Methods
     -------
-    list(connected_account=None, connect_webview=None)
+    list(connected_account=None, connect_webview=None, device_type=None)
         Gets a list of devices
     get(device=None, name=None)
         Gets a device
