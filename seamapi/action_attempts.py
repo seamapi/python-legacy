@@ -8,12 +8,7 @@ from seamapi.types import (
 import time
 import requests
 from typing import Union
-
-
-def to_action_attempt_id(action_attempt: Union[ActionAttemptId, ActionAttempt]) -> str:
-    if isinstance(action_attempt, str):
-        return action_attempt
-    return action_attempt.action_attempt_id
+from seamapi.utils.to_id import to_action_attempt_id
 
 
 class ActionAttempts(AbstractActionAttempts):
@@ -45,7 +40,7 @@ class ActionAttempts(AbstractActionAttempts):
         seam : Seam
           Intial seam class
         """
-        
+
         self.seam = seam
 
     def get(
@@ -109,7 +104,8 @@ class ActionAttempts(AbstractActionAttempts):
 
         updated_action_attempt = None
         while (
-            updated_action_attempt is None or updated_action_attempt.status == "pending"
+            updated_action_attempt is None
+            or updated_action_attempt.status == "pending"
         ):
             updated_action_attempt = self.get(action_attempt)
             time.sleep(0.25)

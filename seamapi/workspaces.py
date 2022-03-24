@@ -1,6 +1,13 @@
-from seamapi.types import AbstractSeam as Seam, AbstractWorkspaces, Workspace
-from typing import Optional, List
+from seamapi.types import (
+    AbstractSeam as Seam,
+    AbstractWorkspaces,
+    Workspace,
+    WorkspaceId,
+)
+from typing import Optional, List, Union
 import requests
+
+from seamapi.utils.to_id import to_workspace_id
 
 
 class Workspaces(AbstractWorkspaces):
@@ -12,38 +19,41 @@ class Workspaces(AbstractWorkspaces):
 
     Attributes
     ----------
-    seam : dict
+    seam : Seam
         Initial seam class
 
     Methods
     -------
-    list(workspace_id=None)
+    list(workspace=None)
         Gets a list of workspaces
-    get(workspace_id=None)
+    get(workspace=None)
         Gets a workspace
     reset_sandbox()
         Resets workspace sandbox
     """
-  
+
     seam: Seam
 
     def __init__(self, seam: Seam):
         """
         Parameters
         ----------
-        seam : dict
+        seam : Seam
           Intial seam class
         """
 
         self.seam = seam
 
-    def list(self, workspace_id: Optional[str] = None) -> List[Workspace]:
+    def list(
+        self,
+        workspace: Optional[Union[WorkspaceId, Workspace]] = None,
+    ) -> List[Workspace]:
         """Gets a list of workspaces.
 
         Parameters
         ----------
-        workspace_id : str, optional
-            Workspace id
+        workspace : WorkspaceId or Workspace, optional
+            Workspace id or Workspace to get latest version of
 
         Raises
         ------
@@ -54,9 +64,10 @@ class Workspaces(AbstractWorkspaces):
 
         Returns
         ------
-            A list of workspaces.
+            Workspace
         """
 
+        workspace_id = to_workspace_id(workspace)
         res = requests.get(
             f"{self.seam.api_url}/workspaces/list",
             params={"workspace_id": workspace_id},
@@ -67,15 +78,18 @@ class Workspaces(AbstractWorkspaces):
         if res.status_code != 200:
             raise Exception(res.text)
         res_json = res.json()
-        return res_json['workspaces']
+        return res_json["workspaces"]
 
-    def get(self, workspace_id: Optional[str] = None) -> Workspace:
+    def get(
+        self,
+        workspace: Optional[Union[WorkspaceId, Workspace]] = None,
+    ) -> Workspace:
         """Gets a workspace.
 
         Parameters
         ----------
-        workspace_id : str, optional
-            Workspace id
+        workspace : WorkspaceId or Workspace, optional
+            Workspace id or Workspace to get latest version of
 
         Raises
         ------
@@ -86,9 +100,10 @@ class Workspaces(AbstractWorkspaces):
 
         Returns
         ------
-            A workspace dict.
+            Workspace
         """
 
+        workspace_id = to_workspace_id(workspace)
         res = requests.get(
             f"{self.seam.api_url}/workspaces/get",
             params={"workspace_id": workspace_id},

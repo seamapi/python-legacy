@@ -9,18 +9,7 @@ from seamapi.types import (
 )
 from typing import List, Optional, Union, Any
 import requests
-
-
-def to_access_code_id(access_code: Union[AccessCodeId, AccessCode]) -> str:
-    if isinstance(access_code, str):
-        return access_code
-    return access_code.access_code_id
-
-
-def to_device_id(device: Union[DeviceId, Device]) -> str:
-    if isinstance(device, str):
-        return device
-    return device.device_id
+from seamapi.utils.to_id import to_access_code_id, to_device_id
 
 
 class AccessCodes(AbstractAccessCodes):
@@ -46,7 +35,7 @@ class AccessCodes(AbstractAccessCodes):
     delete(access_code, device=None)
         Deletes an access code on a device
     """
-    
+
     seam: Seam
 
     def __init__(self, seam: Seam):
@@ -88,9 +77,9 @@ class AccessCodes(AbstractAccessCodes):
         return [AccessCode.from_dict(ac) for ac in access_codes]
 
     def get(
-      self,
-      access_code: Optional[Union[AccessCodeId, AccessCode]] = None,
-      device: Optional[Union[DeviceId, AccessCode]] = None
+        self,
+        access_code: Optional[Union[AccessCodeId, AccessCode]] = None,
+        device: Optional[Union[DeviceId, AccessCode]] = None,
     ) -> AccessCode:
         """Gets a certain access code of a device.
 
@@ -180,9 +169,9 @@ class AccessCodes(AbstractAccessCodes):
         return AccessCode.from_dict(success_res["access_code"])
 
     def delete(
-      self,
-      access_code: Union[AccessCodeId, AccessCode],
-      device: Optional[Union[DeviceId, AccessCode]] = None
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+        device: Optional[Union[DeviceId, AccessCode]] = None,
     ) -> ActionAttempt:
         """Deletes an access code on a device.
 

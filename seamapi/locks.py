@@ -1,6 +1,10 @@
 from seamapi.types import (
     AbstractLocks,
     ActionAttempt,
+    ConnectWebview,
+    ConnectWebviewId,
+    ConnectedAccount,
+    ConnectedAccountId,
     Device,
     DeviceId,
     AbstractSeam as Seam,
@@ -8,12 +12,11 @@ from seamapi.types import (
 import time
 from typing import List, Union, Optional, cast
 import requests
-
-
-def to_device_id(device: Union[DeviceId, Device]) -> str:
-    if isinstance(device, str):
-        return device
-    return device.device_id
+from seamapi.utils.to_id import (
+    to_connect_webview_id,
+    to_connected_account_id,
+    to_device_id,
+)
 
 
 class Locks(AbstractLocks):
@@ -25,7 +28,7 @@ class Locks(AbstractLocks):
 
     Attributes
     ----------
-    seam : dict
+    seam : Seam
         Initial seam class
 
     Methods
@@ -46,7 +49,7 @@ class Locks(AbstractLocks):
         """
         Parameters
         ----------
-        seam : dict
+        seam : Seam
           Intial seam class
         """
 
@@ -54,17 +57,17 @@ class Locks(AbstractLocks):
 
     def list(
         self,
-        connected_account: Optional[str] = None,
-        connect_webview: Optional[str] = None,
+        connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
+        connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
     ) -> List[Device]:
         """Gets a list of locks.
 
         Parameters
         ----------
-        connected_account : str, optional
-            Connected account id
-        connect_webview : str, optional
-            Connect webview id
+        connected_account : ConnectedAccountId or ConnectedAccount, optional
+            Connected account id or ConnectedAccount to get locks associated with
+        connect_webview : ConnectWebviewId or ConnectWebview, optional
+            Connect webview id or ConnectWebview to get locks associated with
 
         Raises
         ------
@@ -78,9 +81,13 @@ class Locks(AbstractLocks):
 
         params = {}
         if connected_account:
-            params["connected_account_id"] = connected_account
+            params["connected_account_id"] = to_connected_account_id(
+                connected_account
+            )
         if connect_webview:
-            params["connect_webview_id"] = connect_webview
+            params["connect_webview_id"] = to_connect_webview_id(
+                connect_webview
+            )
 
         res = requests.post(
             f"{self.seam.api_url}/locks/list",
@@ -101,8 +108,8 @@ class Locks(AbstractLocks):
 
         Parameters
         ----------
-        device : str or dict, optional
-            Device id or device dict
+        device : DeviceId or Device, optional
+            Device id or Device to get the latest state of
         name : str, optional
             Device name
 
@@ -136,8 +143,8 @@ class Locks(AbstractLocks):
 
         Parameters
         ----------
-        device : str or dict
-            Device id or device dict
+        device : DeviceId or Device
+            Device id or Device to be locked
 
         Raises
         ------
@@ -146,7 +153,7 @@ class Locks(AbstractLocks):
 
         Returns
         ------
-            An action attempt dict.
+            ActionAttempt
         """
 
         device_id = to_device_id(device)
@@ -166,8 +173,8 @@ class Locks(AbstractLocks):
 
         Parameters
         ----------
-        device : str or dict
-            Device id or device dict
+        device : DeviceId or Device
+            Device id or Device to be locked
 
         Raises
         ------
@@ -176,9 +183,9 @@ class Locks(AbstractLocks):
 
         Returns
         ------
-            An action attempt dict.
+            ActionAttempt
         """
-      
+
         device_id = to_device_id(device)
         res = requests.post(
             f"{self.seam.api_url}/locks/unlock_door",

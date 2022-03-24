@@ -3,17 +3,11 @@ from seamapi.types import (
     ConnectWebview,
     AbstractSeam as Seam,
     AcceptedProvider,
-    ConnectWebviewId
+    ConnectWebviewId,
 )
 import requests
 from typing import List, Optional, Union
-
-def to_connect_webview_id(
-  connect_webview: Union[ConnectWebviewId, ConnectWebview]
-) -> str:
-    if isinstance(connect_webview, str):
-        return connect_webview
-    return connect_webview.connect_webview_id
+from seamapi.utils.to_id import to_connect_webview_id
 
 
 class ConnectWebviews(AbstractConnectWebviews):
@@ -34,7 +28,9 @@ class ConnectWebviews(AbstractConnectWebviews):
         Gets a list of connect webviews
     get(connect_webview)
         Gets a connect webview
-    create(accepted_providers)
+    create(
+      accepted_providers, custom_redirect_url=None, device_selection_mode==None
+    )
         Creates a connect webview
     """
 
@@ -82,14 +78,13 @@ class ConnectWebviews(AbstractConnectWebviews):
         ]
 
     def get(
-      self,
-      connect_webview: Union[ConnectWebviewId, ConnectWebview]
+        self, connect_webview: Union[ConnectWebviewId, ConnectWebview]
     ) -> ConnectWebview:
         """Gets a connect webview.
 
         Parameters
         ----------
-        connect_webview_id : str or ConnectWebview
+        connect_webview_id : ConnectWebviewId or ConnectWebview
             Connect webview id or ConnectWebview to get latest version of
 
         Raises
@@ -120,14 +115,21 @@ class ConnectWebviews(AbstractConnectWebviews):
         )
 
     def create(
-        self, accepted_providers: List[AcceptedProvider]
+        self,
+        accepted_providers: List[AcceptedProvider],
+        custom_redirect_url: Optional[str] = None,
+        device_selection_mode: Optional[str] = None,
     ) -> ConnectWebview:
         """Creates a connect webview.
 
         Parameters
         ----------
-        accepted_providers : list, optional
+        accepted_providers : list[AcceptedProvider]
             A list of accepted providers e.g. august or noiseaware
+        custom_redirect_url : str, optional
+            Custom redirect url
+        device_selection_mode : str, optional
+            Selection mode: 'none', 'single' or 'multiple'
 
         Raises
         ------
@@ -139,10 +141,15 @@ class ConnectWebviews(AbstractConnectWebviews):
             ConnectWebview
         """
 
+        create_payload = {"accepted_providers": accepted_providers}
+        if custom_redirect_url is not None:
+            create_payload["custom_redirect_url"] = custom_redirect_url
+        if device_selection_mode is not None:
+            create_payload["device_selection_mode"] = device_selection_mode
         res = requests.post(
             f"{self.seam.api_url}/connect_webviews/create",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            json={"accepted_providers": accepted_providers},
+            json=create_payload,
         )
         if not res.ok:
             raise Exception(res.text)

@@ -22,22 +22,22 @@ class Seam(AbstractSeam):
         API key (default None)
     api_url : str
         API url (default None)
-    workspaces : type
+    workspaces : Workspaces
         Workspaces class
-    connected_accounts : type
+    connected_accounts : ConnectedAccounts
         Connected accounts class
-    connect_webviews : type
+    connect_webviews : ConnectWebviews
         Connect webviews class
-    devices : type
+    devices : Devices
         Devices class
-    locks : type
+    locks : Locks
         Locks class
-    access_codes : type
+    access_codes : AccessCodes
         Access codes class
-    action_attempts : type
+    action_attempts : ActionAttempts
         Action attempts class
     """
-  
+
     api_key: str
     api_url: str = "https://connect.getseam.com"
 

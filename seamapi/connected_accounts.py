@@ -2,9 +2,12 @@ from seamapi.types import (
     AbstractConnectedAccounts,
     ConnectedAccount,
     AbstractSeam as Seam,
+    ConnectedAccountId,
 )
+
 import requests
-from typing import List, Optional
+from typing import List, Optional, Union
+from seamapi.utils.to_id import to_connected_account_id
 
 
 class ConnectedAccounts(AbstractConnectedAccounts):
@@ -16,14 +19,14 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
     Attributes
     ----------
-    seam : dict
+    seam : Seam
         Initial seam class
 
     Methods
     -------
     list()
         Gets a list of connected accounts
-    get(connected_account_id)
+    get(connected_account)
         Gets a connected account
     """
 
@@ -33,7 +36,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         """
         Parameters
         ----------
-        seam : dict
+        seam : Seam
           Intial seam class
         """
 
@@ -69,13 +72,16 @@ class ConnectedAccounts(AbstractConnectedAccounts):
             for json_account in json_accounts
         ]
 
-    def get(self, connected_account_id: str) -> ConnectedAccount:
+    def get(
+        self,
+        connected_account: Union[ConnectedAccountId, ConnectedAccount],
+    ) -> ConnectedAccount:
         """Gets a connected account.
 
         Parameters
         ----------
-        connected_account_id : str
-            Connected account id
+        connected_account : ConnectedAccountId or ConnectedAccount
+            Connected account id or ConnectedAccount to get the latest version of
 
         Raises
         ------
@@ -84,9 +90,10 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
         Returns
         ------
-            A connected account dict.
+            ConnectedAccount
         """
 
+        connected_account_id = to_connected_account_id(connected_account)
         res = requests.get(
             f"{self.seam.api_url}/connected_accounts/get",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
@@ -96,8 +103,8 @@ class ConnectedAccounts(AbstractConnectedAccounts):
             raise Exception(res.text)
         json_account = res.json()["connected_account"]
         return ConnectedAccount(
-                connected_account_id=json_account["connected_account_id"],
-                created_at=json_account["created_at"],
-                user_identifier=json_account["user_identifier"],
-                account_type=json_account["account_type"],
-            )
+            connected_account_id=json_account["connected_account_id"],
+            created_at=json_account["created_at"],
+            user_identifier=json_account["user_identifier"],
+            account_type=json_account["account_type"],
+        )

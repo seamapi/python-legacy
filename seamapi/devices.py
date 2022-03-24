@@ -1,12 +1,17 @@
-from seamapi.types import AbstractDevices, Device, DeviceId, AbstractSeam as Seam
+from seamapi.types import (
+    AbstractDevices,
+    ConnectWebview,
+    ConnectWebviewId,
+    ConnectedAccount,
+    ConnectedAccountId,
+    Device,
+    DeviceId,
+    AbstractSeam as Seam,
+    DeviceType,
+)
 from typing import List, Union, Optional
 import requests
-
-
-def to_device_id(device: Union[DeviceId, Device]) -> str:
-    if isinstance(device, str):
-        return device
-    return device.device_id
+from seamapi.utils.to_id import to_device_id
 
 
 class Devices(AbstractDevices):
@@ -18,7 +23,7 @@ class Devices(AbstractDevices):
 
     Attributes
     ----------
-    seam : dict
+    seam : Seam
         Initial seam class
 
     Methods
@@ -28,14 +33,14 @@ class Devices(AbstractDevices):
     get(device=None, name=None)
         Gets a device
     """
-  
+
     seam: Seam
 
     def __init__(self, seam: Seam):
         """
         Parameters
         ----------
-        seam : dict
+        seam : Seam
           Intial seam class
         """
 
@@ -43,20 +48,20 @@ class Devices(AbstractDevices):
 
     def list(
         self,
-        connected_account: Optional[str] = None,
-        connect_webview: Optional[str] = None,
-        device_type: Optional[str] = None,
+        connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
+        connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
+        device_type: Optional[DeviceType] = None,
     ) -> List[Device]:
         """Gets a list of devices.
 
         Parameters
         ----------
-        connected_account : str, optional
-            Connected account id
-        connect_webview : str, optional
-            Connect webview id
-        device_type : str, optional
-            A device type e.g. august_lock
+        connected_account : ConnectedAccountId or ConnectedAccount, optional
+            Connected account id or ConnectedAccount to get devices associated with
+        connect_webview : ConnectWebviewId or ConnectWebview, optional
+            Connect webview id or ConnectWebview to get devices associated with
+        device_type : DeviceType, optional
+            Device type e.g. august_lock
 
         Raises
         ------
@@ -94,8 +99,8 @@ class Devices(AbstractDevices):
 
         Parameters
         ----------
-        device : str or dict, optional
-            Device id or device dict
+        device : DeviceId or Device, optional
+            Device id or Device to get the state of
         name : str, optional
             Device name
 
@@ -106,7 +111,7 @@ class Devices(AbstractDevices):
 
         Returns
         ------
-            A device dict.
+            Device
         """
 
         params = {}
