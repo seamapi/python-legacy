@@ -148,7 +148,9 @@ class AccessCodes(AbstractAccessCodes):
         """
 
         device_id = to_device_id(device)
-        create_payload = {"device_id": device_id, "name": name}
+        create_payload = {"device_id": device_id}
+        if name is not None:
+            create_payload["name"] = name
         if code is not None:
             create_payload["code"] = code
         if starts_at is not None:

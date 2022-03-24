@@ -85,7 +85,7 @@ class Devices(AbstractDevices):
         if connect_webview:
             params[
                 "connect_webview_id"
-            ] = connect_webview_id = to_connect_webview_id(connect_webview)
+            ] =  to_connect_webview_id(connect_webview)
         if device_type:
             params["device_type"] = device_type
         res = requests.get(
