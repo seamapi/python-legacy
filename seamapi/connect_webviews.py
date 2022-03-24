@@ -7,7 +7,7 @@ from seamapi.types import (
 )
 import requests
 from typing import List, Optional, Union
-from seamapi.utils.to_id import to_connect_webview_id
+from seamapi.utils.convert_to_id import to_connect_webview_id
 
 
 class ConnectWebviews(AbstractConnectWebviews):

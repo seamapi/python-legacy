@@ -7,7 +7,7 @@ from seamapi.types import (
 from typing import Optional, List, Union
 import requests
 
-from seamapi.utils.to_id import to_workspace_id
+from seamapi.utils.convert_to_id import to_workspace_id
 
 
 class Workspaces(AbstractWorkspaces):

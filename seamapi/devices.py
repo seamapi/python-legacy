@@ -11,7 +11,11 @@ from seamapi.types import (
 )
 from typing import List, Union, Optional
 import requests
-from seamapi.utils.to_id import to_device_id
+from seamapi.utils.convert_to_id import (
+    to_connect_webview_id,
+    to_connected_account_id,
+    to_device_id,
+)
 
 
 class Devices(AbstractDevices):
@@ -75,9 +79,13 @@ class Devices(AbstractDevices):
 
         params = {}
         if connected_account:
-            params["connected_account_id"] = connected_account
+            params["connected_account_id"] = to_connected_account_id(
+                connected_account
+            )
         if connect_webview:
-            params["connect_webview_id"] = connect_webview
+            params[
+                "connect_webview_id"
+            ] = connect_webview_id = to_connect_webview_id(connect_webview)
         if device_type:
             params["device_type"] = device_type
         res = requests.get(

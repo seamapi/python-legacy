@@ -8,7 +8,7 @@ from seamapi.types import (
 import time
 import requests
 from typing import Union
-from seamapi.utils.to_id import to_action_attempt_id
+from seamapi.utils.convert_to_id import to_action_attempt_id
 
 
 class ActionAttempts(AbstractActionAttempts):
@@ -50,7 +50,7 @@ class ActionAttempts(AbstractActionAttempts):
 
         Parameters
         ----------
-        action_attempt : str or ActionAttempt
+        action_attempt : ActionAttemptId or ActionAttempt
             Action attempt id or ActionAttempt to get latest state of
 
         Raises
@@ -94,7 +94,7 @@ class ActionAttempts(AbstractActionAttempts):
 
         Parameters
         ----------
-        action_attempt : str or ActionAttempt
+        action_attempt : ActionAttemptId or ActionAttempt
             Action attempt id or ActionAttempt to be polled
 
         Returns

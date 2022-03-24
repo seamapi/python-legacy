@@ -9,7 +9,7 @@ from seamapi.types import (
 )
 from typing import List, Optional, Union, Any
 import requests
-from seamapi.utils.to_id import to_access_code_id, to_device_id
+from seamapi.utils.convert_to_id import to_access_code_id, to_device_id
 
 
 class AccessCodes(AbstractAccessCodes):
@@ -81,13 +81,13 @@ class AccessCodes(AbstractAccessCodes):
         access_code: Optional[Union[AccessCodeId, AccessCode]] = None,
         device: Optional[Union[DeviceId, AccessCode]] = None,
     ) -> AccessCode:
-        """Gets a certain access code of a device.
+        """Gets a certain access code for a device.
 
         Parameters
         ----------
-        access_code : AccessCodeId or AccessCode
+        access_code : AccessCodeId or AccessCode, optional
             Access code id or AccessCode to get latest version of
-        device : DeviceId or Device
+        device : DeviceId or Device, optional
             Device id or Device to get an access code for
 
         Raises
@@ -128,7 +128,7 @@ class AccessCodes(AbstractAccessCodes):
         ----------
         device : DeviceId or Device
             Device id or Device to create an access code for
-        name : str
+        name : str, optional
             Access code name
         code : str, optional
             Access code value
@@ -179,7 +179,7 @@ class AccessCodes(AbstractAccessCodes):
         ----------
         access_code : AccessCodeId or AccessCode
             Access code id or AccessCode to delete it
-        device : DeviceId or Device
+        device : DeviceId or Device, optional
             Device id or Device to delete an access code on
 
         Raises

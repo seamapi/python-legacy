@@ -12,7 +12,7 @@ from seamapi.types import (
 import time
 from typing import List, Union, Optional, cast
 import requests
-from seamapi.utils.to_id import (
+from seamapi.utils.convert_to_id import (
     to_connect_webview_id,
     to_connected_account_id,
     to_device_id,
@@ -57,8 +57,12 @@ class Locks(AbstractLocks):
 
     def list(
         self,
-        connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
-        connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
+        connected_account: Optional[
+            Union[ConnectedAccountId, ConnectedAccount]
+        ] = None,
+        connect_webview: Optional[
+            Union[ConnectWebviewId, ConnectWebview]
+        ] = None,
     ) -> List[Device]:
         """Gets a list of locks.
 
@@ -79,19 +83,19 @@ class Locks(AbstractLocks):
             A list of locks.
         """
 
-        params = {}
+        create_payload = {}
         if connected_account:
-            params["connected_account_id"] = to_connected_account_id(
+            create_payload["connected_account_id"] = to_connected_account_id(
                 connected_account
             )
         if connect_webview:
-            params["connect_webview_id"] = to_connect_webview_id(
+            create_payload["connect_webview_id"] = to_connect_webview_id(
                 connect_webview
             )
 
         res = requests.post(
             f"{self.seam.api_url}/locks/list",
-            params=params,
+            json=create_payload,
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
         )
         if not res.ok:
@@ -123,15 +127,15 @@ class Locks(AbstractLocks):
             A lock dict.
         """
 
-        params = {}
+        create_payload = {}
         if device:
-            params["device_id"] = to_device_id(device)
+            create_payload["device_id"] = to_device_id(device)
         if name:
-            params["name"] = name
+            create_payload["name"] = name
         res = requests.post(
             f"{self.seam.api_url}/locks/get",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params=params,
+            json=create_payload,
         )
         if not res.ok:
             raise Exception(res.text)

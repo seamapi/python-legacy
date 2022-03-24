@@ -7,7 +7,7 @@ from seamapi.types import (
 
 import requests
 from typing import List, Optional, Union
-from seamapi.utils.to_id import to_connected_account_id
+from seamapi.utils.convert_to_id import to_connected_account_id
 
 
 class ConnectedAccounts(AbstractConnectedAccounts):
