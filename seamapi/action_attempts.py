@@ -13,7 +13,7 @@ from seamapi.utils.convert_to_id import to_action_attempt_id
 
 class ActionAttempts(AbstractActionAttempts):
     """
-    A class used to retreive action attempt data
+    A class used to retrieve action attempt data
     through interaction with Seam API
 
     ...
