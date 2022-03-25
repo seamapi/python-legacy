@@ -8,23 +8,61 @@ from seamapi.types import (
 import time
 import requests
 from typing import Union
-
-
-def to_action_attempt_id(action_attempt: Union[ActionAttemptId, ActionAttempt]) -> str:
-    if isinstance(action_attempt, str):
-        return action_attempt
-    return action_attempt.action_attempt_id
+from seamapi.utils.convert_to_id import to_action_attempt_id
 
 
 class ActionAttempts(AbstractActionAttempts):
+    """
+    A class used to retrieve action attempt data
+    through interaction with Seam API
+
+    ...
+
+    Attributes
+    ----------
+    seam : Seam
+        Initial seam class
+
+    Methods
+    -------
+    get(action_attempt)
+        Gets data about an action attempt
+    poll_until_ready(action_attempt)
+        Polls an action attempt until its status is 'success' or 'error'
+    """
+
     seam: Seam
 
     def __init__(self, seam: Seam):
+        """
+        Parameters
+        ----------
+        seam : Seam
+          Initial seam class
+        """
+
         self.seam = seam
 
     def get(
         self, action_attempt: Union[ActionAttemptId, ActionAttempt]
     ) -> ActionAttempt:
+        """Gets data about an action attempt.
+
+        Parameters
+        ----------
+        action_attempt : ActionAttemptId or ActionAttempt
+            Action attempt id or ActionAttempt to get latest state of
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            ActionAttempt
+        """
+
         action_attempt_id = to_action_attempt_id(action_attempt)
         res = requests.get(
             f"{self.seam.api_url}/action_attempts/get",
@@ -51,9 +89,23 @@ class ActionAttempts(AbstractActionAttempts):
     def poll_until_ready(
         self, action_attempt: Union[ActionAttemptId, ActionAttempt]
     ) -> ActionAttempt:
+        """
+        Polls an action attempt until its status is 'success' or 'error'.
+
+        Parameters
+        ----------
+        action_attempt : ActionAttemptId or ActionAttempt
+            Action attempt id or ActionAttempt to be polled
+
+        Returns
+        ------
+            ActionAttempt
+        """
+
         updated_action_attempt = None
         while (
-            updated_action_attempt is None or updated_action_attempt.status == "pending"
+            updated_action_attempt is None
+            or updated_action_attempt.status == "pending"
         ):
             updated_action_attempt = self.get(action_attempt)
             time.sleep(0.25)
