@@ -12,7 +12,7 @@ from seamapi.utils.convert_to_id import to_connect_webview_id
 
 class ConnectWebviews(AbstractConnectWebviews):
     """
-    A class used to retreive connect webview data
+    A class used to retrieve connect webview data
     through interaction with Seam API
 
     ...

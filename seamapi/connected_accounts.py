@@ -12,7 +12,7 @@ from seamapi.utils.convert_to_id import to_connected_account_id
 
 class ConnectedAccounts(AbstractConnectedAccounts):
     """
-    A class used to retreive connected account data
+    A class used to retrieve connected account data
     through interaction with Seam API
 
     ...
@@ -37,7 +37,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         Parameters
         ----------
         seam : Seam
-          Intial seam class
+          Initial seam class
         """
 
         self.seam = seam
