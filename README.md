@@ -34,7 +34,8 @@ This project uses [poetry](https://github.com/python-poetry/poetry)
 - To setup the project and install dependencies run `poetry install`
 - To run tests, run `poetry run pytest`
 - To build the project for publishing, run `poetry build`
-- To publish the project run `poetry build`
+
+Commits to `main` following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) will automatically be published to PyPI.
 
 Our tests use a seam sandbox environment given by the environment
 variables `SEAM_SANDBOX_API_KEY`. If you want to run the tests, you should
