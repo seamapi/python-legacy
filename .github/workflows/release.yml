@@ -1,0 +1,21 @@
+name: NPM Semantic Release
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Release
+        uses: bjoluc/semantic-release-config-poetry@v1
+        with:
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+          github_token: ${{ secrets.BOT_GH_TOKEN }}
