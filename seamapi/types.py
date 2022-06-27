@@ -141,6 +141,18 @@ class AbstractAccessCodes(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def update(
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+        device: Optional[Union[DeviceId, Device]] = None,
+        name: Optional[str] = None,
+        code: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+    ) -> AccessCode:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def delete(
         self,
         access_code: Union[AccessCodeId, AccessCode],

@@ -170,6 +170,68 @@ class AccessCodes(AbstractAccessCodes):
         success_res: Any = action_attempt.result
         return AccessCode.from_dict(success_res["access_code"])
 
+    def update(
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+        device: Optional[Union[DeviceId, Device]] = None,
+        name: Optional[str] = None,
+        code: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+    ) -> AccessCode:
+        """Updates an access code on a device.
+
+        Parameters
+        ----------
+        access_code: AccessCodeId or AccessCode
+            Access code id or Access code to update
+        device : DeviceId or Device
+            New device to move access code to
+        name : str, optional
+            Access code name
+        code : str, optional
+            Access code value
+        starts_at : str, optional
+            Time when access code becomes effective
+        ends_at : str, optional
+            Time when access code ceases to be effective
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            AccessCode
+        """
+
+        access_code_id = to_access_code_id(access_code)
+        update_payload = {"access_code_id": access_code_id}
+        if device is not None:
+            update_payload["device_id"] = to_device_id(device)
+        if name is not None:
+            update_payload["name"] = name
+        if code is not None:
+            update_payload["code"] = code
+        if starts_at is not None:
+            update_payload["starts_at"] = starts_at
+        if ends_at is not None:
+            update_payload["ends_at"] = ends_at
+        res = requests.post(
+            f"{self.seam.api_url}/access_codes/update",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            json=update_payload,
+        )
+        if not res.ok:
+            raise Exception(res.text)
+        action_attempt = self.seam.action_attempts.poll_until_ready(
+            res.json()["action_attempt"]["action_attempt_id"]
+        )
+        success_res: Any = action_attempt.result
+        return AccessCode.from_dict(success_res["access_code"])
+
+
     def delete(
         self,
         access_code: Union[AccessCodeId, AccessCode],
