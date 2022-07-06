@@ -35,18 +35,20 @@ def seam_backend():
         ).with_env("DATABASE_NAME", "seam_api").with_env("NODE_ENV", "test").with_env(
             "POSTGRES_HOST", db_host
         ).with_env(
-            "SERVER_BASE_URL", "http://localhost:3000"
+            "SERVER_BASE_URL", "http://localhost:3020"
         ).with_env(
             "SEAMTEAM_ADMIN_PASSWORD", "1234"
+        ).with_env(
+            "PORT", "3020"
         ).with_bind_ports(
-            3000, 3000
+            3020, 3020
         ).with_command(
             "start:for-integration-testing"
         ) as sc_container:
             wait_for_logs(sc_container, r"started server", timeout=20)
-            requests.get("http://localhost:3000/health")
+            requests.get("http://localhost:3020/health")
             yield SeamBackend(
-                url="http://localhost:3000",
+                url="http://localhost:3020",
                 sandbox_api_key="seam_sandykey_0000000000000000000sand",
             )
 
