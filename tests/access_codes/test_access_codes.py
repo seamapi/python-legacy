@@ -16,5 +16,8 @@ def test_access_codes(seam: Seam):
     access_code = seam.access_codes.get(created_access_code.access_code_id)
     assert access_code.code == "4444"
 
+    access_code = seam.access_codes.update(access_code, name="Updated name")
+    assert access_code.name == "Updated name"
+
     delete_action_attempt = seam.access_codes.delete(created_access_code)
     assert delete_action_attempt.status == "success"
