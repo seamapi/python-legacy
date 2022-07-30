@@ -1,9 +1,9 @@
 from seamapi import Seam
-from tests.fixtures.login_via_schlage import login_via_schlage
+from tests.fixtures.run_august_factory import run_august_factory
 
 
 def test_connected_accounts(seam: Seam):
-    login_via_schlage(seam)
+    run_august_factory(seam)
 
     connected_accounts = seam.connected_accounts.list()
     assert len(connected_accounts) > 0

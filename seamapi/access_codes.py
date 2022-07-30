@@ -231,7 +231,6 @@ class AccessCodes(AbstractAccessCodes):
         success_res: Any = action_attempt.result
         return AccessCode.from_dict(success_res["access_code"])
 
-
     def delete(
         self,
         access_code: Union[AccessCodeId, AccessCode],

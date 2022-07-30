@@ -59,7 +59,7 @@ class ConnectWebviews(AbstractConnectWebviews):
             A list of connect webviews
         """
 
-        res = requests.post(
+        res = requests.get(
             f"{self.seam.api_url}/connect_webviews/list",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
         )

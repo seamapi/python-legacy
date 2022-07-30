@@ -22,17 +22,21 @@ class SeamBackend:
     sandbox_api_key: str
 
 
-@pytest.fixture(scope="session")
+# TODO this should use scope="session", but there's some issue, this would
+# dramatically reduce test time to switch
+@pytest.fixture(scope="function")
 def seam_backend():
     with PostgresContainer("postgres:13", dbname="postgres") as pg:
         db_host = "host.docker.internal" if sys.platform == "darwin" else "172.17.0.1"
-        db_url = f"postgresql://test:test@{db_host}:{pg.get_exposed_port(pg.port_to_expose)}/seam_api"
-        with DockerContainer("seam-connect").with_env(
+        db_url = f"postgresql://test:test@{db_host}:{pg.get_exposed_port(pg.port_to_expose)}/postgres"
+        with DockerContainer("registry.digitalocean.com/seam/seam-connect").with_env(
             "DATABASE_URL",
             # TODO on mac us docker.host.internal instead of 172.17.0.1 when someone
             # with a mac needs to run tests
             db_url,
-        ).with_env("DATABASE_NAME", "seam_api").with_env("NODE_ENV", "test").with_env(
+        ).with_env("POSTGRES_DATABASE", "postgres").with_env(
+            "NODE_ENV", "test"
+        ).with_env(
             "POSTGRES_HOST", db_host
         ).with_env(
             "SERVER_BASE_URL", "http://localhost:3020"

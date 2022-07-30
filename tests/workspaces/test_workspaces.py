@@ -1,9 +1,9 @@
 from seamapi import Seam
-from tests.fixtures.login_via_schlage import login_via_schlage
+from tests.fixtures.run_august_factory import run_august_factory
 
 
 def test_workspaces(seam: Seam):
-    login_via_schlage(seam)
+    run_august_factory(seam)
 
     ws = seam.workspaces.get()
     assert ws.is_sandbox == True
