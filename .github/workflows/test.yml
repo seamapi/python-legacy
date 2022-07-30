@@ -52,6 +52,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
           message: |
             ⌛️ [running Python SDK tests](${{ env.RUN_URL }})...
+      - run: poetry install
       - run: poetry run pytest -s
       - name: Comment on failure
         if: ${{ github.event.inputs.prNumber && failure() }}
