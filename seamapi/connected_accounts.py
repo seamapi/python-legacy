@@ -55,7 +55,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
             A list of connected accounts.
         """
 
-        res = requests.post(
+        res = requests.get(
             f"{self.seam.api_url}/connected_accounts/list",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
         )

@@ -88,6 +88,7 @@ class AccessCode:
     starts_at: Optional[str] = None
     ends_at: Optional[str] = None
     name: Optional[str] = ""
+    status: Optional[str] = None
 
 
 class AbstractActionAttempts(abc.ABC):
@@ -149,6 +150,7 @@ class AbstractAccessCodes(abc.ABC):
         code: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
+        status: Optional[str] = None,
     ) -> AccessCode:
         raise NotImplementedError
 

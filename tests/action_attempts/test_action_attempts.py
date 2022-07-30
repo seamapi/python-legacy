@@ -1,12 +1,14 @@
 from seamapi import Seam
-from tests.fixtures.login_via_schlage import login_via_schlage
+from tests.fixtures.run_august_factory import run_august_factory
 
 
 def test_action_attempts(seam: Seam):
-    login_via_schlage(seam)
+    run_august_factory(seam)
 
     some_device = seam.devices.list()[0]
-    created_access_code = seam.access_codes.create(some_device.device_id, "Test code", "4444")
+    created_access_code = seam.access_codes.create(
+        some_device.device_id, "Test code", "4444"
+    )
     delete_action_attempt = seam.access_codes.delete(created_access_code)
 
     action_attempt = seam.action_attempts.get(delete_action_attempt)

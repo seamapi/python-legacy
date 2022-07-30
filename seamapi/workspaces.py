@@ -67,7 +67,7 @@ class Workspaces(AbstractWorkspaces):
             Workspace
         """
 
-        workspace_id = to_workspace_id(workspace)
+        workspace_id = None if workspace is None else to_workspace_id(workspace)
         res = requests.get(
             f"{self.seam.api_url}/workspaces/list",
             params={"workspace_id": workspace_id},
@@ -102,8 +102,7 @@ class Workspaces(AbstractWorkspaces):
         ------
             Workspace
         """
-
-        workspace_id = to_workspace_id(workspace)
+        workspace_id = None if workspace is None else to_workspace_id(workspace)
         res = requests.get(
             f"{self.seam.api_url}/workspaces/get",
             params={"workspace_id": workspace_id},

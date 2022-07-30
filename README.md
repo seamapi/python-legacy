@@ -32,7 +32,7 @@ seam.locks.lock_door(some_lock)
 This project uses [poetry](https://github.com/python-poetry/poetry)
 
 - To setup the project and install dependencies run `poetry install`
-- To run tests, run `poetry run pytest`
+- To run tests, run `poetry run pytest -s`
 - To build the project for publishing, run `poetry build`
 
 Commits to `main` following [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) will automatically be published to PyPI.
