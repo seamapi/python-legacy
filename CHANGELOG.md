@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [1.1.2](https://github.com/seamapi/python/compare/v1.1.1...v1.1.2) (2022-08-05)
+
+
+### Bug Fixes
+
+* Merge pull request [#22](https://github.com/seamapi/python/issues/22) from seamapi/better-error-handling ([25d007a](https://github.com/seamapi/python/commit/25d007a4feaaab4e0fe94bcb528ec79dc8326915))
+
 ### [1.1.1](https://github.com/seamapi/python/compare/v1.1.0...v1.1.1) (2022-07-30)
 
 
