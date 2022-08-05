@@ -31,8 +31,6 @@ def seam_backend():
         db_url = f"postgresql://test:test@{db_host}:{pg.get_exposed_port(pg.port_to_expose)}/postgres"
         with DockerContainer("registry.digitalocean.com/seam/seam-connect").with_env(
             "DATABASE_URL",
-            # TODO on mac us docker.host.internal instead of 172.17.0.1 when someone
-            # with a mac needs to run tests
             db_url,
         ).with_env("POSTGRES_DATABASE", "postgres").with_env(
             "NODE_ENV", "test"

@@ -16,6 +16,23 @@ DeviceType = str  # e.g. august_lock
 WorkspaceId = str
 
 
+class ActionAttemptFailedException(Exception):
+    def __init__(
+        self,
+        action_attempt_id: Optional[str] = None,
+        action_type: Optional[str] = None,
+        error_type: Optional[str] = None,
+        error_message: Optional[str] = None,
+    ):
+        self.action_attempt_id = action_attempt_id
+        self.action_type = action_type
+        self.error_type = error_type
+        self.error_message = error_message
+        super().__init__(
+            f'Action Attempt for "{action_type}" Failed. {error_type}: {error_message} (action_attempt_id={action_attempt_id})'
+        )
+
+
 @dataclass
 class Device:
     device_id: DeviceId
@@ -100,7 +117,9 @@ class AbstractActionAttempts(abc.ABC):
 
     @abc.abstractmethod
     def poll_until_ready(
-        self, action_attempt: Union[ActionAttemptId, ActionAttempt]
+        self,
+        action_attempt: Union[ActionAttemptId, ActionAttempt],
+        should_raise: bool = True,
     ) -> ActionAttempt:
         raise NotImplementedError
 
@@ -158,7 +177,7 @@ class AbstractAccessCodes(abc.ABC):
     def delete(
         self,
         access_code: Union[AccessCodeId, AccessCode],
-    ) -> None:
+    ) -> ActionAttempt:
         raise NotImplementedError
 
 

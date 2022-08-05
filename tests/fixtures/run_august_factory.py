@@ -15,3 +15,4 @@ def run_august_factory(seam: Seam):
             "Authorization": f"Bearer {seam.api_key}",
         },
     )
+    time.sleep(0.2)
