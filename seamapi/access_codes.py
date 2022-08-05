@@ -271,8 +271,4 @@ class AccessCodes(AbstractAccessCodes):
         action_attempt = self.seam.action_attempts.poll_until_ready(
             res.json()["action_attempt"]["action_attempt_id"]
         )
-        if action_attempt.status == "error" and action_attempt.error:
-            raise Exception(
-                f"{action_attempt.error.type}: {action_attempt.error.message}"
-            )
         return action_attempt

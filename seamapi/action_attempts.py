@@ -3,6 +3,7 @@ from seamapi.types import (
     ActionAttemptError,
     ActionAttempt,
     AbstractSeam as Seam,
+    ActionAttemptFailedException,
     ActionAttemptId,
 )
 import time
@@ -87,7 +88,9 @@ class ActionAttempts(AbstractActionAttempts):
         )
 
     def poll_until_ready(
-        self, action_attempt: Union[ActionAttemptId, ActionAttempt]
+        self,
+        action_attempt: Union[ActionAttemptId, ActionAttempt],
+        should_raise: bool = True,
     ) -> ActionAttempt:
         """
         Polls an action attempt until its status is 'success' or 'error'.
@@ -104,9 +107,22 @@ class ActionAttempts(AbstractActionAttempts):
 
         updated_action_attempt = None
         while (
-            updated_action_attempt is None
-            or updated_action_attempt.status == "pending"
+            updated_action_attempt is None or updated_action_attempt.status == "pending"
         ):
             updated_action_attempt = self.get(action_attempt)
             time.sleep(0.25)
+
+        if updated_action_attempt.status == "error" and should_raise:
+            error_type = None
+            error_message = None
+            if updated_action_attempt.error is not None:
+                error_type = updated_action_attempt.error.type
+                error_message = updated_action_attempt.error.message
+            raise ActionAttemptFailedException(
+                action_attempt_id=updated_action_attempt.action_attempt_id,
+                action_type=updated_action_attempt.action_type,
+                error_type=error_type,
+                error_message=error_message,
+            )
+
         return updated_action_attempt

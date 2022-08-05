@@ -1,5 +1,7 @@
 from seamapi import Seam
+from seamapi.types import ActionAttemptFailedException
 from tests.fixtures.run_august_factory import run_august_factory
+import pytest
 
 
 def test_access_codes(seam: Seam):
@@ -18,6 +20,9 @@ def test_access_codes(seam: Seam):
 
     access_code = seam.access_codes.get(created_access_code.access_code_id)
     assert access_code.code == "4444"
+
+    with pytest.raises(ActionAttemptFailedException):
+        seam.access_codes.create(some_device.device_id, "Duplicate Access Code", "4444")
 
     access_code = seam.access_codes.update(access_code, name="Updated name")
     assert access_code.name == "Updated name"
