@@ -6,7 +6,7 @@ from seamapi.types import (
 )
 
 import requests
-from typing import List, Optional, Union
+from typing import Any, Dict, List, Union
 from seamapi.utils.convert_to_id import to_connected_account_id
 
 
@@ -61,13 +61,14 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         )
         if not res.ok:
             raise Exception(res.text)
-        json_accounts = res.json()["connected_accounts"]
+        json_accounts: List[Dict[str, Any]] = res.json()["connected_accounts"]
         return [
             ConnectedAccount(
                 connected_account_id=json_account["connected_account_id"],
                 created_at=json_account["created_at"],
                 user_identifier=json_account["user_identifier"],
                 account_type=json_account["account_type"],
+                errors=json_account.get("errors", []),
             )
             for json_account in json_accounts
         ]
@@ -101,10 +102,11 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         )
         if not res.ok:
             raise Exception(res.text)
-        json_account = res.json()["connected_account"]
+        json_account: Dict[str, Any] = res.json()["connected_account"]
         return ConnectedAccount(
             connected_account_id=json_account["connected_account_id"],
             created_at=json_account["created_at"],
             user_identifier=json_account["user_identifier"],
             account_type=json_account["account_type"],
+            errors=json_account.get("errors", []),
         )

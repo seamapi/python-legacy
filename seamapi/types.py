@@ -94,6 +94,7 @@ class ConnectedAccount:
     created_at: str
     user_identifier: str
     account_type: str
+    errors: List[str]
 
 
 @dataclass_json
@@ -231,7 +232,9 @@ class AbstractConnectedAccounts(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get(self, connected_account_id: str) -> ConnectedAccount:
+    def get(
+        self, connected_account: Union[ConnectedAccountId, ConnectedAccount]
+    ) -> ConnectedAccount:
         raise NotImplementedError
 
 
