@@ -40,6 +40,7 @@ class Device:
     location: Optional[Dict[str, Any]]
     properties: Any
     capabilities_supported: List[str]
+    errors: List[Dict[str, Any]]
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -49,6 +50,7 @@ class Device:
             location=d.get("location", None),
             properties=DeepAttrDict(d["properties"]),
             capabilities_supported=d["capabilities_supported"],
+            errors=d["errors"],
         )
 
 
