@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [1.1.4](https://github.com/seamapi/python/compare/v1.1.3...v1.1.4) (2022-08-14)
+
+
+### Bug Fixes
+
+* Merge pull request [#24](https://github.com/seamapi/python/issues/24) from seamapi/device-errors ([daf4afc](https://github.com/seamapi/python/commit/daf4afcbd5576fdd48592f896c174eb7bd9f160f))
+
 ### [1.1.3](https://github.com/seamapi/python/compare/v1.1.2...v1.1.3) (2022-08-10)
 
 
