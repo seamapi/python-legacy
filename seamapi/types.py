@@ -255,3 +255,9 @@ class AbstractSeam(abc.ABC):
     @abc.abstractmethod
     def __init__(self, api_key: Optional[str] = None):
         raise NotImplementedError
+
+@dataclass_json
+@dataclass
+class ResetSandBoxResponse:
+    message: str
+    ok: bool
