@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [1.1.5](https://github.com/seamapi/python/compare/v1.1.4...v1.1.5) (2022-09-13)
+
+
+### Bug Fixes
+
+* Merge pull request [#38](https://github.com/seamapi/python/issues/38) from seamapi/fix-35 ([47d1597](https://github.com/seamapi/python/commit/47d15978187c3be769fee01f20cc7ab374443a3d)), closes [#35](https://github.com/seamapi/python/issues/35)
+
 ### [1.1.4](https://github.com/seamapi/python/compare/v1.1.3...v1.1.4) (2022-08-14)
 
 
