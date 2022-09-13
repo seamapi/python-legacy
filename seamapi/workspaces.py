@@ -3,6 +3,7 @@ from seamapi.types import (
     AbstractWorkspaces,
     Workspace,
     WorkspaceId,
+    ResetSandBoxResponse,
 )
 from typing import Optional, List, Union
 import requests
@@ -129,7 +130,7 @@ class Workspaces(AbstractWorkspaces):
 
         Returns
         ------
-            None
+            ResetSandBoxResponse
         """
 
         res = requests.post(
@@ -138,4 +139,8 @@ class Workspaces(AbstractWorkspaces):
         )
         if not res.ok:
             raise Exception(res.text)
-        return None
+
+        return ResetSandBoxResponse(
+            message="Successfully reset workspace sandbox",
+            ok=True,
+        )
