@@ -41,7 +41,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.BOT_GH_TOKEN }}
       - name: Pre-pull Seam Connect image
-        run: docker pull ${{ env.CONTAINER_REGISTRY }}/seamapi/seam-connect:${{ github.event.inputs.connectSha || 'latest' }}
+        run: |
+          docker pull ${{ env.CONTAINER_REGISTRY }}/seamapi/seam-connect:${{ github.event.inputs.connectSha || 'latest' }}
+          docker tag ${{ env.CONTAINER_REGISTRY }}/seamapi/seam-connect:${{ github.event.inputs.connectSha || 'latest' }} seamapi/seam-connect
       - uses: actions/setup-python@v2
         with:
           python-version: 3.8
