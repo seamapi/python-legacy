@@ -24,7 +24,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      CONTAINER_REGISTRY: "registry.digitalocean.com"
+      CONTAINER_REGISTRY: "ghcr.io"
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
       - name: Checkout
@@ -35,8 +35,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ${{ env.CONTAINER_REGISTRY }}
-          username: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
-          password: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Pre-pull Seam Connect image
         run: docker pull ${{ env.CONTAINER_REGISTRY }}/seam/seam-connect:${{ github.event.inputs.connectSha || 'latest' }}
       - uses: actions/setup-python@v2
