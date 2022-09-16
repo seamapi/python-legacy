@@ -36,6 +36,8 @@ class Devices(AbstractDevices):
         Gets a list of devices
     get(device=None, name=None)
         Gets a device
+    update(device, name=None, properties=None, location=None)
+        Updates a device
     """
 
     seam: Seam
@@ -136,3 +138,53 @@ class Devices(AbstractDevices):
             raise Exception(res.text)
         json_device = res.json()["device"]
         return Device.from_dict(json_device)
+
+    def update(
+        self,
+        device: Union[DeviceId, Device],
+        name: Optional[str] = None,
+        properties: Optional[dict] = None,
+        location: Optional[dict] = None,
+    ) -> Device:
+        """Updates a device.
+
+        Parameters
+        ----------
+        device : DeviceId or Device
+            Device id or Device to update
+        name : str, optional
+            New device name
+        properties : dict, optional
+            New device properties
+        location : str, optional
+            New device location
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            Boolean
+        """
+
+        if not device:
+            raise Exception("device is required")
+
+        params = {
+            "device_id": to_device_id(device),
+            "name": name,
+            "properties": properties,
+            "location": location,
+        }
+        
+        res = requests.post(
+            f"{self.seam.api_url}/devices/update",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            params=params,
+        )
+        if not res.ok:
+            raise Exception(res.text)
+
+        return True
