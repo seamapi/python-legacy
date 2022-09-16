@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.0](https://github.com/seamapi/python/compare/v1.1.5...v1.2.0) (2022-09-16)
+
+
+### Features
+
+* Merge pull request [#41](https://github.com/seamapi/python/issues/41) from seamapi/implement-device-update ([bd94e17](https://github.com/seamapi/python/commit/bd94e17bab7657d31e2f58049deb136b5d2a58a2)), closes [#29](https://github.com/seamapi/python/issues/29)
+
 ### [1.1.5](https://github.com/seamapi/python/compare/v1.1.4...v1.1.5) (2022-09-13)
 
 
