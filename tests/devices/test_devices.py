@@ -27,3 +27,7 @@ def test_devices(seam: Seam):
     seam.locks.lock_door(device=(some_device))
     some_locked_lock = seam.locks.get(device=(some_device))
     assert some_locked_lock.properties.locked == True
+
+    seam.devices.update(device=(some_device), name="Updated lock")
+    some_updated_lock = seam.locks.get(device=(some_device))
+    assert some_updated_lock.properties.name == "Updated lock"
