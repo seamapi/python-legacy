@@ -110,3 +110,35 @@ class ConnectedAccounts(AbstractConnectedAccounts):
             account_type=json_account["account_type"],
             errors=json_account.get("errors", []),
         )
+
+    def delete(
+        self,
+        connected_account: Union[ConnectedAccountId, ConnectedAccount],
+    ) -> bool:
+        """Deletes a connected account.
+
+        Parameters
+        ----------
+        connected_account : ConnectedAccountId or ConnectedAccount
+            Connected account id or ConnectedAccount to delete
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+            Boolean indicating if the connected account was deleted
+        """
+
+        connected_account_id = to_connected_account_id(connected_account)
+
+        res = requests.delete(
+            f"{self.seam.api_url}/connected_accounts/delete",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            data={"connected_account_id": connected_account_id},
+        )
+        if not res.ok:
+            raise Exception(res.text)
+
+        return True
