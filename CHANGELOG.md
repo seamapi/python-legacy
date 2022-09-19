@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.0](https://github.com/seamapi/python/compare/v1.3.0...v1.4.0) (2022-09-19)
+
+
+### Features
+
+* Merge pull request [#45](https://github.com/seamapi/python/issues/45) from seamapi/implement-devices-delete ([b4be008](https://github.com/seamapi/python/commit/b4be00814820a609f0e0c09dc3c3a67526f0d656)), closes [#36](https://github.com/seamapi/python/issues/36)
+* Merge pull request [#46](https://github.com/seamapi/python/issues/46) from seamapi/get-connected-account-by-email ([e247042](https://github.com/seamapi/python/commit/e247042b05ea40a3cd78f1fba94a7a2be2d75cb0)), closes [#28](https://github.com/seamapi/python/issues/28)
+
+
+### Bug Fixes
+
+* Correct reference to Docker container ([077c005](https://github.com/seamapi/python/commit/077c005e904b5c268deea0cd53f989e0a43ed03a))
+* Merge pull request [#44](https://github.com/seamapi/python/issues/44) from seamapi/fix-docker-reference ([e6d1365](https://github.com/seamapi/python/commit/e6d136516e8410f5220631b1e44bda7dcaa60716))
+
 ## [1.3.0](https://github.com/seamapi/python/compare/v1.2.0...v1.3.0) (2022-09-19)
 
 
