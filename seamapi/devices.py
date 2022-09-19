@@ -188,3 +188,35 @@ class Devices(AbstractDevices):
             raise Exception(res.text)
 
         return True
+    
+    def delete(self, device: Union[DeviceId, Device]) -> bool:
+        """Deletes a device.
+
+        Parameters
+        ----------
+        device : DeviceId or Device
+            Device id or Device to delete
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            None
+        """
+
+        if not device:
+            raise Exception("device is required")
+
+        params = {"device_id": to_device_id(device)}
+        res = requests.post(
+            f"{self.seam.api_url}/devices/delete",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            params=params,
+        )
+        if not res.ok:
+            raise Exception(res.text)
+
+        return None
