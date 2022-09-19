@@ -3,6 +3,7 @@ from seamapi.types import (
     ConnectedAccount,
     AbstractSeam as Seam,
     ConnectedAccountId,
+    Email,
 )
 
 import requests
@@ -75,17 +76,22 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
     def get(
         self,
-        connected_account: Union[ConnectedAccountId, ConnectedAccount],
+        connected_account: Union[ConnectedAccountId, ConnectedAccount, None] = None,
+        email: Email = None,
     ) -> ConnectedAccount:
         """Gets a connected account.
 
         Parameters
         ----------
-        connected_account : ConnectedAccountId or ConnectedAccount
+        connected_account : ConnectedAccountId or ConnectedAccount, optional (required if email is None)
             Connected account id or ConnectedAccount to get the latest version of
+        email : Email (str), optional (required if connected_account is None)
+            Email to get the latest connected account for
 
         Raises
         ------
+        Exception
+            If both connected_account and email are not provided.
         Exception
             If the API request wasn't successful.
 
@@ -93,12 +99,20 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         ------
             ConnectedAccount
         """
+        params = {}
 
-        connected_account_id = to_connected_account_id(connected_account)
+        if connected_account:
+            params["connected_account_id"] = to_connected_account_id(connected_account)
+        if email:
+            params["email"] = email
+
+        if not connected_account and not email:
+            raise Exception("Must provide either ConnectedAccount (ConnectedAccount or ConnectedAccountId) or Email")
+        
         res = requests.get(
             f"{self.seam.api_url}/connected_accounts/get",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params={"connected_account_id": connected_account_id},
+            params=params,
         )
         if not res.ok:
             raise Exception(res.text)

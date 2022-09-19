@@ -12,6 +12,7 @@ DeviceId = str
 AcceptedProvider = str  # e.g. august or noiseaware
 ConnectWebviewId = str
 ConnectedAccountId = str
+Email = str
 DeviceType = str  # e.g. august_lock
 WorkspaceId = str
 
