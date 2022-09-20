@@ -2,6 +2,7 @@ import os
 from typing import Optional, cast
 from .workspaces import Workspaces
 from .devices import Devices
+from .events import Events
 from .connected_accounts import ConnectedAccounts
 from .connect_webviews import ConnectWebviews
 from .locks import Locks
@@ -30,6 +31,8 @@ class Seam(AbstractSeam):
         Connect webviews class
     devices : Devices
         Devices class
+    events : Events
+        Events class
     locks : Locks
         Locks class
     access_codes : AccessCodes
@@ -69,6 +72,7 @@ class Seam(AbstractSeam):
         self.connected_accounts = ConnectedAccounts(seam=self)
         self.connect_webviews = ConnectWebviews(seam=self)
         self.devices = Devices(seam=self)
+        self.events = Events(seam=self)
         self.locks = Locks(seam=self)
         self.access_codes = AccessCodes(seam=self)
         self.action_attempts = ActionAttempts(seam=self)

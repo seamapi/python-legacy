@@ -53,6 +53,19 @@ class Device:
             errors=d["errors"],
         )
 
+@dataclass
+class Event:
+    event_id: str
+    noiseaware_id: str
+    activity_zone_id: str
+    event_class: Union[str, None]
+    event_type: Union[str, None]
+    duration: Union[int, None]
+    local_end_time: Union[str, None]
+    local_start_time: Union[str, None]
+    start_time: Union[str, None]
+    end_time: Union[str, None]
+    created_at: Union[str, None]
 
 @dataclass_json
 @dataclass
@@ -197,6 +210,10 @@ class AbstractDevices(abc.ABC):
     ) -> Device:
         raise NotImplementedError
 
+class AbstractEvents(abc.ABC):
+    @abc.abstractmethod
+    def list(self) -> List[Event]:
+        raise NotImplementedError
 
 class AbstractWorkspaces(abc.ABC):
     @abc.abstractmethod
