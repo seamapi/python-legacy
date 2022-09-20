@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.0](https://github.com/seamapi/python/compare/v1.4.0...v1.5.0) (2022-09-20)
+
+
+### Features
+
+* Merge pull request [#47](https://github.com/seamapi/python/issues/47) from seamapi/implement-events ([20e3ecb](https://github.com/seamapi/python/commit/20e3ecb5aa855312cd47f92f12f75ccbba20f58c)), closes [#33](https://github.com/seamapi/python/issues/33)
+
 ## [1.4.0](https://github.com/seamapi/python/compare/v1.3.0...v1.4.0) (2022-09-19)
 
 
