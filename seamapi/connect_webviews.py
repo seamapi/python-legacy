@@ -67,13 +67,7 @@ class ConnectWebviews(AbstractConnectWebviews):
             raise Exception(res.text)
         json_webviews = res.json()["connect_webviews"]
         return [
-            ConnectWebview(
-                connect_webview_id=json_webview["connect_webview_id"],
-                status=json_webview["status"],
-                url=json_webview["url"],
-                login_successful=json_webview["login_successful"],
-                connected_account_id=json_webview["connected_account_id"],
-            )
+            ConnectWebview(**json_webview)
             for json_webview in json_webviews
         ]
 
@@ -106,13 +100,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         if not res.ok:
             raise Exception(res.text)
         json_webview = res.json()["connect_webview"]
-        return ConnectWebview(
-            connect_webview_id=json_webview["connect_webview_id"],
-            status=json_webview["status"],
-            url=json_webview["url"],
-            login_successful=json_webview["login_successful"],
-            connected_account_id=json_webview["connected_account_id"],
-        )
+        return ConnectWebview(**json_webview)
 
     def create(
         self,
@@ -154,10 +142,4 @@ class ConnectWebviews(AbstractConnectWebviews):
         if not res.ok:
             raise Exception(res.text)
         json_webview = res.json()["connect_webview"]
-        return ConnectWebview(
-            connect_webview_id=json_webview["connect_webview_id"],
-            status=json_webview["status"],
-            url=json_webview["url"],
-            login_successful=json_webview["login_successful"],
-            connected_account_id=None,
-        )
+        return ConnectWebview(**json_webview)
