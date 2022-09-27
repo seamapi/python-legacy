@@ -161,3 +161,28 @@ class ConnectWebviews(AbstractConnectWebviews):
             login_successful=json_webview["login_successful"],
             connected_account_id=None,
         )
+
+    def delete(self, connect_webview: Union[ConnectWebviewId, ConnectWebview]):
+        """Deletes a connect webview.
+
+        Parameters
+        ----------
+        connect_webview_id : ConnectWebviewId or ConnectWebview
+            Connect webview id or ConnectWebview to delete
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+        """
+        body = {
+            "connect_webview_id": to_connect_webview_id(connect_webview)
+        }
+
+        res = requests.delete(
+            f"{self.seam.api_url}/connect_webviews/delete",
+            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            data=body,
+        )
+        if not res.ok:
+            raise Exception(res.text)

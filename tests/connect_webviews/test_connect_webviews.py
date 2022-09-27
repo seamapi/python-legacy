@@ -10,3 +10,7 @@ def test_connect_webviews(seam: Seam):
 
     webviews = seam.connect_webviews.list()
     assert len(webviews) > 0
+
+    seam.connect_webviews.delete(created_webview)
+    webviews = seam.connect_webviews.list()
+    assert len(webviews) == 0
