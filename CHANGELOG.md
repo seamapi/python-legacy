@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.0](https://github.com/seamapi/python/compare/v1.5.0...v1.6.0) (2022-10-08)
+
+
+### Features
+
+* Merge pull request [#50](https://github.com/seamapi/python/issues/50) from seamapi/fill-connectwebview-props ([72fab41](https://github.com/seamapi/python/commit/72fab4136b7e72234240f60618b8eb80febdf02c)), closes [#26](https://github.com/seamapi/python/issues/26)
+
 ## [1.5.0](https://github.com/seamapi/python/compare/v1.4.0...v1.5.0) (2022-09-20)
 
 

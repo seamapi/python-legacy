@@ -96,11 +96,20 @@ class Workspace:
 @dataclass_json
 @dataclass
 class ConnectWebview:
+    workspace_id: str
     connect_webview_id: str
     status: str
     url: str
     login_successful: bool
-    connected_account_id: Optional[str]
+    device_selection_mode: str
+    any_provider_allowed: bool
+    any_device_allowed: bool
+    created_at: str
+    connected_account_id: Optional[str] = None
+    authorized_at: Optional[str] = None
+    custom_redirect_url: Optional[str] = None
+    accepted_providers: Optional[List[AcceptedProvider]] = None
+    accepted_devices: Optional[List[str]] = None
 
 
 @dataclass_json
