@@ -129,14 +129,12 @@ class Devices(AbstractDevices):
             params["device_id"] = to_device_id(device)
         if name:
             params["name"] = name
-        res = requests.get(
-            f"{self.seam.api_url}/devices/get",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params=params,
+        res = self.seam.make_request(
+            "GET",
+            "/devices/get",
+            params=params
         )
-        if not res.ok:
-            raise Exception(res.text)
-        json_device = res.json()["device"]
+        json_device = res["device"]
         return Device.from_dict(json_device)
 
     def update(
@@ -178,7 +176,7 @@ class Devices(AbstractDevices):
             "properties": properties,
             "location": location,
         }
-        
+
         res = requests.post(
             f"{self.seam.api_url}/devices/update",
             headers={"Authorization": f"Bearer {self.seam.api_key}"},
@@ -188,7 +186,7 @@ class Devices(AbstractDevices):
             raise Exception(res.text)
 
         return True
-    
+
     def delete(self, device: Union[DeviceId, Device]) -> bool:
         """Deletes a device.
 
