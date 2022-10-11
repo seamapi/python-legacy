@@ -1,14 +1,8 @@
 import os
+from .routes import Routes
+import requests
 from typing import Optional, cast
-from .workspaces import Workspaces
-from .devices import Devices
-from .events import Events
-from .connected_accounts import ConnectedAccounts
-from .connect_webviews import ConnectWebviews
-from .locks import Locks
-from .access_codes import AccessCodes
-from .action_attempts import ActionAttempts
-from .types import AbstractSeam
+from .types import AbstractSeam, SeamAPIException
 
 
 class Seam(AbstractSeam):
@@ -57,6 +51,7 @@ class Seam(AbstractSeam):
         api_url : str, optional
           API url
         """
+        Routes.__init__(self)
 
         if api_key is None:
             api_key = os.environ.get("SEAM_API_KEY", None)
@@ -68,11 +63,31 @@ class Seam(AbstractSeam):
             api_url = os.environ.get("SEAM_API_URL", self.api_url)
         self.api_key = api_key
         self.api_url = cast(str, api_url)
-        self.workspaces = Workspaces(seam=self)
-        self.connected_accounts = ConnectedAccounts(seam=self)
-        self.connect_webviews = ConnectWebviews(seam=self)
-        self.devices = Devices(seam=self)
-        self.events = Events(seam=self)
-        self.locks = Locks(seam=self)
-        self.access_codes = AccessCodes(seam=self)
-        self.action_attempts = ActionAttempts(seam=self)
+
+    def make_request(self, method: str, path: str, **kwargs):
+        """
+        Makes a request to the API
+
+        Parameters
+        ----------
+        method : str
+          Request method
+        path : str
+          Request path
+        **kwargs
+          Keyword arguments passed to requests.request
+        """
+
+        url = self.api_url + path
+        headers = {
+            "Authorization": "Bearer " + self.api_key,
+            "Content-Type": "application/json",
+        }
+        response = requests.request(method, url, headers=headers, **kwargs)
+
+        parsed_response = response.json()
+
+        if response.status_code != 200:
+            raise SeamAPIException(response.status_code, response.headers["seam-request-id"], parsed_response["error"])
+
+        return parsed_response

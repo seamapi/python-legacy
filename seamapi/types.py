@@ -16,6 +16,13 @@ Email = str
 DeviceType = str  # e.g. august_lock
 WorkspaceId = str
 
+class SeamAPIException(Exception):
+    def __init__(self, status_code: int, request_id: str, metadata: Optional[Dict[str, any]]):
+        self.status_code = status_code
+        self.request_id = request_id
+        self.metadata = metadata
+
+        super().__init__(f"SeamAPIException: status={status_code}, request_id={request_id}, metadata={metadata}")
 
 class ActionAttemptFailedException(Exception):
     def __init__(
@@ -266,18 +273,24 @@ class AbstractConnectedAccounts(abc.ABC):
     ) -> ConnectedAccount:
         raise NotImplementedError
 
-
 @dataclass
-class AbstractSeam(abc.ABC):
-    api_key: str
-    api_url: str
-
+class AbstractRoutes(abc.ABC):
     workspaces: AbstractWorkspaces
     connect_webviews: AbstractConnectWebviews
     locks: AbstractLocks
     devices: AbstractDevices
     access_codes: AbstractAccessCodes
     action_attempts: AbstractActionAttempts
+
+    @abc.abstractmethod
+    def make_request(self, method: str, path: str, **kwargs) -> Any:
+        raise NotImplementedError
+
+
+@dataclass
+class AbstractSeam(AbstractRoutes):
+    api_key: str
+    api_url: str
 
     @abc.abstractmethod
     def __init__(self, api_key: Optional[str] = None):
