@@ -1,3 +1,4 @@
+import os
 import pytest
 from seamapi import Seam
 import time
@@ -29,7 +30,7 @@ def seam_backend():
     with PostgresContainer("postgres:13", dbname="postgres") as pg:
         db_host = "host.docker.internal" if sys.platform == "darwin" else "172.17.0.1"
         db_url = f"postgresql://test:test@{db_host}:{pg.get_exposed_port(pg.port_to_expose)}/postgres"
-        with DockerContainer("ghcr.io/seamapi/seam-connect").with_env(
+        with DockerContainer(os.environ.get("SEAM_CONNECT_IMAGE", "ghcr.io/seamapi/seam-connect")).with_env(
             "DATABASE_URL",
             db_url,
         ).with_env("POSTGRES_DATABASE", "postgres").with_env(
