@@ -8,7 +8,8 @@ def test_sends_error_to_sentry(seam: Seam, monkeypatch):
       method="GET",
       url=seam.api_url + "/devices/list",
       # Missing top-level `devices` key
-      json={"foo": []}
+      json={"foo": []},
+      headers={"seam-request-id": "1234"},
     )
     responses.add(rsp)
 
@@ -29,6 +30,8 @@ def test_sends_error_to_sentry(seam: Seam, monkeypatch):
     sentry_capture_exception_calls = []
     monkeypatch.setattr("sentry_sdk.capture_exception", lambda *a, **kw: sentry_capture_exception_calls.append((a, kw)))
 
+    sentry_add_breadcrumb_calls = []
+    monkeypatch.setattr("sentry_sdk.add_breadcrumb", lambda *a, **kw: sentry_add_breadcrumb_calls.append((a, kw)))
     try:
       client_with_sentry.devices.list()
       assert False
@@ -39,6 +42,10 @@ def test_sends_error_to_sentry(seam: Seam, monkeypatch):
 
     assert len(sentry_capture_exception_calls) == 1
     assert type(sentry_capture_exception_calls[0][0][0]) is KeyError
+
+    assert len(sentry_add_breadcrumb_calls) == 1
+    assert sentry_add_breadcrumb_calls[0][1]['category'] == "http"
+    assert sentry_add_breadcrumb_calls[0][1]["data"]["request_id"] == "1234"
 
 @responses.activate
 def test_skips_sentry_reporting(seam: Seam, monkeypatch):

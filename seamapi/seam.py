@@ -103,6 +103,20 @@ class Seam(AbstractSeam):
         }
         response = requests.request(method, url, headers=headers, **kwargs)
 
+        if self.should_report_exceptions and response.status_code:
+            # Add breadcrumb
+            sentry_sdk.add_breadcrumb(
+                category="http",
+                level="info",
+                data={
+                    "method": method,
+                    "url": url,
+                    "status_code": response.status_code,
+                    "request_id": response.headers.get("seam-request-id", "unknown"),
+                },
+            )
+
+
         parsed_response = response.json()
 
         if response.status_code != 200:
