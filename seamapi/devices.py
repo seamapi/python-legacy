@@ -202,13 +202,11 @@ class Devices(AbstractDevices):
         if not device:
             raise Exception("device is required")
 
-        params = {"device_id": to_device_id(device)}
-        res = requests.post(
-            f"{self.seam.api_url}/devices/delete",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params=params,
+        delete_payload = {"device_id": to_device_id(device)}
+        self.seam.make_request(
+            "POST",
+            "/devices/delete",
+            json=delete_payload,
         )
-        if not res.ok:
-            raise Exception(res.text)
 
         return None
