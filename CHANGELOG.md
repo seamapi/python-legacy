@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.0](https://github.com/seamapi/python/compare/v2.0.0...v2.1.0) (2022-10-12)
+
+
+### Features
+
+* Merge pull request [#56](https://github.com/seamapi/python/issues/56) from seamapi/feat-add-user-agent ([aa00ba2](https://github.com/seamapi/python/commit/aa00ba28ba72ab6f57c489a004e177a2e4016990))
+
 ## [2.0.0](https://github.com/seamapi/python/compare/v1.6.0...v2.0.0) (2022-10-12)
 
 
