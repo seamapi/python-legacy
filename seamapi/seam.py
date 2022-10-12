@@ -1,4 +1,6 @@
 import os
+
+from seamapi.utils.get_sentry_dsn import get_sentry_dsn
 from .routes import Routes
 import requests
 import sentry_sdk
@@ -72,7 +74,7 @@ class Seam(AbstractSeam):
 
         if self.should_report_exceptions:
             sentry_sdk.init(
-                dsn=os.environ.get("SENTRY_DSN", None),
+                dsn=get_sentry_dsn(),
                 default_integrations=False,
             )
             sentry_sdk.set_context("sdk_info", {
