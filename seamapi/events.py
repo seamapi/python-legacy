@@ -6,6 +6,8 @@ from seamapi.types import (
 from typing import List, Optional
 import requests
 
+from seamapi.utils.report_error import report_error
+
 
 class Events(AbstractEvents):
     """
@@ -35,6 +37,7 @@ class Events(AbstractEvents):
         """
         self.seam = seam
 
+    @report_error
     def list(
         self,
         since: str,
@@ -93,6 +96,7 @@ class Events(AbstractEvents):
 
         return res["events"]
 
+    @report_error
     def get(
         self,
         event_id: Optional[str] = None,

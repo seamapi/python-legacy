@@ -8,6 +8,7 @@ from seamapi.types import (
 import requests
 from typing import List, Optional, Union
 from seamapi.utils.convert_to_id import to_connect_webview_id
+from seamapi.utils.report_error import report_error
 
 
 class ConnectWebviews(AbstractConnectWebviews):
@@ -46,6 +47,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         self.seam = seam
 
+    @report_error
     def list(self) -> List[ConnectWebview]:
         """Gets a list of connect webviews.
 
@@ -69,6 +71,7 @@ class ConnectWebviews(AbstractConnectWebviews):
             ConnectWebview(**json_webview) for json_webview in json_webviews
         ]
 
+    @report_error
     def get(
         self, connect_webview: Union[ConnectWebviewId, ConnectWebview]
     ) -> ConnectWebview:
@@ -99,6 +102,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         return ConnectWebview(**json_webview)
 
+    @report_error
     def create(
         self,
         accepted_providers: List[AcceptedProvider],
