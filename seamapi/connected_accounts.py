@@ -56,13 +56,12 @@ class ConnectedAccounts(AbstractConnectedAccounts):
             A list of connected accounts.
         """
 
-        res = requests.get(
-            f"{self.seam.api_url}/connected_accounts/list",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        res = self.seam.make_request(
+            "GET",
+            "/connected_accounts/list",
         )
-        if not res.ok:
-            raise Exception(res.text)
-        json_accounts: List[Dict[str, Any]] = res.json()["connected_accounts"]
+        json_accounts: List[Dict[str, Any]] = res["connected_accounts"]
+
         return [
             ConnectedAccount(
                 connected_account_id=json_account["connected_account_id"],
@@ -76,7 +75,9 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
     def get(
         self,
-        connected_account: Union[ConnectedAccountId, ConnectedAccount, None] = None,
+        connected_account: Union[
+            ConnectedAccountId, ConnectedAccount, None
+        ] = None,
         email: Email = None,
     ) -> ConnectedAccount:
         """Gets a connected account.
@@ -102,21 +103,24 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         params = {}
 
         if connected_account:
-            params["connected_account_id"] = to_connected_account_id(connected_account)
+            params["connected_account_id"] = to_connected_account_id(
+                connected_account
+            )
         if email:
             params["email"] = email
 
         if not connected_account and not email:
-            raise Exception("Must provide either ConnectedAccount (ConnectedAccount or ConnectedAccountId) or Email")
-        
-        res = requests.get(
-            f"{self.seam.api_url}/connected_accounts/get",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+            raise Exception(
+                "Must provide either ConnectedAccount (ConnectedAccount or ConnectedAccountId) or Email"
+            )
+
+        res = self.seam.make_request(
+            "GET",
+            "/connected_accounts/get",
             params=params,
         )
-        if not res.ok:
-            raise Exception(res.text)
-        json_account: Dict[str, Any] = res.json()["connected_account"]
+        json_account: Dict[str, Any] = res["connected_account"]
+
         return ConnectedAccount(
             connected_account_id=json_account["connected_account_id"],
             created_at=json_account["created_at"],
@@ -147,12 +151,10 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
         connected_account_id = to_connected_account_id(connected_account)
 
-        res = requests.delete(
-            f"{self.seam.api_url}/connected_accounts/delete",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        self.seam.make_request(
+            "DELETE",
+            "/connected_accounts/delete",
             data={"connected_account_id": connected_account_id},
         )
-        if not res.ok:
-            raise Exception(res.text)
 
         return True
