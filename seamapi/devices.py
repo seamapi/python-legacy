@@ -10,12 +10,12 @@ from seamapi.types import (
     DeviceType,
 )
 from typing import List, Union, Optional
-import requests
 from seamapi.utils.convert_to_id import (
     to_connect_webview_id,
     to_connected_account_id,
     to_device_id,
 )
+from seamapi.utils.report_error import report_error
 
 
 class Devices(AbstractDevices):
@@ -52,6 +52,7 @@ class Devices(AbstractDevices):
 
         self.seam = seam
 
+    @report_error
     def list(
         self,
         connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
@@ -100,6 +101,7 @@ class Devices(AbstractDevices):
 
         return [Device.from_dict(d) for d in devices]
 
+    @report_error
     def get(
         self,
         device: Optional[Union[DeviceId, Device]] = None,
@@ -133,6 +135,7 @@ class Devices(AbstractDevices):
         json_device = res["device"]
         return Device.from_dict(json_device)
 
+    @report_error
     def update(
         self,
         device: Union[DeviceId, Device],
@@ -184,6 +187,7 @@ class Devices(AbstractDevices):
 
         return True
 
+    @report_error
     def delete(self, device: Union[DeviceId, Device]) -> bool:
         """Deletes a device.
 

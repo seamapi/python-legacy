@@ -1,6 +1,7 @@
 import os
 from .routes import Routes
 import requests
+import sentry_sdk
 import pkg_resources
 from typing import Optional, cast
 from .types import AbstractSeam, SeamAPIException
@@ -43,6 +44,7 @@ class Seam(AbstractSeam):
         self,
         api_key: Optional[str] = None,
         api_url: Optional[str] = None,
+        should_report_exceptions: Optional[bool] = False,
     ):
         """
         Parameters
@@ -51,6 +53,8 @@ class Seam(AbstractSeam):
           API key
         api_url : str, optional
           API url
+        should_report_exceptions : bool, optional
+          Defaults to False. If true, thrown exceptions will be reported to Seam.
         """
         Routes.__init__(self)
 
@@ -64,6 +68,18 @@ class Seam(AbstractSeam):
             api_url = os.environ.get("SEAM_API_URL", self.api_url)
         self.api_key = api_key
         self.api_url = cast(str, api_url)
+        self.should_report_exceptions = should_report_exceptions
+
+        if self.should_report_exceptions:
+            sentry_sdk.init(
+                dsn=os.environ.get("SENTRY_DSN", None),
+                default_integrations=False,
+            )
+            sentry_sdk.set_context("sdk_info", {
+                "repository": "https://github.com/seamapi/python",
+                "version": pkg_resources.get_distribution("seamapi").version,
+                "endpoint": self.api_url,
+            })
 
     def make_request(self, method: str, path: str, **kwargs):
         """
