@@ -73,11 +73,10 @@ class Seam(AbstractSeam):
         self.should_report_exceptions = should_report_exceptions
 
         if self.should_report_exceptions:
-            sentry_sdk.init(
+            self.sentry_client = sentry_sdk.Hub(sentry_sdk.Client(
                 dsn=get_sentry_dsn(),
-                default_integrations=False,
-            )
-            sentry_sdk.set_context("sdk_info", {
+            ))
+            self.sentry_client.scope.set_context("sdk_info", {
                 "repository": "https://github.com/seamapi/python",
                 "version": pkg_resources.get_distribution("seamapi").version,
                 "endpoint": self.api_url,
@@ -107,7 +106,7 @@ class Seam(AbstractSeam):
 
         if self.should_report_exceptions and response.status_code:
             # Add breadcrumb
-            sentry_sdk.add_breadcrumb(
+            self.sentry_client.add_breadcrumb(
                 category="http",
                 level="info",
                 data={
