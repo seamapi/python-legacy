@@ -59,16 +59,14 @@ class ConnectWebviews(AbstractConnectWebviews):
             A list of connect webviews
         """
 
-        res = requests.get(
-            f"{self.seam.api_url}/connect_webviews/list",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        res = self.seam.make_request(
+            "GET",
+            "/connect_webviews/list",
         )
-        if not res.ok:
-            raise Exception(res.text)
-        json_webviews = res.json()["connect_webviews"]
+        json_webviews = res["connect_webviews"]
+
         return [
-            ConnectWebview(**json_webview)
-            for json_webview in json_webviews
+            ConnectWebview(**json_webview) for json_webview in json_webviews
         ]
 
     def get(
@@ -92,14 +90,13 @@ class ConnectWebviews(AbstractConnectWebviews):
         """
 
         connect_webview_id = to_connect_webview_id(connect_webview)
-        res = requests.get(
-            f"{self.seam.api_url}/connect_webviews/get",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        res = self.seam.make_request(
+            "GET",
+            "/connect_webviews/get",
             params={"connect_webview_id": connect_webview_id},
         )
-        if not res.ok:
-            raise Exception(res.text)
-        json_webview = res.json()["connect_webview"]
+        json_webview = res["connect_webview"]
+
         return ConnectWebview(**json_webview)
 
     def create(
@@ -134,12 +131,12 @@ class ConnectWebviews(AbstractConnectWebviews):
             create_payload["custom_redirect_url"] = custom_redirect_url
         if device_selection_mode is not None:
             create_payload["device_selection_mode"] = device_selection_mode
-        res = requests.post(
-            f"{self.seam.api_url}/connect_webviews/create",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+
+        res = self.seam.make_request(
+            "POST",
+            "/connect_webviews/create",
             json=create_payload,
         )
-        if not res.ok:
-            raise Exception(res.text)
-        json_webview = res.json()["connect_webview"]
+        json_webview = res["connect_webview"]
+
         return ConnectWebview(**json_webview)

@@ -85,19 +85,19 @@ class Devices(AbstractDevices):
                 connected_account
             )
         if connect_webview:
-            params[
-                "connect_webview_id"
-            ] =  to_connect_webview_id(connect_webview)
+            params["connect_webview_id"] = to_connect_webview_id(
+                connect_webview
+            )
         if device_type:
             params["device_type"] = device_type
-        res = requests.get(
-            f"{self.seam.api_url}/devices/list",
+
+        res = self.seam.make_request(
+            "GET",
+            "/devices/list",
             params=params,
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
         )
-        if not res.ok:
-            raise Exception(res.text)
-        devices = res.json()["devices"]
+        devices = res["devices"]
+
         return [Device.from_dict(d) for d in devices]
 
     def get(
@@ -129,14 +129,8 @@ class Devices(AbstractDevices):
             params["device_id"] = to_device_id(device)
         if name:
             params["name"] = name
-        res = requests.get(
-            f"{self.seam.api_url}/devices/get",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params=params,
-        )
-        if not res.ok:
-            raise Exception(res.text)
-        json_device = res.json()["device"]
+        res = self.seam.make_request("GET", "/devices/get", params=params)
+        json_device = res["device"]
         return Device.from_dict(json_device)
 
     def update(
@@ -172,23 +166,24 @@ class Devices(AbstractDevices):
         if not device:
             raise Exception("device is required")
 
-        params = {
+        update_payload = {
             "device_id": to_device_id(device),
-            "name": name,
-            "properties": properties,
-            "location": location,
         }
-        
-        res = requests.post(
-            f"{self.seam.api_url}/devices/update",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params=params,
+        if name:
+            update_payload["name"] = name
+        if properties:
+            update_payload["properties"] = properties
+        if location:
+            update_payload["location"] = location
+
+        self.seam.make_request(
+            "POST",
+            "/devices/update",
+            json=update_payload,
         )
-        if not res.ok:
-            raise Exception(res.text)
 
         return True
-    
+
     def delete(self, device: Union[DeviceId, Device]) -> bool:
         """Deletes a device.
 
@@ -210,13 +205,11 @@ class Devices(AbstractDevices):
         if not device:
             raise Exception("device is required")
 
-        params = {"device_id": to_device_id(device)}
-        res = requests.post(
-            f"{self.seam.api_url}/devices/delete",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params=params,
+        delete_payload = {"device_id": to_device_id(device)}
+        self.seam.make_request(
+            "DELETE",
+            "/devices/delete",
+            json=delete_payload,
         )
-        if not res.ok:
-            raise Exception(res.text)
 
         return None

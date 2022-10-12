@@ -83,24 +83,23 @@ class Locks(AbstractLocks):
             A list of locks.
         """
 
-        create_payload = {}
+        params = {}
         if connected_account:
-            create_payload["connected_account_id"] = to_connected_account_id(
+            params["connected_account_id"] = to_connected_account_id(
                 connected_account
             )
         if connect_webview:
-            create_payload["connect_webview_id"] = to_connect_webview_id(
+            params["connect_webview_id"] = to_connect_webview_id(
                 connect_webview
             )
 
-        res = requests.post(
-            f"{self.seam.api_url}/locks/list",
-            json=create_payload,
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        res = self.seam.make_request(
+            "GET",
+            "/locks/list",
+            params=params,
         )
-        if not res.ok:
-            raise Exception(res.text)
-        json_locks = res.json()["devices"]
+        json_locks = res["devices"]
+
         return [Device.from_dict(d) for d in json_locks]
 
     def get(
@@ -127,19 +126,19 @@ class Locks(AbstractLocks):
             A lock dict.
         """
 
-        create_payload = {}
+        params = {}
         if device:
-            create_payload["device_id"] = to_device_id(device)
+            params["device_id"] = to_device_id(device)
         if name:
-            create_payload["name"] = name
-        res = requests.post(
-            f"{self.seam.api_url}/locks/get",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            json=create_payload,
+            params["name"] = name
+
+        res = self.seam.make_request(
+            "GET",
+            "/locks/get",
+            params=params,
         )
-        if not res.ok:
-            raise Exception(res.text)
-        json_lock = res.json()["device"]
+        json_lock = res["device"]
+
         return Device.from_dict(json_lock)
 
     def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
@@ -161,15 +160,14 @@ class Locks(AbstractLocks):
         """
 
         device_id = to_device_id(device)
-        res = requests.post(
-            f"{self.seam.api_url}/locks/lock_door",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        res = self.seam.make_request(
+            "POST",
+            "/locks/lock_door",
             json={"device_id": device_id},
         )
-        if not res.ok:
-            raise Exception(res.text)
+
         return self.seam.action_attempts.poll_until_ready(
-            res.json()["action_attempt"]["action_attempt_id"]
+            res["action_attempt"]["action_attempt_id"]
         )
 
     def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
@@ -191,13 +189,12 @@ class Locks(AbstractLocks):
         """
 
         device_id = to_device_id(device)
-        res = requests.post(
-            f"{self.seam.api_url}/locks/unlock_door",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        res = self.seam.make_request(
+            "POST",
+            "/locks/unlock_door",
             json={"device_id": device_id},
         )
-        if not res.ok:
-            raise Exception(res.text)
+
         return self.seam.action_attempts.poll_until_ready(
-            res.json()["action_attempt"]["action_attempt_id"]
+            res["action_attempt"]["action_attempt_id"]
         )

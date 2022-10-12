@@ -1,4 +1,5 @@
 from seamapi import Seam
+from seamapi.types import SeamAPIException
 from tests.fixtures.run_august_factory import run_august_factory
 from seamapi.utils.deep_attr_dict import DeepAttrDict
 
@@ -34,3 +35,12 @@ def test_devices(seam: Seam):
 
     seam.devices.delete(device=(some_updated_lock))
     assert len(seam.devices.list()) == len(devices) - 1
+
+    # Test custom exception
+    try:
+        seam.devices.get(name="foo")
+        assert False
+    except SeamAPIException as error:
+        assert error.status_code == 404
+        assert type(error.request_id) == str
+        assert error.metadata["type"] == "device_not_found"

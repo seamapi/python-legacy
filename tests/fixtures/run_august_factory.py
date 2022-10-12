@@ -4,15 +4,13 @@ import requests
 
 
 def run_august_factory(seam: Seam):
-    requests.post(
-        f"{seam.api_url}/internal/scenarios/factories/load",
+    seam.make_request(
+        "POST",
+        "/internal/scenarios/factories/load",
         json={
             "factory_name": "create_august_devices",
             "input": {"num": 1},
             "sync": True,
-        },
-        headers={
-            "Authorization": f"Bearer {seam.api_key}",
         },
     )
 
