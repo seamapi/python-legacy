@@ -154,7 +154,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         self.seam.make_request(
             "DELETE",
             "/connected_accounts/delete",
-            data={"connected_account_id": connected_account_id},
+            json={"connected_account_id": connected_account_id},
         )
 
         return True

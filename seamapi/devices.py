@@ -168,10 +168,13 @@ class Devices(AbstractDevices):
 
         update_payload = {
             "device_id": to_device_id(device),
-            "name": name,
-            "properties": properties,
-            "location": location,
         }
+        if name:
+            update_payload["name"] = name
+        if properties:
+            update_payload["properties"] = properties
+        if location:
+            update_payload["location"] = location
 
         self.seam.make_request(
             "POST",
