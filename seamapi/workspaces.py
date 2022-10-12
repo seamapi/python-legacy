@@ -118,7 +118,7 @@ class Workspaces(AbstractWorkspaces):
         ------
             ResetSandBoxResponse
         """
-        res = self.seam.make_request(
+        self.seam.make_request(
             "POST",
             "/workspaces/reset_sandbox",
         )

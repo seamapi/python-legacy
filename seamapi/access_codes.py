@@ -67,13 +67,13 @@ class AccessCodes(AbstractAccessCodes):
         """
 
         device_id = to_device_id(device)
-        res = requests.get(
-            f"{self.seam.api_url}/access_codes/list?device_id={device_id}",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+        res = self.seam.make_request(
+            "GET",
+            "/access_codes/list",
+            params={"device_id": device_id},
         )
-        if not res.ok:
-            raise Exception(res.text)
-        access_codes = res.json()["access_codes"]
+        access_codes = res["access_codes"]
+
         return [AccessCode.from_dict(ac) for ac in access_codes]
 
     def get(
@@ -105,14 +105,14 @@ class AccessCodes(AbstractAccessCodes):
             params["access_code_id"] = to_access_code_id(access_code)
         if device:
             params["device_id"] = to_device_id(device)
-        res = requests.get(
-            f"{self.seam.api_url}/access_codes/get",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+
+        res = self.seam.make_request(
+            "GET",
+            "/access_codes/get",
             params=params,
         )
-        if not res.ok:
-            raise Exception(res.text)
-        return AccessCode.from_dict(res.json()["access_code"])
+
+        return AccessCode.from_dict(res["access_code"])
 
     def create(
         self,
@@ -157,17 +157,18 @@ class AccessCodes(AbstractAccessCodes):
             create_payload["starts_at"] = starts_at
         if ends_at is not None:
             create_payload["ends_at"] = ends_at
-        res = requests.post(
-            f"{self.seam.api_url}/access_codes/create",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+
+        res = self.seam.make_request(
+            "POST",
+            "/access_codes/create",
             json=create_payload,
         )
-        if not res.ok:
-            raise Exception(res.text)
+
         action_attempt = self.seam.action_attempts.poll_until_ready(
-            res.json()["action_attempt"]["action_attempt_id"]
+            res["action_attempt"]["action_attempt_id"]
         )
         success_res: Any = action_attempt.result
+
         return AccessCode.from_dict(success_res["access_code"])
 
     def update(
@@ -218,17 +219,18 @@ class AccessCodes(AbstractAccessCodes):
             update_payload["starts_at"] = starts_at
         if ends_at is not None:
             update_payload["ends_at"] = ends_at
-        res = requests.post(
-            f"{self.seam.api_url}/access_codes/update",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+
+        res = self.seam.make_request(
+            "POST",
+            "/access_codes/update",
             json=update_payload,
         )
-        if not res.ok:
-            raise Exception(res.text)
+
         action_attempt = self.seam.action_attempts.poll_until_ready(
-            res.json()["action_attempt"]["action_attempt_id"]
+            res["action_attempt"]["action_attempt_id"]
         )
         success_res: Any = action_attempt.result
+
         return AccessCode.from_dict(success_res["access_code"])
 
     def delete(
@@ -261,14 +263,15 @@ class AccessCodes(AbstractAccessCodes):
         create_payload = {"access_code_id": access_code_id}
         if device is not None:
             create_payload["device_id"] = to_device_id(device)
-        res = requests.delete(
-            (f"{self.seam.api_url}/access_codes/delete"),
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
+
+        res = self.seam.make_request(
+            "DELETE",
+            "/access_codes/delete",
             json=create_payload,
         )
-        if not res.ok:
-            raise Exception(res.text)
+
         action_attempt = self.seam.action_attempts.poll_until_ready(
-            res.json()["action_attempt"]["action_attempt_id"]
+            res["action_attempt"]["action_attempt_id"]
         )
+
         return action_attempt
