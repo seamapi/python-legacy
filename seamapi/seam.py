@@ -1,6 +1,7 @@
 import os
 from .routes import Routes
 import requests
+import pkg_resources
 from typing import Optional, cast
 from .types import AbstractSeam, SeamAPIException
 
@@ -82,6 +83,7 @@ class Seam(AbstractSeam):
         headers = {
             "Authorization": "Bearer " + self.api_key,
             "Content-Type": "application/json",
+            "User-Agent": "Python SDK v" + pkg_resources.get_distribution("seamapi").version + " (https://github.com/seamapi/python)",
         }
         response = requests.request(method, url, headers=headers, **kwargs)
 
