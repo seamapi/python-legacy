@@ -85,19 +85,19 @@ class Devices(AbstractDevices):
                 connected_account
             )
         if connect_webview:
-            params[
-                "connect_webview_id"
-            ] =  to_connect_webview_id(connect_webview)
+            params["connect_webview_id"] = to_connect_webview_id(
+                connect_webview
+            )
         if device_type:
             params["device_type"] = device_type
-        res = requests.get(
-            f"{self.seam.api_url}/devices/list",
+
+        res = self.seam.make_request(
+            "GET",
+            "/devices/list",
             params=params,
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
         )
-        if not res.ok:
-            raise Exception(res.text)
-        devices = res.json()["devices"]
+        devices = res["devices"]
+
         return [Device.from_dict(d) for d in devices]
 
     def get(
@@ -129,11 +129,7 @@ class Devices(AbstractDevices):
             params["device_id"] = to_device_id(device)
         if name:
             params["name"] = name
-        res = self.seam.make_request(
-            "GET",
-            "/devices/get",
-            params=params
-        )
+        res = self.seam.make_request("GET", "/devices/get", params=params)
         json_device = res["device"]
         return Device.from_dict(json_device)
 
@@ -170,20 +166,18 @@ class Devices(AbstractDevices):
         if not device:
             raise Exception("device is required")
 
-        params = {
+        update_payload = {
             "device_id": to_device_id(device),
             "name": name,
             "properties": properties,
             "location": location,
         }
 
-        res = requests.post(
-            f"{self.seam.api_url}/devices/update",
-            headers={"Authorization": f"Bearer {self.seam.api_key}"},
-            params=params,
+        self.seam.make_request(
+            "POST",
+            "/devices/update",
+            json=update_payload,
         )
-        if not res.ok:
-            raise Exception(res.text)
 
         return True
 
