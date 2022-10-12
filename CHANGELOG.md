@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.0](https://github.com/seamapi/python/compare/v1.6.0...v2.0.0) (2022-10-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* thrown exceptions will now be slightly different
+
+### Features
+
+* Merge pull request [#53](https://github.com/seamapi/python/issues/53) from seamapi/feat-centralized-requests ([000a164](https://github.com/seamapi/python/commit/000a164883e4517f38e186f697326a5fd503d432))
+
 ## [1.6.0](https://github.com/seamapi/python/compare/v1.5.0...v1.6.0) (2022-10-08)
 
 
