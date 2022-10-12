@@ -207,7 +207,7 @@ class Devices(AbstractDevices):
 
         delete_payload = {"device_id": to_device_id(device)}
         self.seam.make_request(
-            "POST",
+            "DELETE",
             "/devices/delete",
             json=delete_payload,
         )

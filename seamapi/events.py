@@ -137,7 +137,4 @@ class Events(AbstractEvents):
             params=params,
         )
 
-        if not res.get("event", None):
-            return None
-
-        return res["event"]
+        return res.get("event", None)

@@ -83,20 +83,20 @@ class Locks(AbstractLocks):
             A list of locks.
         """
 
-        list_payload = {}
+        params = {}
         if connected_account:
-            list_payload["connected_account_id"] = to_connected_account_id(
+            params["connected_account_id"] = to_connected_account_id(
                 connected_account
             )
         if connect_webview:
-            list_payload["connect_webview_id"] = to_connect_webview_id(
+            params["connect_webview_id"] = to_connect_webview_id(
                 connect_webview
             )
 
         res = self.seam.make_request(
             "GET",
             "/locks/list",
-            params=list_payload,
+            params=params,
         )
         json_locks = res["devices"]
 
@@ -126,16 +126,16 @@ class Locks(AbstractLocks):
             A lock dict.
         """
 
-        get_payload = {}
+        params = {}
         if device:
-            get_payload["device_id"] = to_device_id(device)
+            params["device_id"] = to_device_id(device)
         if name:
-            get_payload["name"] = name
+            params["name"] = name
 
         res = self.seam.make_request(
             "GET",
             "/locks/get",
-            params=get_payload,
+            params=params,
         )
         json_lock = res["device"]
 
