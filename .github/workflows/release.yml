@@ -14,6 +14,11 @@ jobs:
           python-version: 3.8
       - name: Install Poetry
         uses: snok/install-poetry@v1
+      - name: Run pre-build script (embed Sentry DSN)
+        run: |
+          poetry run python scripts/prebuild.py
+        env:
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       - name: Release
         uses: bjoluc/semantic-release-config-poetry@v1
         with:

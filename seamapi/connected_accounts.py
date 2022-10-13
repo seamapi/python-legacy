@@ -9,6 +9,7 @@ from seamapi.types import (
 import requests
 from typing import Any, Dict, List, Union
 from seamapi.utils.convert_to_id import to_connected_account_id
+from seamapi.utils.report_error import report_error
 
 
 class ConnectedAccounts(AbstractConnectedAccounts):
@@ -43,6 +44,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
         self.seam = seam
 
+    @report_error
     def list(self) -> List[ConnectedAccount]:
         """Gets a list of connected accounts.
 
@@ -73,6 +75,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
             for json_account in json_accounts
         ]
 
+    @report_error
     def get(
         self,
         connected_account: Union[
@@ -129,6 +132,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
             errors=json_account.get("errors", []),
         )
 
+    @report_error
     def delete(
         self,
         connected_account: Union[ConnectedAccountId, ConnectedAccount],

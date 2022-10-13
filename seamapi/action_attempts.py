@@ -10,6 +10,7 @@ import time
 import requests
 from typing import Union
 from seamapi.utils.convert_to_id import to_action_attempt_id
+from seamapi.utils.report_error import report_error
 
 
 class ActionAttempts(AbstractActionAttempts):
@@ -44,6 +45,7 @@ class ActionAttempts(AbstractActionAttempts):
 
         self.seam = seam
 
+    @report_error
     def get(
         self, action_attempt: Union[ActionAttemptId, ActionAttempt]
     ) -> ActionAttempt:
@@ -87,6 +89,7 @@ class ActionAttempts(AbstractActionAttempts):
             error=error,
         )
 
+    @report_error
     def poll_until_ready(
         self,
         action_attempt: Union[ActionAttemptId, ActionAttempt],

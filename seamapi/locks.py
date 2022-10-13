@@ -17,6 +17,7 @@ from seamapi.utils.convert_to_id import (
     to_connected_account_id,
     to_device_id,
 )
+from seamapi.utils.report_error import report_error
 
 
 class Locks(AbstractLocks):
@@ -55,6 +56,7 @@ class Locks(AbstractLocks):
 
         self.seam = seam
 
+    @report_error
     def list(
         self,
         connected_account: Optional[
@@ -102,6 +104,7 @@ class Locks(AbstractLocks):
 
         return [Device.from_dict(d) for d in json_locks]
 
+    @report_error
     def get(
         self,
         device: Optional[Union[DeviceId, Device]] = None,
@@ -141,6 +144,7 @@ class Locks(AbstractLocks):
 
         return Device.from_dict(json_lock)
 
+    @report_error
     def lock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         """Locks a lock.
 
@@ -170,6 +174,7 @@ class Locks(AbstractLocks):
             res["action_attempt"]["action_attempt_id"]
         )
 
+    @report_error
     def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         """Unlocks a lock.
 

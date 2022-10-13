@@ -10,6 +10,7 @@ from seamapi.types import (
 from typing import List, Optional, Union, Any
 import requests
 from seamapi.utils.convert_to_id import to_access_code_id, to_device_id
+from seamapi.utils.report_error import report_error
 
 
 class AccessCodes(AbstractAccessCodes):
@@ -48,6 +49,7 @@ class AccessCodes(AbstractAccessCodes):
 
         self.seam = seam
 
+    @report_error
     def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
         """Gets a list of access codes for a device.
 
@@ -76,6 +78,7 @@ class AccessCodes(AbstractAccessCodes):
 
         return [AccessCode.from_dict(ac) for ac in access_codes]
 
+    @report_error
     def get(
         self,
         access_code: Optional[Union[AccessCodeId, AccessCode]] = None,
@@ -114,6 +117,7 @@ class AccessCodes(AbstractAccessCodes):
 
         return AccessCode.from_dict(res["access_code"])
 
+    @report_error
     def create(
         self,
         device: Union[DeviceId, Device],
@@ -171,6 +175,7 @@ class AccessCodes(AbstractAccessCodes):
 
         return AccessCode.from_dict(success_res["access_code"])
 
+    @report_error
     def update(
         self,
         access_code: Union[AccessCodeId, AccessCode],
@@ -233,6 +238,7 @@ class AccessCodes(AbstractAccessCodes):
 
         return AccessCode.from_dict(success_res["access_code"])
 
+    @report_error
     def delete(
         self,
         access_code: Union[AccessCodeId, AccessCode],

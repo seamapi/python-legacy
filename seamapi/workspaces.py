@@ -8,6 +8,7 @@ from seamapi.types import (
 from typing import Optional, List, Union
 
 from seamapi.utils.convert_to_id import to_workspace_id
+from seamapi.utils.report_error import report_error
 
 
 class Workspaces(AbstractWorkspaces):
@@ -44,6 +45,7 @@ class Workspaces(AbstractWorkspaces):
 
         self.seam = seam
 
+    @report_error
     def list(
         self,
         workspace: Optional[Union[WorkspaceId, Workspace]] = None,
@@ -75,6 +77,7 @@ class Workspaces(AbstractWorkspaces):
         )
         return res["workspaces"]
 
+    @report_error
     def get(
         self
     ) -> Workspace:
@@ -106,6 +109,7 @@ class Workspaces(AbstractWorkspaces):
             is_sandbox=res["workspace"]["is_sandbox"],
         )
 
+    @report_error
     def reset_sandbox(self) -> None:
         """Resets workspace sandbox.
 
