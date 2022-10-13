@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.0](https://github.com/seamapi/python/compare/v2.1.0...v2.2.0) (2022-10-13)
+
+
+### Features
+
+* Merge pull request [#57](https://github.com/seamapi/python/issues/57) from seamapi/feat-sentry ([20605d5](https://github.com/seamapi/python/commit/20605d5e23da3d5b772565a05c412ba0d2979bef))
+
 ## [2.1.0](https://github.com/seamapi/python/compare/v2.0.0...v2.1.0) (2022-10-12)
 
 
