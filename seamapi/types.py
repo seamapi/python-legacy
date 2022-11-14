@@ -115,6 +115,7 @@ class ConnectWebview:
     connected_account_id: Optional[str] = None
     authorized_at: Optional[str] = None
     custom_redirect_url: Optional[str] = None
+    custom_redirect_failure_url: Optional[str] = None
     accepted_providers: Optional[List[AcceptedProvider]] = None
     accepted_devices: Optional[List[str]] = None
 
