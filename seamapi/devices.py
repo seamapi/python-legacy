@@ -32,7 +32,7 @@ class Devices(AbstractDevices):
 
     Methods
     -------
-    list(connected_account=None, connect_webview=None, device_type=None)
+    list(connected_account=None, connect_webview=None, device_type=None, device_ids=None)
         Gets a list of devices
     get(device=None, name=None)
         Gets a device
@@ -58,6 +58,7 @@ class Devices(AbstractDevices):
         connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
+        device_ids: Optional[list] = None,
     ) -> List[Device]:
         """Gets a list of devices.
 
@@ -69,6 +70,8 @@ class Devices(AbstractDevices):
             Connect webview id or ConnectWebview to get devices associated with
         device_type : DeviceType, optional
             Device type e.g. august_lock
+        device_ids : Optional[list]
+            Device IDs to filter devices by
 
         Raises
         ------
@@ -91,6 +94,8 @@ class Devices(AbstractDevices):
             )
         if device_type:
             params["device_type"] = device_type
+        if device_ids is not None:
+            params["device_ids"] =  [to_device_id(d) for d in device_ids]
 
         res = self.seam.make_request(
             "GET",
