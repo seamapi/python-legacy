@@ -30,7 +30,7 @@ class ConnectWebviews(AbstractConnectWebviews):
     get(connect_webview)
         Gets a connect webview
     create(
-      accepted_providers, custom_redirect_url=None, device_selection_mode==None
+      accepted_providers, custom_redirect_url=None, custom_redirect_failure_url=None, device_selection_mode=None
     )
         Creates a connect webview
     """
@@ -107,6 +107,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         self,
         accepted_providers: List[AcceptedProvider],
         custom_redirect_url: Optional[str] = None,
+        custom_redirect_failure_url: Optional[str] = None,
         device_selection_mode: Optional[str] = None,
     ) -> ConnectWebview:
         """Creates a connect webview.
@@ -117,6 +118,8 @@ class ConnectWebviews(AbstractConnectWebviews):
             A list of accepted providers e.g. august or noiseaware
         custom_redirect_url : str, optional
             Custom redirect url
+        custom_redirect_failure_url : str, optional
+            Custom redirect failure url
         device_selection_mode : str, optional
             Selection mode: 'none', 'single' or 'multiple'
 
@@ -133,6 +136,8 @@ class ConnectWebviews(AbstractConnectWebviews):
         create_payload = {"accepted_providers": accepted_providers}
         if custom_redirect_url is not None:
             create_payload["custom_redirect_url"] = custom_redirect_url
+        if custom_redirect_failure_url is not None:
+            create_payload["custom_redirect_failure_url"] = custom_redirect_failure_url
         if device_selection_mode is not None:
             create_payload["device_selection_mode"] = device_selection_mode
 

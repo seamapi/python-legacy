@@ -10,6 +10,10 @@ def test_devices(seam: Seam):
     devices = seam.devices.list()
     assert len(devices) > 0
 
+    device_ids = [devices[0]]
+    devices = seam.devices.list(device_ids=device_ids)
+    assert len(devices) == 1
+
     some_device = seam.devices.get(name="Generated Lock 0")
     assert some_device.properties.name == "Generated Lock 0"
 
