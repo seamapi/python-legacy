@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.0](https://github.com/seamapi/python/compare/v2.2.0...v2.3.0) (2022-11-16)
+
+
+### Features
+
+* Merge pull request [#58](https://github.com/seamapi/python/issues/58) from seamapi/add-new-params-nov-14 ([acebae9](https://github.com/seamapi/python/commit/acebae9453aca7211da4d5d7d02f9c3bc80fc0a9))
+
 ## [2.2.0](https://github.com/seamapi/python/compare/v2.1.0...v2.2.0) (2022-10-13)
 
 
