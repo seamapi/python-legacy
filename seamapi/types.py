@@ -148,6 +148,7 @@ class AccessCode:
     ends_at: Optional[str] = None
     name: Optional[str] = ""
     status: Optional[str] = None
+    common_code_key: Optional[str] = None
 
 
 class AbstractActionAttempts(abc.ABC):
@@ -198,13 +199,25 @@ class AbstractAccessCodes(abc.ABC):
 
     @abc.abstractmethod
     def create_multiple(
-        self, devices: Union[List[DeviceId], List[Device]], name: str, code: str
-    ) -> AccessCode:
+        self,
+        devices: Union[List[DeviceId], List[Device]],
+        name: Optional[str] = None,
+        code: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+        common_code_key: Optional[str] = None,
+    ) -> List[AccessCode]:
         raise NotImplementedError
 
     @abc.abstractmethod
     def create(
-        self, device: Union[DeviceId, Device], name: str, code: str
+        self,
+        device: Union[DeviceId, Device],
+        name: Optional[str] = None,
+        code: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+        common_code_key: Optional[str] = None,
     ) -> AccessCode:
         raise NotImplementedError
 

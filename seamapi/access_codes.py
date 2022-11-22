@@ -187,8 +187,9 @@ class AccessCodes(AbstractAccessCodes):
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
-    ) -> AccessCode:
-        """Creates multiple access codes across multiple devices.
+    ) -> List[AccessCode]:
+        """Creates multiple access codes across multiple devices. All access
+        codes will have the same code (if possible).
 
         Parameters
         ----------
@@ -235,12 +236,11 @@ class AccessCodes(AbstractAccessCodes):
             json=create_payload,
         )
 
-        action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
-        success_res: Any = action_attempt.result
+        access_codes: List[AccessCode] = []
+        for access_code in res["access_codes"]:
+            access_codes.append(AccessCode.from_dict(access_code))
 
-        return AccessCode.from_dict(success_res["access_code"])
+        return access_codes
 
     @report_error
     def update(
