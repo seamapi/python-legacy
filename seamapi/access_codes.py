@@ -125,6 +125,7 @@ class AccessCodes(AbstractAccessCodes):
         code: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
+        common_code_key: Optional[str] = None,
     ) -> AccessCode:
         """Creates an access code on a device.
 
@@ -161,10 +162,76 @@ class AccessCodes(AbstractAccessCodes):
             create_payload["starts_at"] = starts_at
         if ends_at is not None:
             create_payload["ends_at"] = ends_at
+        if common_code_key is not None:
+            create_payload["common_code_key"] = common_code_key
 
         res = self.seam.make_request(
             "POST",
             "/access_codes/create",
+            json=create_payload,
+        )
+
+        action_attempt = self.seam.action_attempts.poll_until_ready(
+            res["action_attempt"]["action_attempt_id"]
+        )
+        success_res: Any = action_attempt.result
+
+        return AccessCode.from_dict(success_res["access_code"])
+
+    @report_error
+    def create_multiple(
+        self,
+        devices: Union[List[DeviceId], List[Device]],
+        name: Optional[str] = None,
+        code: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+        common_code_key: Optional[str] = None,
+    ) -> AccessCode:
+        """Creates multiple access codes across multiple devices.
+
+        Parameters
+        ----------
+        devices : List of DeviceIds or Devices
+            Device ids or Devices to create an access code for
+        name : str, optional
+            Access code name
+        code : str, optional
+            Access code value
+        starts_at : str, optional
+            Time when access code becomes effective
+        ends_at : str, optional
+            Time when access code ceases to be effective
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            AccessCode
+        """
+
+        device_ids: List[str] = []
+        for device in devices:
+            device_ids.append(to_device_id(device))
+
+        create_payload: dict[str, Any] = {"device_ids": device_ids}
+        if name is not None:
+            create_payload["name"] = name
+        if code is not None:
+            create_payload["code"] = code
+        if starts_at is not None:
+            create_payload["starts_at"] = starts_at
+        if ends_at is not None:
+            create_payload["ends_at"] = ends_at
+        if common_code_key is not None:
+            create_payload["common_code_key"] = common_code_key
+
+        res = self.seam.make_request(
+            "POST",
+            "/access_codes/create_multiple",
             json=create_payload,
         )
 
