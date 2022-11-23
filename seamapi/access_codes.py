@@ -186,7 +186,6 @@ class AccessCodes(AbstractAccessCodes):
         code: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
-        common_code_key: Optional[str] = None,
     ) -> List[AccessCode]:
         """Creates multiple access codes across multiple devices. All access
         codes will have the same code (if possible).
@@ -227,8 +226,6 @@ class AccessCodes(AbstractAccessCodes):
             create_payload["starts_at"] = starts_at
         if ends_at is not None:
             create_payload["ends_at"] = ends_at
-        if common_code_key is not None:
-            create_payload["common_code_key"] = common_code_key
 
         res = self.seam.make_request(
             "POST",
