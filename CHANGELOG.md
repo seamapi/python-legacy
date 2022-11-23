@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.4.0](https://github.com/seamapi/python/compare/v2.3.0...v2.4.0) (2022-11-23)
+
+
+### Features
+
+* Create Access Codes against many devices with same code ([#60](https://github.com/seamapi/python/issues/60)) ([d0e856f](https://github.com/seamapi/python/commit/d0e856fb142c44abc3b32dd38fac0236283dd69e))
+
 ## [2.3.0](https://github.com/seamapi/python/compare/v2.2.0...v2.3.0) (2022-11-16)
 
 
