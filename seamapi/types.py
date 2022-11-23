@@ -16,13 +16,19 @@ Email = str
 DeviceType = str  # e.g. august_lock
 WorkspaceId = str
 
+
 class SeamAPIException(Exception):
-    def __init__(self, status_code: int, request_id: str, metadata: Optional[Dict[str, any]]):
+    def __init__(
+        self, status_code: int, request_id: str, metadata: Optional[Dict[str, any]]
+    ):
         self.status_code = status_code
         self.request_id = request_id
         self.metadata = metadata
 
-        super().__init__(f"SeamAPIException: status={status_code}, request_id={request_id}, metadata={metadata}")
+        super().__init__(
+            f"SeamAPIException: status={status_code}, request_id={request_id}, metadata={metadata}"
+        )
+
 
 class ActionAttemptFailedException(Exception):
     def __init__(
@@ -61,6 +67,7 @@ class Device:
             errors=d["errors"],
         )
 
+
 @dataclass
 class Event:
     event_id: str
@@ -74,6 +81,7 @@ class Event:
     start_time: Union[str, None]
     end_time: Union[str, None]
     created_at: Union[str, None]
+
 
 @dataclass_json
 @dataclass
@@ -140,6 +148,7 @@ class AccessCode:
     ends_at: Optional[str] = None
     name: Optional[str] = ""
     status: Optional[str] = None
+    common_code_key: Optional[str] = None
 
 
 class AbstractActionAttempts(abc.ABC):
@@ -189,8 +198,26 @@ class AbstractAccessCodes(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def create_multiple(
+        self,
+        devices: Union[List[DeviceId], List[Device]],
+        name: Optional[str] = None,
+        code: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+        common_code_key: Optional[str] = None,
+    ) -> List[AccessCode]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def create(
-        self, device: Union[DeviceId, Device], name: str, code: str
+        self,
+        device: Union[DeviceId, Device],
+        name: Optional[str] = None,
+        code: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+        common_code_key: Optional[str] = None,
     ) -> AccessCode:
         raise NotImplementedError
 
@@ -228,10 +255,12 @@ class AbstractDevices(abc.ABC):
     ) -> Device:
         raise NotImplementedError
 
+
 class AbstractEvents(abc.ABC):
     @abc.abstractmethod
     def list(self) -> List[Event]:
         raise NotImplementedError
+
 
 class AbstractWorkspaces(abc.ABC):
     @abc.abstractmethod
@@ -274,6 +303,7 @@ class AbstractConnectedAccounts(abc.ABC):
     ) -> ConnectedAccount:
         raise NotImplementedError
 
+
 @dataclass
 class AbstractRoutes(abc.ABC):
     workspaces: AbstractWorkspaces
@@ -296,6 +326,7 @@ class AbstractSeam(AbstractRoutes):
     @abc.abstractmethod
     def __init__(self, api_key: Optional[str] = None):
         raise NotImplementedError
+
 
 @dataclass_json
 @dataclass
