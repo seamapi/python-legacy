@@ -31,6 +31,12 @@ def test_access_codes(seam: Seam):
     delete_action_attempt = seam.access_codes.delete(created_access_code)
     assert delete_action_attempt.status == "success"
 
+    created_access_code = seam.access_codes.create(
+        some_device.device_id, "Other Test code", "4445", wait_for_action_attempt=False
+    )
+    assert created_access_code.name == "Other Test code"
+    assert created_access_code.code == "4445"
+
     # TODO: Can only test for salto devices.
     # access_codes = seam.access_codes.create_multiple(devices=all_devices)
     # assert len(access_codes) == len(all_devices)
