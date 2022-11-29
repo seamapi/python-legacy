@@ -171,12 +171,7 @@ class AccessCodes(AbstractAccessCodes):
             json=create_payload,
         )
 
-        action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
-        success_res: Any = action_attempt.result
-
-        return AccessCode.from_dict(success_res["access_code"])
+        return AccessCode.from_dict(res["access_code"])
 
     @report_error
     def create_multiple(
