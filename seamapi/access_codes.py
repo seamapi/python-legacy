@@ -126,6 +126,7 @@ class AccessCodes(AbstractAccessCodes):
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
+        wait_for_code: Optional[bool] = True,
     ) -> AccessCode:
         """Creates an access code on a device.
 
@@ -170,6 +171,14 @@ class AccessCodes(AbstractAccessCodes):
             "/access_codes/create",
             json=create_payload,
         )
+
+        if wait_for_code:
+            action_attempt = self.seam.action_attempts.poll_until_ready(
+                res["action_attempt"]["action_attempt_id"]
+            )
+            success_res: Any = action_attempt.result
+
+            return AccessCode.from_dict(success_res["access_code"])
 
         return AccessCode.from_dict(res["access_code"])
 
