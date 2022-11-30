@@ -127,7 +127,7 @@ class AccessCodes(AbstractAccessCodes):
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
-        wait_for_code: Optional[bool] = True,
+        wait_for_code: Optional[bool] = False,
     ) -> AccessCode:
         """Creates an access code on a device.
 
