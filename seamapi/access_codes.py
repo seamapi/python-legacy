@@ -183,7 +183,7 @@ class AccessCodes(AbstractAccessCodes):
 
         if wait_for_code:
             while (access_code.code is None):
-                if (access_code.status != "unknown"):
+                if (access_code.status == "unknown"):
                     raise RuntimeException("Gave up waiting for code since access code status is unknown")
                 access_code = access_codes.get(access_code)
 
