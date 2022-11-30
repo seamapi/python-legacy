@@ -1,3 +1,4 @@
+from datetime import datetime, timezone, timedelta
 from seamapi.types import (
     AbstractAccessCodes,
     AccessCode,
@@ -166,22 +167,27 @@ class AccessCodes(AbstractAccessCodes):
         if common_code_key is not None:
             create_payload["common_code_key"] = common_code_key
 
+        if (wait_for_code
+            and starts_at is not None
+            and datetime.fromisoformat(starts_at) > datetime.now() + timedelta(seconds=5)
+        ):
+            raise RuntimeException("Cannot use wait_for_code with a future time bound code")
+
         res = self.seam.make_request(
             "POST",
             "/access_codes/create",
             json=create_payload,
         )
 
-        # TODO: Poll AccessCode not ActionAttempt
+        access_code = AccessCode.from_dict(res["access_code"])
+
         if wait_for_code:
-            action_attempt = self.seam.action_attempts.poll_until_ready(
-                res["action_attempt"]["action_attempt_id"]
-            )
-            success_res: Any = action_attempt.result
+            while (access_code.code is None):
+                if (access_code.status != "unknown"):
+                    raise RuntimeException("Gave up waiting for code since access code status is unknown")
+                access_code = access_codes.get(access_code)
 
-            return AccessCode.from_dict(success_res["access_code"])
-
-        return AccessCode.from_dict(res["access_code"])
+        return access_code
 
     @report_error
     def create_multiple(
