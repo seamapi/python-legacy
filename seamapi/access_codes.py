@@ -172,6 +172,7 @@ class AccessCodes(AbstractAccessCodes):
             json=create_payload,
         )
 
+        # TODO: Poll AccessCode not ActionAttempt
         if wait_for_code:
             action_attempt = self.seam.action_attempts.poll_until_ready(
                 res["action_attempt"]["action_attempt_id"]
