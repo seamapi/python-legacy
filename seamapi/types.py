@@ -46,6 +46,19 @@ class ActionAttemptFailedException(Exception):
             f'Action Attempt for "{action_type}" Failed. {error_type}: {error_message} (action_attempt_id={action_attempt_id})'
         )
 
+class WaitForAccessCodeFailedException(Exception):
+    def __init__(
+        self,
+        message: str,
+        access_code_id: str,
+        errors: Optional[list] = []
+    ):
+        self.access_code_id = access_code_id
+        self.errors = errors
+        super().__init__(
+            f'Failed while waiting for access code. ${message}'
+        )
+
 
 @dataclass
 class Device:

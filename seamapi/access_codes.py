@@ -1,4 +1,7 @@
+import time
+from datetime import datetime, timezone, timedelta
 from seamapi.types import (
+    WaitForAccessCodeFailedException,
     AbstractAccessCodes,
     AccessCode,
     AccessCodeId,
@@ -126,6 +129,8 @@ class AccessCodes(AbstractAccessCodes):
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
+        wait_for_code: Optional[bool] = False,
+        timeout: Optional[int] = 300,
     ) -> AccessCode:
         """Creates an access code on a device.
 
@@ -141,11 +146,17 @@ class AccessCodes(AbstractAccessCodes):
             Time when access code becomes effective
         ends_at : str, optional
             Time when access code ceases to be effective
+        wait_for_code : bool, optional
+            Poll the access code until the code is known.
+        timeout : int, optional:
+            Maximum polling time in seconds.
 
         Raises
         ------
         Exception
             If the API request wasn't successful.
+        WaitForAccessCodeFailedException
+            If waiting for code aborts due to error or timeout.
 
         Returns
         ------
@@ -165,18 +176,47 @@ class AccessCodes(AbstractAccessCodes):
         if common_code_key is not None:
             create_payload["common_code_key"] = common_code_key
 
+        if (wait_for_code
+            and starts_at is not None
+            and datetime.fromisoformat(starts_at) > datetime.now() + timedelta(seconds=5)
+        ):
+            raise RuntimeError("Cannot use wait_for_code with a future time bound code")
+
         res = self.seam.make_request(
             "POST",
             "/access_codes/create",
             json=create_payload,
         )
 
-        action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
-        success_res: Any = action_attempt.result
+        access_code = AccessCode.from_dict(res["access_code"])
 
-        return AccessCode.from_dict(success_res["access_code"])
+        duration = 0
+        poll_interval = 0.25
+        if wait_for_code:
+            while (access_code.code is None):
+                if (access_code.status == "unknown"):
+                    raise WaitForAccessCodeFailedException(
+                        "Access code status returned unknown",
+                        access_code_id=access_code.access_code_id
+                    )
+                if (len(access_code.errors) > 0):
+                    raise WaitForAccessCodeFailedException(
+                        "Access code returned errors",
+                        access_code_id=access_code.access_code_id,
+                        errors=access_code.errors
+                    )
+                time.sleep(poll_interval)
+                duration += poll_interval
+                if (duration > timeout):
+                    raise WaitForAccessCodeFailedException(
+                        f"Gave up after waiting the maximum timeout of {timeout} seconds",
+                        access_code_id=access_code.access_code_id,
+                        errors=access_code.errors
+                    )
+
+                access_code = access_codes.get(access_code)
+
+        return access_code
 
     @report_error
     def create_multiple(

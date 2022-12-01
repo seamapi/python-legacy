@@ -31,6 +31,26 @@ def test_access_codes(seam: Seam):
     delete_action_attempt = seam.access_codes.delete(created_access_code)
     assert delete_action_attempt.status == "success"
 
-    access_codes = seam.access_codes.create_multiple(devices=all_devices)
-    assert len(access_codes) == len(all_devices)
-    assert len(set([ac.common_code_key for ac in access_codes])) == 1
+    # TODO: Can only test for salto devices.
+    # access_codes = seam.access_codes.create_multiple(devices=all_devices)
+    # assert len(access_codes) == len(all_devices)
+    # assert len(set([ac.common_code_key for ac in access_codes])) == 1
+
+def test_access_codes_create_wait_for_code(seam: Seam):
+    run_august_factory(seam)
+
+    all_devices = seam.devices.list()
+    some_device = all_devices[0]
+
+    created_access_code = seam.access_codes.create(
+        some_device.device_id, "Test code", "4445", wait_for_code=True
+    )
+
+    assert created_access_code.name == "Test code"
+    assert created_access_code.code == "4445"
+
+    with pytest.raises(RuntimeError) as excinfo:
+        seam.access_codes.create(
+            some_device.device_id, "Test code", "4445", wait_for_code=True, starts_at="3001-01-01", ends_at="3001-01-03"
+        )
+    assert "future time bound code" in str(excinfo.value)
