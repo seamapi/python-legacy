@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.5.0](https://github.com/seamapi/python/compare/v2.4.0...v2.5.0) (2022-12-01)
+
+
+### Features
+
+* Do not wait for action action attempt on access_code.create ([7684c1f](https://github.com/seamapi/python/commit/7684c1fa10db8014cff04007fa9b041623d8a0fe))
+* Return access code immediately from access_code.create ([b6ec63a](https://github.com/seamapi/python/commit/b6ec63a13158d8e575be35c4117bd6c5ac2d9d2d))
+
 ## [2.4.0](https://github.com/seamapi/python/compare/v2.3.0...v2.4.0) (2022-11-23)
 
 
