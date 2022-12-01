@@ -28,22 +28,18 @@ class SeamBackend:
 @pytest.fixture(scope="function")
 def seam_backend():
     with PostgresContainer("postgres:13", dbname="postgres") as pg:
-        db_host = (
-            "host.docker.internal"
-            if sys.platform == "darwin"
-            else "172.17.0.1"
-        )
-        db_url = f"postgresql://test:test@{db_host}:{pg.get_exposed_port(pg.port_to_expose)}/postgres"
         with DockerContainer(
             os.environ.get(
                 "SEAM_CONNECT_IMAGE", "ghcr.io/seamapi/seam-connect"
             )
-        ).with_env("DATABASE_URL", db_url,).with_env(
+        ).with_env(
+            "DATABASE_URL", pg.get_connection_url()
+        ).with_env(
             "POSTGRES_DATABASE", "postgres"
         ).with_env(
             "NODE_ENV", "test"
         ).with_env(
-            "POSTGRES_HOST", db_host
+            "POSTGRES_HOST", pg.get_container_host_ip()
         ).with_env(
             "SERVER_BASE_URL", "http://localhost:3020"
         ).with_env(
