@@ -150,6 +150,8 @@ class AccessCodes(AbstractAccessCodes):
         ------
         Exception
             If the API request wasn't successful.
+        WaitForAccessCodeFailedException
+            If waiting for code aborts due to error or timeout.
 
         Returns
         ------
