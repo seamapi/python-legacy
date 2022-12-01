@@ -1,6 +1,7 @@
 import time
 from datetime import datetime, timezone, timedelta
 from seamapi.types import (
+    WaitForAccessCodeFailedException,
     AbstractAccessCodes,
     AccessCode,
     AccessCodeId,
@@ -185,7 +186,16 @@ class AccessCodes(AbstractAccessCodes):
         if wait_for_code:
             while (access_code.code is None):
                 if (access_code.status == "unknown"):
-                    raise RuntimeError("Gave up waiting for code since access code status is unknown")
+                    raise WaitForAccessCodeFailedException(
+                        "Access code status returned unknown",
+                        access_code_id=access_code.access_code_id
+                    )
+                if (len(access_code.errors) > 0):
+                    raise WaitForAccessCodeFailedException(
+                        "Access code returned errors",
+                        access_code_id=access_code.access_code_id,
+                        errors=access_code.errors
+                    )
                 time.sleep(0.25)
                 access_code = access_codes.get(access_code)
 
