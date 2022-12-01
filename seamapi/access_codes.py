@@ -130,6 +130,7 @@ class AccessCodes(AbstractAccessCodes):
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
         wait_for_code: Optional[bool] = False,
+        timeout: Optional[int] = 300,
     ) -> AccessCode:
         """Creates an access code on a device.
 
@@ -145,6 +146,10 @@ class AccessCodes(AbstractAccessCodes):
             Time when access code becomes effective
         ends_at : str, optional
             Time when access code ceases to be effective
+        wait_for_code : bool, optional
+            Poll the access code until the code is known.
+        timeout : int, optional:
+            Maximum polling time in seconds.
 
         Raises
         ------
@@ -185,6 +190,8 @@ class AccessCodes(AbstractAccessCodes):
 
         access_code = AccessCode.from_dict(res["access_code"])
 
+        duration = 0
+        poll_interval = 0.25
         if wait_for_code:
             while (access_code.code is None):
                 if (access_code.status == "unknown"):
@@ -198,7 +205,15 @@ class AccessCodes(AbstractAccessCodes):
                         access_code_id=access_code.access_code_id,
                         errors=access_code.errors
                     )
-                time.sleep(0.25)
+                time.sleep(poll_interval)
+                duration += poll_interval
+                if (duration > timeout):
+                    raise WaitForAccessCodeFailedException(
+                        f"Gave up after waiting the maximum timeout of {timeout} seconds",
+                        access_code_id=access_code.access_code_id,
+                        errors=access_code.errors
+                    )
+
                 access_code = access_codes.get(access_code)
 
         return access_code
