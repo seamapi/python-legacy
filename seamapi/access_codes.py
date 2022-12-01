@@ -129,6 +129,7 @@ class AccessCodes(AbstractAccessCodes):
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
+        attempt_for_offline_device: Optional[bool] = True,
         wait_for_code: Optional[bool] = False,
         timeout: Optional[int] = 300,
     ) -> AccessCode:
@@ -146,6 +147,9 @@ class AccessCodes(AbstractAccessCodes):
             Time when access code becomes effective
         ends_at : str, optional
             Time when access code ceases to be effective
+        attempt_for_offline_device : bool, optional
+            If the device status is offline,
+            attempt to set the access code anyway.
         wait_for_code : bool, optional
             Poll the access code until the code is known.
         timeout : int, optional:
@@ -175,6 +179,8 @@ class AccessCodes(AbstractAccessCodes):
             create_payload["ends_at"] = ends_at
         if common_code_key is not None:
             create_payload["common_code_key"] = common_code_key
+        if attempt_for_offline_device is not None:
+            create_payload["attempt_for_offline_device"] = attempt_for_offline_device
 
         if (wait_for_code
             and starts_at is not None
