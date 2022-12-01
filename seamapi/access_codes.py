@@ -171,7 +171,7 @@ class AccessCodes(AbstractAccessCodes):
             and starts_at is not None
             and datetime.fromisoformat(starts_at) > datetime.now() + timedelta(seconds=5)
         ):
-            raise RuntimeException("Cannot use wait_for_code with a future time bound code")
+            raise RuntimeError("Cannot use wait_for_code with a future time bound code")
 
         res = self.seam.make_request(
             "POST",
@@ -184,7 +184,7 @@ class AccessCodes(AbstractAccessCodes):
         if wait_for_code:
             while (access_code.code is None):
                 if (access_code.status == "unknown"):
-                    raise RuntimeException("Gave up waiting for code since access code status is unknown")
+                    raise RuntimeError("Gave up waiting for code since access code status is unknown")
                 access_code = access_codes.get(access_code)
 
         return access_code
