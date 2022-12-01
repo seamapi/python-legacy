@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.0](https://github.com/seamapi/python/compare/v2.5.0...v2.6.0) (2022-12-01)
+
+
+### Features
+
+* Add attempt_for_offline_device to access_codes.create ([#67](https://github.com/seamapi/python/issues/67)) ([279ba04](https://github.com/seamapi/python/commit/279ba04687107ebcc222b561eec4180551864286))
+
 ## [2.5.0](https://github.com/seamapi/python/compare/v2.4.0...v2.5.0) (2022-12-01)
 
 
