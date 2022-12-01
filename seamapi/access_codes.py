@@ -1,3 +1,4 @@
+import time
 from datetime import datetime, timezone, timedelta
 from seamapi.types import (
     AbstractAccessCodes,
@@ -185,6 +186,7 @@ class AccessCodes(AbstractAccessCodes):
             while (access_code.code is None):
                 if (access_code.status == "unknown"):
                     raise RuntimeError("Gave up waiting for code since access code status is unknown")
+                time.sleep(0.25)
                 access_code = access_codes.get(access_code)
 
         return access_code
