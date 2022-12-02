@@ -32,7 +32,7 @@ def seam_backend():
         db_url = pg.get_connection_url()
 
         # UPSTREAM: https://github.com/testcontainers/testcontainers-python/issues/159
-        if os.environ.get("CI"):
+        if os.environ.get("CI") is not None:
             container_host = "host.docker.internal"
             db_url = db_url.replace(db_host, container_host)
             db_host = container_host
