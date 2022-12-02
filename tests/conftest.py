@@ -33,7 +33,6 @@ def seam_backend():
 
         # UPSTREAM: https://github.com/testcontainers/testcontainers-python/issues/159
         docker_info = pg.get_docker_client().client.info()
-        print(docker_info["OperatingSystem"])
         if docker_info["OperatingSystem"] == "Docker Desktop":
             container_host = "host.docker.internal"
             db_url = db_url.replace(db_host, container_host)
