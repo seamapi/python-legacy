@@ -28,6 +28,9 @@ class SeamBackend:
 @pytest.fixture(scope="function")
 def seam_backend():
     with PostgresContainer("postgres:13", dbname="postgres") as pg:
+        db_host = pg.get_container_host_ip()
+        db_url = pg.get_connection_url()
+
         # UPSTREAM: https://github.com/testcontainers/testcontainers-python/issues/159
         if os.environ.get("CI"):
             container_host = "host.docker.internal"
