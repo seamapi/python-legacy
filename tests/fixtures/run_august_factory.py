@@ -13,6 +13,3 @@ def run_august_factory(seam: Seam):
             "sync": True,
         },
     )
-
-    # TODO remove when sync is supported in /internal/scenarios/factories/load
-    time.sleep(0.2)
