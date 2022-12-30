@@ -1,11 +1,13 @@
 from seamapi import Seam
 from seamapi.types import SeamAPIException
 from tests.fixtures.run_august_factory import run_august_factory
+from tests.fixtures.run_salto_factory import run_salto_factory
 import pytest
 
 
 def test_access_codes(seam: Seam):
     run_august_factory(seam)
+    run_salto_factory(seam)
 
     all_devices = seam.devices.list()
     some_device = all_devices[0]
@@ -31,10 +33,10 @@ def test_access_codes(seam: Seam):
     delete_action_attempt = seam.access_codes.delete(created_access_code)
     assert delete_action_attempt.status == "success"
 
-    # TODO: Can only test for salto devices.
-    # access_codes = seam.access_codes.create_multiple(devices=all_devices)
-    # assert len(access_codes) == len(all_devices)
-    # assert len(set([ac.common_code_key for ac in access_codes])) == 1
+    multiple_devices = [d for d in all_devices if d.device_type == "salto_lock" ]
+    access_codes = seam.access_codes.create_multiple(devices=multiple_devices)
+    assert len(access_codes) == len(multiple_devices)
+    assert len(set([ac.common_code_key for ac in access_codes])) == 1
 
 def test_access_codes_create_wait_for_code(seam: Seam):
     run_august_factory(seam)
