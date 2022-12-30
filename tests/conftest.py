@@ -27,7 +27,7 @@ class SeamBackend:
 # dramatically reduce test time to switch
 @pytest.fixture(scope="function")
 def seam_backend():
-    with PostgresContainer("postgres:13", dbname="postgres") as pg:
+    with PostgresContainer("postgres:15", dbname="postgres") as pg:
         db_host = pg.get_container_host_ip()
         db_url = pg.get_connection_url()
 
