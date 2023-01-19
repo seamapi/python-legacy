@@ -3,13 +3,13 @@ import time
 import requests
 
 
-def run_august_factory(seam: Seam):
+def run_salto_factory(seam: Seam):
     seam.make_request(
         "POST",
         "/internal/scenarios/factories/load",
         json={
-            "factory_name": "create_august_devices",
-            "input": {"num": 1},
+            "factory_name": "create_salto_devices",
+            "input": {"num": 3},
             "sync": True,
         },
     )
