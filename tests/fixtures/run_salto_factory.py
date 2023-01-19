@@ -9,7 +9,7 @@ def run_salto_factory(seam: Seam):
         "/internal/scenarios/factories/load",
         json={
             "factory_name": "create_salto_devices",
-            "input": {"num": 1},
+            "input": {"num": 3},
             "sync": True,
         },
     )

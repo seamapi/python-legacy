@@ -33,10 +33,10 @@ def test_access_codes(seam: Seam):
     delete_action_attempt = seam.access_codes.delete(created_access_code)
     assert delete_action_attempt.status == "success"
 
-    multiple_devices = [d for d in all_devices if d.device_type == "salto_lock" ]
-    access_codes = seam.access_codes.create_multiple(devices=multiple_devices)
-    assert len(access_codes) == len(multiple_devices)
+    access_codes = seam.access_codes.create_multiple(devices=all_devices)
+    assert len(access_codes) == len(all_devices)
     assert len(set([ac.common_code_key for ac in access_codes])) == 1
+
 
 def test_access_codes_create_wait_for_code(seam: Seam):
     run_august_factory(seam)
