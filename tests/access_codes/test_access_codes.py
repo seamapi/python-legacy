@@ -53,6 +53,11 @@ def test_access_codes_create_wait_for_code(seam: Seam):
 
     with pytest.raises(RuntimeError) as excinfo:
         seam.access_codes.create(
-            some_device.device_id, "Test code", "4445", wait_for_code=True, starts_at="3001-01-01", ends_at="3001-01-03"
+            some_device.device_id,
+            "Test code",
+            "4445",
+            wait_for_code=True,
+            starts_at="3001-01-01",
+            ends_at="3001-01-03",
         )
     assert "future time bound code" in str(excinfo.value)
