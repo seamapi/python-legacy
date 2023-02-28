@@ -30,6 +30,16 @@ jobs:
       CONTAINER_REGISTRY: "ghcr.io"
       RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
     steps:
+      - uses: Sibz/github-status-action@v1
+        if: ${{ github.event.inputs.connectSha }}
+        with:
+          authToken: ${{ secrets.BOT_GH_TOKEN }}
+          context: Test Python SDK
+          state: pending
+          sha: ${{ github.event.inputs.connectSha }}
+          repository: seam-connect
+          target_url: ${{ env.RUN_URL }}
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -80,3 +90,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
           message: |
             ✅ [Python SDK tests passed](${{ env.RUN_URL }}).
+
+      - uses: Sibz/github-status-action@v1
+        if: ${{ github.event.inputs.connectSha && always() }}
+        with:
+          authToken: ${{ secrets.BOT_GH_TOKEN }}
+          context: Test Python SDK
+          state: ${{ job.status }}
+          sha: ${{ github.event.inputs.connectSha }}
+          repository: seam-connect
