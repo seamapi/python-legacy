@@ -91,7 +91,8 @@ jobs:
           message: |
             ✅ [Python SDK tests passed](${{ env.RUN_URL }}).
 
-      - uses: Sibz/github-status-action@v1
+      - name: Send back status
+        uses: Sibz/github-status-action@v1
         if: ${{ github.event.inputs.connectSha && always() }}
         with:
           authToken: ${{ secrets.BOT_GH_TOKEN }}
