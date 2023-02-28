@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.0](https://github.com/seamapi/python/compare/v2.6.0...v2.7.0) (2023-02-28)
+
+
+### Features
+
+* send status to connect on workflow trigger ([8091b61](https://github.com/seamapi/python/commit/8091b61e6de3593b99aaf71083964be31ea3d9db))
+* use different name to call always ([aae209d](https://github.com/seamapi/python/commit/aae209d212dbb08a613e2783dbbb3744f8443eed))
+
 ## [2.6.0](https://github.com/seamapi/python/compare/v2.5.0...v2.6.0) (2022-12-01)
 
 
