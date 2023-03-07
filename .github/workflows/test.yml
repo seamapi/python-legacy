@@ -59,14 +59,6 @@ jobs:
           python-version: 3.8
       - name: Install Poetry
         uses: snok/install-poetry@v1
-      - if: ${{ github.event.inputs.prNumber }}
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          number: ${{ github.event.inputs.prNumber }}
-          repo: ${{ github.event.inputs.prRepo }}
-          GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
-          message: |
-            ⌛️ [running Python SDK tests](${{ env.RUN_URL }})...
       - run: poetry install
       - run: poetry run pytest -s
         env:
