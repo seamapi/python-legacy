@@ -71,25 +71,6 @@ jobs:
       - run: poetry run pytest -s
         env:
           TC_HOST: 172.17.0.1
-      - name: Comment on failure
-        if: ${{ github.event.inputs.prNumber && failure() }}
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          number: ${{ github.event.inputs.prNumber }}
-          repo: ${{ github.event.inputs.prRepo }}
-          GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
-          message: |
-            ⛔️ [Python SDK tests failed](${{ env.RUN_URL }}).
-
-      - name: Comment on success
-        if: ${{ github.event.inputs.prNumber && success() }}
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          number: ${{ github.event.inputs.prNumber }}
-          repo: ${{ github.event.inputs.prRepo }}
-          GITHUB_TOKEN: ${{ secrets.BOT_GH_TOKEN }}
-          message: |
-            ✅ [Python SDK tests passed](${{ env.RUN_URL }}).
 
       - name: Send back status
         uses: Sibz/github-status-action@v1
@@ -100,3 +81,5 @@ jobs:
           state: ${{ job.status }}
           sha: ${{ github.event.inputs.connectSha }}
           repository: seam-connect
+          target_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
