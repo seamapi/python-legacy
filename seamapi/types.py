@@ -133,6 +133,7 @@ class ConnectWebview:
     any_provider_allowed: bool
     any_device_allowed: bool
     created_at: str
+    custom_metadata: Dict[str, Union[str, int, bool, None]]
     connected_account_id: Optional[str] = None
     authorized_at: Optional[str] = None
     custom_redirect_url: Optional[str] = None
@@ -149,7 +150,7 @@ class ConnectedAccount:
     user_identifier: str
     account_type: str
     errors: List[str]
-
+    custom_metadata: Dict[str, Union[str, int, bool, None]]
 
 @dataclass_json
 @dataclass

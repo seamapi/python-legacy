@@ -109,6 +109,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         custom_redirect_url: Optional[str] = None,
         custom_redirect_failure_url: Optional[str] = None,
         device_selection_mode: Optional[str] = None,
+        custom_metadata: Optional[dict] = None,
     ) -> ConnectWebview:
         """Creates a connect webview.
 
@@ -122,6 +123,7 @@ class ConnectWebviews(AbstractConnectWebviews):
             Custom redirect failure url
         device_selection_mode : str, optional
             Selection mode: 'none', 'single' or 'multiple'
+        custom_metadata : dict, optional
 
         Raises
         ------
@@ -140,6 +142,8 @@ class ConnectWebviews(AbstractConnectWebviews):
             create_payload["custom_redirect_failure_url"] = custom_redirect_failure_url
         if device_selection_mode is not None:
             create_payload["device_selection_mode"] = device_selection_mode
+        if custom_metadata is not None:
+            create_payload["custom_metadata"] = custom_metadata
 
         res = self.seam.make_request(
             "POST",
