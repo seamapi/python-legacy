@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.0](https://github.com/seamapi/python/compare/v2.7.0...v2.8.0) (2023-03-09)
+
+
+### Features
+
+* Add custom_metadata ([#75](https://github.com/seamapi/python/issues/75)) ([01be89c](https://github.com/seamapi/python/commit/01be89cf854fa1d244f448f1ab41113c166f6340))
+
+
+### Bug Fixes
+
+* parity with js changes ([59051b4](https://github.com/seamapi/python/commit/59051b40b9b43a87ebaa23d898ea1f2c4d417811))
+
 ## [2.7.0](https://github.com/seamapi/python/compare/v2.6.0...v2.7.0) (2023-02-28)
 
 
