@@ -143,7 +143,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         if device_selection_mode is not None:
             create_payload["device_selection_mode"] = device_selection_mode
         if custom_metadata is not None:
-            create_payload["custom_metadata "] = custom_metadata 
+            create_payload["custom_metadata"] = custom_metadata
 
         res = self.seam.make_request(
             "POST",
