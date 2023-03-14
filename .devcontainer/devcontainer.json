@@ -21,6 +21,7 @@
     "EditorConfig.EditorConfig"
   ],
   "runArgs": ["--volume=/var/lib/docker", "--privileged"],
-  "postCreateCommand": "sudo service docker start && poetry install",
+  "postCreateCommand": "poetry install",
+  "postAttachCommand": "sudo service docker start",
   "remoteUser": "vscode"
 }
