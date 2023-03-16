@@ -1,7 +1,6 @@
 from seamapi import Seam
 from seamapi.types import SeamAPIException
 from tests.fixtures.run_august_factory import run_august_factory
-from tests.fixtures.run_salto_factory import run_salto_factory
 import pytest
 
 
