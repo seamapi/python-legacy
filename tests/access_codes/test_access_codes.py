@@ -34,7 +34,7 @@ def test_access_codes(seam: Seam):
 
     access_codes = seam.access_codes.create_multiple(devices=all_devices)
     assert len(access_codes) == len(all_devices)
-    assert len(all_devices > 1)
+    assert len(all_devices) > 1
     assert len(set([ac.common_code_key for ac in access_codes])) == 1
 
 
