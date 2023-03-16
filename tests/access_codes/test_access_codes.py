@@ -1,13 +1,11 @@
 from seamapi import Seam
 from seamapi.types import SeamAPIException
 from tests.fixtures.run_august_factory import run_august_factory
-from tests.fixtures.run_salto_factory import run_salto_factory
 import pytest
 
 
 def test_access_codes(seam: Seam):
     run_august_factory(seam)
-    run_salto_factory(seam)
 
     all_devices = seam.devices.list()
     some_device = all_devices[0]
@@ -35,6 +33,7 @@ def test_access_codes(seam: Seam):
 
     access_codes = seam.access_codes.create_multiple(devices=all_devices)
     assert len(access_codes) == len(all_devices)
+    assert len(all_devices) > 1
     assert len(set([ac.common_code_key for ac in access_codes])) == 1
 
 

@@ -9,7 +9,7 @@ def run_august_factory(seam: Seam):
         "/internal/scenarios/factories/load",
         json={
             "factory_name": "create_august_devices",
-            "input": {"num": 1},
+            "input": {"num": 2},
             "sync": True,
         },
     )
