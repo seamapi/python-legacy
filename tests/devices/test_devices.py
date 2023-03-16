@@ -36,7 +36,8 @@ def test_devices(seam: Seam):
     seam.devices.update(device=(some_device), name="Updated lock")
     some_updated_lock = seam.locks.get(device=(some_device))
     assert some_updated_lock.properties.name == "Updated lock"
-
+    
+    devices = seam.devices.list()
     seam.devices.delete(device=(some_updated_lock))
     assert len(seam.devices.list()) == len(devices) - 1
 
