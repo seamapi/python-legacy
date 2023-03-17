@@ -2,6 +2,8 @@
 name: Python Test
 on:
   push:
+  schedule:
+    - '0 0,6,12,18,22 * * *'
   workflow_dispatch:
     inputs:
       sdkSha:
