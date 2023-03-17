@@ -133,6 +133,7 @@ class ConnectWebview:
     any_provider_allowed: bool
     any_device_allowed: bool
     created_at: str
+    selected_provider: Optional[str] = None
     custom_metadata: Dict[str, Union[str, int, bool, None]]
     connected_account_id: Optional[str] = None
     authorized_at: Optional[str] = None
