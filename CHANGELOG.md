@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.0](https://github.com/seamapi/python/compare/v2.8.0...v2.9.0) (2023-03-17)
+
+
+### Features
+
+* Add selected_provider to ConnectWebview ([#81](https://github.com/seamapi/python/issues/81)) ([98a2474](https://github.com/seamapi/python/commit/98a24745b7b35040b4dc870ce45d91c8984cfdc0))
+
 ## [2.8.0](https://github.com/seamapi/python/compare/v2.7.0...v2.8.0) (2023-03-09)
 
 
