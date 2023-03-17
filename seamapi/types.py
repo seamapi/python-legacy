@@ -133,7 +133,6 @@ class ConnectWebview:
     any_provider_allowed: bool
     any_device_allowed: bool
     created_at: str
-    selected_provider: Optional[str] = None
     custom_metadata: Dict[str, Union[str, int, bool, None]]
     connected_account_id: Optional[str] = None
     authorized_at: Optional[str] = None
@@ -141,6 +140,7 @@ class ConnectWebview:
     custom_redirect_failure_url: Optional[str] = None
     accepted_providers: Optional[List[AcceptedProvider]] = None
     accepted_devices: Optional[List[str]] = None
+    selected_provider: Optional[str] = None
 
 
 @dataclass_json
