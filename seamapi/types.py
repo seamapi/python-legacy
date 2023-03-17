@@ -140,6 +140,7 @@ class ConnectWebview:
     custom_redirect_failure_url: Optional[str] = None
     accepted_providers: Optional[List[AcceptedProvider]] = None
     accepted_devices: Optional[List[str]] = None
+    selected_provider: Optional[str] = None
 
 
 @dataclass_json
