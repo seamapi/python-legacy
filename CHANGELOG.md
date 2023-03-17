@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [2.9.1](https://github.com/seamapi/python/compare/v2.9.0...v2.9.1) (2023-03-17)
+
+
+### Bug Fixes
+
+* Always use ConnectWebview.from_dict ([#82](https://github.com/seamapi/python/issues/82)) ([e66f69b](https://github.com/seamapi/python/commit/e66f69bc50cbd6462aec52bf03b7d962dfdbc788))
+
 ## [2.9.0](https://github.com/seamapi/python/compare/v2.8.0...v2.9.0) (2023-03-17)
 
 

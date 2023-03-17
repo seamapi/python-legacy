@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "seamapi"
-version = "2.9.0"
+version = "2.9.1"
 description = "A Python Library for Seam's API https://getseam.com"
 authors = ["Severin Ibarluzea <seveibar@gmail.com>"]
 license = "MIT"
