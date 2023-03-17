@@ -68,7 +68,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         json_webviews = res["connect_webviews"]
 
         return [
-            ConnectWebview(**json_webview) for json_webview in json_webviews
+            ConnectWebview.from_dict(json_webview) for json_webview in json_webviews
         ]
 
     @report_error
@@ -100,7 +100,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         )
         json_webview = res["connect_webview"]
 
-        return ConnectWebview(**json_webview)
+        return ConnectWebview.from_dict(json_webview)
 
     @report_error
     def create(
@@ -152,4 +152,4 @@ class ConnectWebviews(AbstractConnectWebviews):
         )
         json_webview = res["connect_webview"]
 
-        return ConnectWebview(**json_webview)
+        return ConnectWebview.from_dict(json_webview)
