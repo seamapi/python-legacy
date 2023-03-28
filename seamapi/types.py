@@ -280,6 +280,10 @@ class AbstractUnmanagedDevices(abc.ABC):
     def list(self) -> List[UnmanagedDevice]:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def update(self) -> bool:
+        raise NotImplementedError
+
 class AbstractEvents(abc.ABC):
     @abc.abstractmethod
     def list(self) -> List[Event]:

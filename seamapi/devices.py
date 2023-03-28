@@ -298,6 +298,48 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
 
         return [UnmanagedDevice.from_dict(d) for d in devices]
 
+    @report_error
+    def update(
+        self,
+        device: Union[DeviceId, Device],
+        is_managed: Optional[bool] = False,
+    ) -> bool:
+        """Updates a device.
+
+        Parameters
+        ----------
+        device : DeviceId or Device
+            Device id or Device to update
+        is_managed : bool, optional
+            The managed state of the device
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            Boolean
+        """
+
+        if not device:
+            raise Exception("device is required")
+
+        update_payload = {
+            "device_id": to_device_id(device),
+        }
+        if is_managed is not None:
+            update_payload["is_managed"] = is_managed
+
+        self.seam.make_request(
+            "POST",
+            "/devices/unmanaged/update",
+            json=update_payload,
+        )
+
+        return True
+
 def parse_list_params (
     connected_account,
     connect_webview,
