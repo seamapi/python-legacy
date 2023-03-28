@@ -306,7 +306,7 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
     @report_error
     def update(
         self,
-        device: Union[DeviceId, Device],
+        device: Union[DeviceId, UnmanagedDevice],
         is_managed: Optional[bool] = False,
     ) -> bool:
         """Updates a device.
