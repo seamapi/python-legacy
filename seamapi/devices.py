@@ -143,6 +143,7 @@ class Devices(AbstractDevices):
         name: Optional[str] = None,
         properties: Optional[dict] = None,
         location: Optional[dict] = None,
+        is_managed: Optional[bool] = None,
     ) -> bool:
         """Updates a device.
 
@@ -156,6 +157,8 @@ class Devices(AbstractDevices):
             New device properties
         location : str, optional
             New device location
+        is_managed : bool, optional
+            The managed state of the device
 
         Raises
         ------
@@ -179,6 +182,8 @@ class Devices(AbstractDevices):
             update_payload["properties"] = properties
         if location:
             update_payload["location"] = location
+        if is_managed is not None:
+            update_payload["is_managed"] = is_managed
 
         self.seam.make_request(
             "POST",
