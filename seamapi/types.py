@@ -80,6 +80,11 @@ class Device:
             errors=d["errors"],
         )
 
+@dataclass
+class UnmanagedDevice:
+    device_id: DeviceId
+    device_type: str
+    errors: List[Dict[str, Any]]
 
 @dataclass
 class Event:
@@ -270,6 +275,10 @@ class AbstractDevices(abc.ABC):
     ) -> Device:
         raise NotImplementedError
 
+class AbstractUnmanagedDevices(abc.ABC):
+    @abc.abstractmethod
+    def list(self) -> List[UnmanagedDevice]:
+        raise NotImplementedError
 
 class AbstractEvents(abc.ABC):
     @abc.abstractmethod
