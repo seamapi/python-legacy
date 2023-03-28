@@ -143,7 +143,7 @@ class Devices(AbstractDevices):
         name: Optional[str] = None,
         properties: Optional[dict] = None,
         location: Optional[dict] = None,
-    ) -> Device:
+    ) -> bool:
         """Updates a device.
 
         Parameters
