@@ -46,18 +46,12 @@ class ActionAttemptFailedException(Exception):
             f'Action Attempt for "{action_type}" Failed. {error_type}: {error_message} (action_attempt_id={action_attempt_id})'
         )
 
+
 class WaitForAccessCodeFailedException(Exception):
-    def __init__(
-        self,
-        message: str,
-        access_code_id: str,
-        errors: Optional[list] = []
-    ):
+    def __init__(self, message: str, access_code_id: str, errors: Optional[list] = []):
         self.access_code_id = access_code_id
         self.errors = errors
-        super().__init__(
-            f'Failed while waiting for access code. ${message}'
-        )
+        super().__init__(f"Failed while waiting for access code. ${message}")
 
 
 @dataclass
@@ -80,11 +74,14 @@ class Device:
             errors=d["errors"],
         )
 
+
+@dataclass_json
 @dataclass
 class UnmanagedDevice:
     device_id: DeviceId
     device_type: str
     errors: List[Dict[str, Any]]
+
 
 @dataclass
 class Event:
@@ -157,6 +154,7 @@ class ConnectedAccount:
     account_type: str
     errors: List[str]
     custom_metadata: Dict[str, Union[str, int, bool, None]]
+
 
 @dataclass_json
 @dataclass
@@ -275,6 +273,7 @@ class AbstractDevices(abc.ABC):
     ) -> Device:
         raise NotImplementedError
 
+
 class AbstractUnmanagedDevices(abc.ABC):
     @abc.abstractmethod
     def list(self) -> List[UnmanagedDevice]:
@@ -283,6 +282,7 @@ class AbstractUnmanagedDevices(abc.ABC):
     @abc.abstractmethod
     def update(self) -> bool:
         raise NotImplementedError
+
 
 class AbstractEvents(abc.ABC):
     @abc.abstractmethod
