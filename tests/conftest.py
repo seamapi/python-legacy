@@ -56,6 +56,8 @@ def seam_backend():
             "SEAMTEAM_ADMIN_PASSWORD", "1234"
         ).with_env(
             "PORT", "3020"
+        ).with_env(
+            ENABLE_UNMANAGED_DEVICES, "true"
         ).with_bind_ports(
             3020, 3020
         ).with_command(
