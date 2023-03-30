@@ -156,7 +156,7 @@ class AccessCode:
 
 
 @dataclass_json
-@dataclass(_cls)
+@dataclass
 class NoiseThreshold:
     noise_threshold_id: str
     name: str

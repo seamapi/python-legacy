@@ -37,19 +37,20 @@ def seam_backend():
             container_host = "host.docker.internal"
             db_url = db_url.replace(db_host, container_host)
             db_host = container_host
+        elif db_host == "localhost":
+            container_host = "172.17.0.1"  # linux equivalent of host.docker.internal
+            db_url = db_url.replace(db_host, container_host)
+            db_host = container_host
 
         with DockerContainer(
-            os.environ.get(
-                "SEAM_CONNECT_IMAGE", "ghcr.io/seamapi/seam-connect"
-            )
-        ).with_env(
-            "DATABASE_URL", db_url
-        ).with_env(
+            os.environ.get("SEAM_CONNECT_IMAGE", "ghcr.io/seamapi/seam-connect")
+        ).with_env("DATABASE_URL", db_url).with_env(
             "POSTGRES_DATABASE", "postgres"
         ).with_env(
             "NODE_ENV", "test"
         ).with_env(
-            "POSTGRES_HOST", db_host,
+            "POSTGRES_HOST",
+            db_host,
         ).with_env(
             "SERVER_BASE_URL", "http://localhost:3020"
         ).with_env(
@@ -75,6 +76,7 @@ def seam(seam_backend: Any, dotenv_fixture: Any):
     seam.make_request("POST", "/workspaces/reset_sandbox")
     yield seam
 
+
 @pytest.fixture
 def fake_sentry(monkeypatch):
     sentry_dsn = "https://key@sentry.io/123"
@@ -84,9 +86,11 @@ def fake_sentry(monkeypatch):
     sentry_init_args = {}
     sentry_capture_exception_calls = []
     sentry_add_breadcrumb_calls = []
+
     class TestSentryClient(object):
         def __init__(self, *args, **kwargs):
             sentry_init_args.update(kwargs)
+
         def set_context(self, *args, **kwargs):
             pass
 
@@ -98,9 +102,11 @@ def fake_sentry(monkeypatch):
 
     class TestSentryHub(object):
         def __init__(self, *args, **kwargs):
-          self.scope = TestSentryScope()
+            self.scope = TestSentryScope()
+
         def capture_exception(self, *args, **kwargs):
-          sentry_capture_exception_calls.append((args, kwargs))
+            sentry_capture_exception_calls.append((args, kwargs))
+
         def add_breadcrumb(self, *args, **kwargs):
             sentry_add_breadcrumb_calls.append((args, kwargs))
 
