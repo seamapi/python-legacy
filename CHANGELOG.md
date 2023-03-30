@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.0](https://github.com/seamapi/python/compare/v2.9.1...v2.10.0) (2023-03-30)
+
+
+### Features
+
+* Add unmanaged device methods ([#83](https://github.com/seamapi/python/issues/83)) ([9be9408](https://github.com/seamapi/python/commit/9be94084fea4ec70804821781bc63c5d81ec65e7))
+
 ### [2.9.1](https://github.com/seamapi/python/compare/v2.9.0...v2.9.1) (2023-03-17)
 
 
