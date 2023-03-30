@@ -81,6 +81,14 @@ class Device:
         )
 
 
+@dataclass_json
+@dataclass
+class UnmanagedDevice:
+    device_id: DeviceId
+    device_type: str
+    errors: List[Dict[str, Any]]
+
+
 @dataclass
 class Event:
     event_id: str
@@ -268,6 +276,16 @@ class AbstractDevices(abc.ABC):
         device: Optional[Union[DeviceId, Device]] = None,
         name: Optional[str] = None,
     ) -> Device:
+        raise NotImplementedError
+
+
+class AbstractUnmanagedDevices(abc.ABC):
+    @abc.abstractmethod
+    def list(self) -> List[UnmanagedDevice]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def update(self) -> bool:
         raise NotImplementedError
 
 

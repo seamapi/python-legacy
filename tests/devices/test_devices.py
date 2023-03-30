@@ -36,7 +36,7 @@ def test_devices(seam: Seam):
     seam.devices.update(device=(some_device), name="Updated lock")
     some_updated_lock = seam.locks.get(device=(some_device))
     assert some_updated_lock.properties.name == "Updated lock"
-    
+
     devices = seam.devices.list()
     seam.devices.delete(device=(some_updated_lock))
     assert len(seam.devices.list()) == len(devices) - 1
@@ -49,3 +49,22 @@ def test_devices(seam: Seam):
         assert error.status_code == 404
         assert type(error.request_id) == str
         assert error.metadata["type"] == "device_not_found"
+
+def test_unmanaged_devices(seam: Seam):
+    run_august_factory(seam)
+
+    devices = seam.devices.list()
+    assert len(devices) > 0
+
+    unmanaged_devices = seam.devices.unmanaged.list()
+    assert len(unmanaged_devices) == 0
+
+    device = devices[0]
+
+    seam.devices.update(device=device, is_managed=False)
+    unmanaged_devices = seam.devices.unmanaged.list()
+    assert len(unmanaged_devices) == 1
+
+    seam.devices.unmanaged.update(device=device, is_managed=True)
+    unmanaged_devices = seam.devices.unmanaged.list()
+    assert len(unmanaged_devices) == 0

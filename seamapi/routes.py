@@ -1,6 +1,6 @@
 from .types import AbstractRoutes
 from .workspaces import Workspaces
-from .devices import Devices
+from .devices import Devices, UnmanagedDevices
 from .events import Events
 from .connected_accounts import ConnectedAccounts
 from .connect_webviews import ConnectWebviews
