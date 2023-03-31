@@ -366,6 +366,7 @@ class AbstractRoutes(abc.ABC):
     devices: AbstractDevices
     access_codes: AbstractAccessCodes
     action_attempts: AbstractActionAttempts
+    noise_thresholds: AbstractNoiseThresholds
 
     @abc.abstractmethod
     def make_request(self, method: str, path: str, **kwargs) -> Any:

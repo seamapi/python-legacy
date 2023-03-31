@@ -7,6 +7,7 @@ from .connect_webviews import ConnectWebviews
 from .locks import Locks
 from .access_codes import AccessCodes
 from .action_attempts import ActionAttempts
+from .noise_thresholds import NoiseThresholds
 
 class Routes(AbstractRoutes):
     def __init__(self):
@@ -18,6 +19,7 @@ class Routes(AbstractRoutes):
       self.locks = Locks(seam=self)
       self.access_codes = AccessCodes(seam=self)
       self.action_attempts = ActionAttempts(seam=self)
+      self.noise_thresholds = NoiseThresholds(seam=self)
 
     def make_request(self):
       raise NotImplementedError()
