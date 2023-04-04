@@ -24,9 +24,9 @@ class NoiseThresholds(AbstractNoiseThresholds):
 
     Methods
     -------
-    list(device)
+    list(device_id)
         Gets a list of noise thresholds of a noise-monitoring device
-    create(device, name=None, code=None, starts_at=None, ends_at=None)
+    create(device_id, starts_daily_at, ends_daily_at, sync=None, noise_threshold_decibels=None, noise_threshold_nrs=None)
         Creates a noise threshold on a noise-monitoring device
     """
 
@@ -74,11 +74,11 @@ class NoiseThresholds(AbstractNoiseThresholds):
     def create(
         self,
         device_id: str,
-        sync: Optional[bool],
         starts_daily_at: str,
         ends_daily_at: str,
-        noise_threshold_decibels: Optional[float],
-        noise_threshold_nrs: Optional[float],
+        sync: Optional[bool] = None,
+        noise_threshold_decibels: Optional[float] = None,
+        noise_threshold_nrs: Optional[float] = None,
     ) -> List[NoiseThreshold]:
         """Creates a noise threshold.
 
@@ -87,7 +87,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         device_id : str
             Device ID of a device to list noise thresholds of
         sync: Optional[bool]
-            Indication to wait for action attempt to resolve
+            Should wait for action attempt to resolve
         starts_daily_at: str,
             Time when noise threshold becomes active
         ends_daily_at: str,
