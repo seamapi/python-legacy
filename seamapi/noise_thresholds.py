@@ -142,3 +142,11 @@ class NoiseThresholds(AbstractNoiseThresholds):
             result=json_aa["result"],
             error=error,
         )
+
+    @report_error
+    def delete(self, noise_threshold_id):
+        raise NotImplementedError()
+
+    @report_error
+    def update(self, noise_threshold_id):
+        raise NotImplementedError()
