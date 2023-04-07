@@ -154,7 +154,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         ends_daily_at: Optional[str] = None,
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
-    ) -> List[NoiseThreshold]:
+    ) -> ActionAttempt:
         """Updates a noise threshold.
 
         Parameters
