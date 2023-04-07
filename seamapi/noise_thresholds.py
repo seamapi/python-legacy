@@ -144,9 +144,65 @@ class NoiseThresholds(AbstractNoiseThresholds):
         )
 
     @report_error
-    def delete(self, noise_threshold_id):
+    def update(self, noise_threshold_id):
         raise NotImplementedError()
 
     @report_error
-    def update(self, noise_threshold_id):
-        raise NotImplementedError()
+    def delete(
+        self,
+        noise_threshold_id: str,
+        device_id: str,
+        sync: Optional[bool] = None,
+    ) -> ActionAttempt:
+        """Deletes a noise threshold.
+
+        Parameters
+        ----------
+        noise_threshold_id : str
+            Id of a noise threshold to delete
+        device_id : str
+            Device ID of a device to delete noise threshold of
+        sync: Optional[bool]
+            Should wait for delete action attempt to resolve
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            ActionAttempt
+        """
+        params = {
+            "noise_threshold_id": noise_threshold_id,
+            "device_id": device_id,
+        }
+
+        arguments = {"sync": sync}
+
+        for name in arguments:
+            if arguments[name]:
+                params.update({name: arguments[name]})
+
+        res = self.seam.make_request(
+            "DELETE",
+            "/noise_sensors/noise_thresholds/delete",
+            params=params,
+        )
+
+        json_aa = res["action_attempt"]
+        error = None
+        if "error" in json_aa and json_aa["error"] is not None:
+            error = ActionAttemptError(
+                type=json_aa["error"]["type"],
+                message=json_aa["error"]["message"],
+            )
+
+        return ActionAttempt(
+            action_attempt_id=json_aa["action_attempt_id"],
+            status=json_aa["status"],
+            action_type=json_aa["action_type"],
+            result=json_aa["result"],
+            error=error,
+        )
