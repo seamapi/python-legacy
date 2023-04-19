@@ -89,9 +89,9 @@ class NoiseThresholds(AbstractNoiseThresholds):
         sync: Optional[bool]
             Should wait for action attempt to resolve
         starts_daily_at: str,
-            Time when noise threshold becomes active
+            Time when noise threshold becomes active daily
         ends_daily_at: str,
-            Time when noise threshold becomes inactive
+            Time when noise threshold becomes inactive daily
         noise_threshold_decibels: Optional[float],
             The noise level in decibels
         noise_threshold_nrs: Optional[float],

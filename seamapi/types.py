@@ -19,7 +19,10 @@ WorkspaceId = str
 
 class SeamAPIException(Exception):
     def __init__(
-        self, status_code: int, request_id: str, metadata: Optional[Dict[str, any]]
+        self,
+        status_code: int,
+        request_id: str,
+        metadata: Optional[Dict[str, any]],
     ):
         self.status_code = status_code
         self.request_id = request_id
@@ -48,7 +51,9 @@ class ActionAttemptFailedException(Exception):
 
 
 class WaitForAccessCodeFailedException(Exception):
-    def __init__(self, message: str, access_code_id: str, errors: Optional[list] = []):
+    def __init__(
+        self, message: str, access_code_id: str, errors: Optional[list] = []
+    ):
         self.access_code_id = access_code_id
         self.errors = errors
         super().__init__(f"Failed while waiting for access code. ${message}")
@@ -299,8 +304,14 @@ class AbstractNoiseThresholds(abc.ABC):
 
 
 class AbstractNoiseSensors(abc.ABC):
+    @abc.abstractproperty
+    def noise_thresholds(self) -> AbstractNoiseThresholds:
+        raise NotImplementedError
+
     @abc.abstractmethod
-    def list_noise_levels(self, starting_after=None, ending_before=None) -> None:
+    def list_noise_levels(
+        self, starting_after=None, ending_before=None
+    ) -> None:
         raise NotImplementedError
 
 
@@ -384,7 +395,7 @@ class AbstractRoutes(abc.ABC):
     devices: AbstractDevices
     access_codes: AbstractAccessCodes
     action_attempts: AbstractActionAttempts
-    noise_thresholds: AbstractNoiseThresholds
+    noise_sensors: AbstractNoiseSensors
 
     @abc.abstractmethod
     def make_request(self, method: str, path: str, **kwargs) -> Any:
