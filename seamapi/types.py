@@ -304,15 +304,16 @@ class AbstractNoiseThresholds(abc.ABC):
 
 
 class AbstractNoiseSensors(abc.ABC):
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def noise_thresholds(self) -> AbstractNoiseThresholds:
-        raise NotImplementedError
+        pass
 
     @abc.abstractmethod
     def list_noise_levels(
         self, starting_after=None, ending_before=None
     ) -> None:
-        raise NotImplementedError
+        pass
 
 
 class AbstractDevices(abc.ABC):
