@@ -278,9 +278,13 @@ class AbstractNoiseThresholds(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
-        name: str,
+        device_id: str,
+        starts_daily_at: str,
+        ends_daily_at: str,
+        name: Optional[str],
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
+        sync: Optional[bool] = None,
     ) -> NoiseThreshold:
         raise NotImplementedError
 
@@ -295,11 +299,19 @@ class AbstractNoiseThresholds(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def list(self) -> List[NoiseThreshold]:
+    def list(
+        self,
+        device_id: str,
+    ) -> List[NoiseThreshold]:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def delete(self, noise_threshold_id: str) -> None:
+    def delete(
+        self,
+        noise_threshold_id: str,
+        device_id: str,
+        sync: Optional[bool] = None,
+    ) -> None:
         raise NotImplementedError
 
 
@@ -307,13 +319,13 @@ class AbstractNoiseSensors(abc.ABC):
     @property
     @abc.abstractmethod
     def noise_thresholds(self) -> AbstractNoiseThresholds:
-        pass
+        raise NotImplementedError
 
     @abc.abstractmethod
     def list_noise_levels(
         self, starting_after=None, ending_before=None
     ) -> None:
-        pass
+        raise NotImplementedError
 
 
 class AbstractDevices(abc.ABC):

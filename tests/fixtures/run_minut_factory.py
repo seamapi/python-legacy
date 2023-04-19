@@ -1,7 +1,7 @@
 from seamapi import Seam
 
 
-def run_salto_factory(seam: Seam):
+def run_minut_factory(seam: Seam):
     seam.make_request(
         "POST",
         "/internal/scenarios/factories/load",

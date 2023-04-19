@@ -17,7 +17,7 @@ class NoiseSensors(AbstractNoiseSensors):
     Properties
     -------
     noise_thresholds
-        An instance of the NoiseThresholds class to interact with noise thresholds
+        An instance of the NoiseThresholds class designed to interact with noise thresholds
     """
 
     seam: Seam

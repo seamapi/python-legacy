@@ -28,6 +28,8 @@ class NoiseThresholds(AbstractNoiseThresholds):
         Gets a list of noise thresholds of a noise-monitoring device
     create(device_id, starts_daily_at, ends_daily_at, sync=None, noise_threshold_decibels=None, noise_threshold_nrs=None)
         Creates a noise threshold on a noise-monitoring device
+    delete(noise_threshold_id, device_id, sync=None)
+        Deletes a noise threshold on a noise-monitoring device
     """
 
     seam: Seam
@@ -76,6 +78,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         device_id: str,
         starts_daily_at: str,
         ends_daily_at: str,
+        name: Optional[str],
         sync: Optional[bool] = None,
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
@@ -84,14 +87,16 @@ class NoiseThresholds(AbstractNoiseThresholds):
 
         Parameters
         ----------
-        device_id : str
+        device_id: str
             Device ID of a device to list noise thresholds of
-        sync: Optional[bool]
-            Should wait for action attempt to resolve
         starts_daily_at: str,
             Time when noise threshold becomes active daily
         ends_daily_at: str,
             Time when noise threshold becomes inactive daily
+        name: Optional[str]
+            Noise threshold name
+        sync: Optional[bool]
+            Should wait for action attempt to resolve
         noise_threshold_decibels: Optional[float],
             The noise level in decibels
         noise_threshold_nrs: Optional[float],
@@ -115,6 +120,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
             "sync": sync,
             "noise_threshold_decibels": noise_threshold_decibels,
             "noise_threshold_nrs": noise_threshold_nrs,
+            "name": name,
         }
 
         for name in arguments:
