@@ -168,10 +168,10 @@ class AccessCode:
     common_code_key: Optional[str] = None
 
 
-@dataclass_json
 @dataclass
 class NoiseThreshold:
     noise_threshold_id: str
+    device_id: str
     name: str
     noise_threshold_decibels: float
 
@@ -180,7 +180,17 @@ class NoiseThreshold:
 
     noise_threshold_nrs: Optional[float]
 
-    created_at: str
+    @staticmethod
+    def from_dict(nt: Dict[str, Any]):
+        return NoiseThreshold(
+            noise_threshold_id=nt["noise_threshold_id"],
+            device_id=nt["device_id"],
+            name=nt["name"],
+            noise_threshold_decibels=nt["noise_threshold_decibels"],
+            starts_daily_at=nt["starts_daily_at"],
+            ends_daily_at=nt["ends_daily_at"],
+            noise_threshold_nrs=nt.get("noise_threshold_nrs", None),
+        )
 
 
 class AbstractActionAttempts(abc.ABC):

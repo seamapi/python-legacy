@@ -70,7 +70,9 @@ class NoiseThresholds(AbstractNoiseThresholds):
             params={"device_id": device_id},
         )
 
-        return res["noise_thresholds"]
+        noise_thresholds = res["noise_thresholds"]
+
+        return [NoiseThreshold.from_dict(nt) for nt in noise_thresholds]
 
     @report_error
     def create(
@@ -78,11 +80,11 @@ class NoiseThresholds(AbstractNoiseThresholds):
         device_id: str,
         starts_daily_at: str,
         ends_daily_at: str,
-        name: Optional[str],
+        name: Optional[str] = None,
         sync: Optional[bool] = None,
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
-    ) -> List[NoiseThreshold]:
+    ) -> ActionAttempt:
         """Creates a noise threshold.
 
         Parameters
@@ -130,7 +132,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         res = self.seam.make_request(
             "POST",
             "/noise_sensors/noise_thresholds/create",
-            params={"device_id": device_id},
+            json=params,
         )
 
         json_aa = res["action_attempt"]
@@ -194,7 +196,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         res = self.seam.make_request(
             "DELETE",
             "/noise_sensors/noise_thresholds/delete",
-            params=params,
+            json=params,
         )
 
         json_aa = res["action_attempt"]

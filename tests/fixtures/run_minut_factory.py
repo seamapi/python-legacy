@@ -8,19 +8,23 @@ def run_minut_factory(seam: Seam):
         json={
             "factory_name": "create_minut_devices",
             "input": {
-                "sound_level_high": {
-                    "value": 60,
-                    "duration_seconds": 600,
-                    "notifications": [],
-                },
-                "sound_level_high_quiet_hours": {
-                    "value": 60,
-                    "duration_seconds": 600,
-                    "notifications": [],
-                    "enabled": True,
-                    "starts_at": "20:00",
-                    "ends_at": "08:00",
-                },
+                "devicesConfig": [
+                    {
+                        "sound_level_high": {
+                            "value": 60,
+                            "duration_seconds": 600,
+                            "notifications": [],
+                        },
+                        "sound_level_high_quiet_hours": {
+                            "value": 60,
+                            "duration_seconds": 600,
+                            "notifications": [],
+                            "enabled": True,
+                            "starts_at": "20:00",
+                            "ends_at": "08:00",
+                        },
+                    }
+                ]
             },
         },
     )
