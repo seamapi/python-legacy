@@ -36,9 +36,10 @@ def test_noise_thresholds(seam: Seam):
 
     seam.noise_sensors.noise_thresholds.create(
         device_id=device.device_id,
-        starts_daily_at="20:00",
-        ends_daily_at="08:00",
+        starts_daily_at="20:00:00[America/Los_Angeles]",
+        ends_daily_at="08:00:00[America/Los_Angeles]",
         noise_threshold_decibels=75,
+        sync=True
     )
     noise_thresholds = get_minut_device_noise_thresholds()
     assert len(noise_thresholds) == 2
