@@ -205,7 +205,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         res = self.seam.make_request(
             "PUT",
             "/noise_sensors/noise_thresholds/update",
-            params=params,
+            json=params,
         )
 
         json_aa = res["action_attempt"]
