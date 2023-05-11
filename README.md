@@ -39,7 +39,7 @@ Commits to `main` following [Conventional Commits](https://www.conventionalcommi
 
 Our tests use a seam sandbox environment given by the environment
 variables `SEAM_SANDBOX_API_KEY`. If you want to run the tests, you should
-first create a sandbox workspace [on your dashboard](https://dashboard.getseam.com)
+first create a sandbox workspace [on your Developer Console page](https://console.getseam.com)
 then create a sandbox workspace.
 
 > NOTE: For installation on m1 mac, you may need to export the following lines

@@ -5,7 +5,6 @@ from tests.fixtures.run_minut_factory import run_minut_factory
 from pprint import pprint
 
 
-
 def test_noise_thresholds(seam: Seam):
     run_minut_factory(seam)
     time.sleep(2)
@@ -29,7 +28,6 @@ def test_noise_thresholds(seam: Seam):
     seam.noise_sensors.noise_thresholds.delete(
         device_id=device.device_id,
         noise_threshold_id=quiet_hours_threshold.noise_threshold_id,
-        sync=True
     )
     noise_thresholds = get_minut_device_noise_thresholds()
     assert len(noise_thresholds) == 1
@@ -39,7 +37,6 @@ def test_noise_thresholds(seam: Seam):
         starts_daily_at="20:00:00[America/Los_Angeles]",
         ends_daily_at="08:00:00[America/Los_Angeles]",
         noise_threshold_decibels=75,
-        sync=True
     )
     noise_thresholds = get_minut_device_noise_thresholds()
     assert len(noise_thresholds) == 2
