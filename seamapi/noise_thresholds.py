@@ -6,7 +6,7 @@ from seamapi.types import (
     ActionAttempt,
     ActionAttemptError,
 )
-from typing import List, Optional
+from typing import List, Optional, Union
 import requests
 import json
 
@@ -86,7 +86,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ) -> ActionAttempt | NoiseThreshold:
+    ) -> Union[ActionAttempt, NoiseThreshold]:
         """Creates a noise threshold.
 
         Parameters
