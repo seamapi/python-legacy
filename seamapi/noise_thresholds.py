@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from seamapi.types import (
     NoiseThreshold,
     AbstractNoiseThresholds,
@@ -157,13 +158,11 @@ class NoiseThresholds(AbstractNoiseThresholds):
         )
 
         action_attempt_result = getattr(updated_action_attempt, "result", None)
-        noise_threshold = getattr(
-            action_attempt_result, "noise_threshold", None
-        )
+        noise_threshold = action_attempt_result.get("noise_threshold", None)
         if not action_attempt_result or not noise_threshold:
             raise Exception(
                 "Failed to create noise_threshold: no noise_threshold returned: "
-                + json.dumps(updated_action_attempt)
+                + json.dumps(asdict(updated_action_attempt))
             )
 
         return NoiseThreshold.from_dict(noise_threshold)
