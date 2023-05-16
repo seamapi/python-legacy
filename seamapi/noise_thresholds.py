@@ -86,7 +86,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ) -> ActionAttempt:
+    ) -> ActionAttempt | NoiseThreshold:
         """Creates a noise threshold.
 
         Parameters
