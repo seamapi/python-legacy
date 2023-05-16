@@ -112,7 +112,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
 
         Returns
         ------
-            ActionAttempt
+            ActionAttempt or NoiseThreshold
         """
         params = {
             "device_id": device_id,
