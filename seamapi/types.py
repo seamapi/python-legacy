@@ -19,7 +19,10 @@ WorkspaceId = str
 
 class SeamAPIException(Exception):
     def __init__(
-        self, status_code: int, request_id: str, metadata: Optional[Dict[str, any]]
+        self,
+        status_code: int,
+        request_id: str,
+        metadata: Optional[Dict[str, any]],
     ):
         self.status_code = status_code
         self.request_id = request_id
@@ -48,7 +51,9 @@ class ActionAttemptFailedException(Exception):
 
 
 class WaitForAccessCodeFailedException(Exception):
-    def __init__(self, message: str, access_code_id: str, errors: Optional[list] = []):
+    def __init__(
+        self, message: str, access_code_id: str, errors: Optional[list] = []
+    ):
         self.access_code_id = access_code_id
         self.errors = errors
         super().__init__(f"Failed while waiting for access code. ${message}")
@@ -163,10 +168,10 @@ class AccessCode:
     common_code_key: Optional[str] = None
 
 
-@dataclass_json
 @dataclass
 class NoiseThreshold:
     noise_threshold_id: str
+    device_id: str
     name: str
     noise_threshold_decibels: float
 
@@ -175,7 +180,17 @@ class NoiseThreshold:
 
     noise_threshold_nrs: Optional[float]
 
-    created_at: str
+    @staticmethod
+    def from_dict(nt: Dict[str, Any]):
+        return NoiseThreshold(
+            noise_threshold_id=nt["noise_threshold_id"],
+            device_id=nt["device_id"],
+            name=nt["name"],
+            noise_threshold_decibels=nt["noise_threshold_decibels"],
+            starts_daily_at=nt["starts_daily_at"],
+            ends_daily_at=nt["ends_daily_at"],
+            noise_threshold_nrs=nt.get("noise_threshold_nrs", None),
+        )
 
 
 class AbstractActionAttempts(abc.ABC):
@@ -273,9 +288,13 @@ class AbstractNoiseThresholds(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
-        name: str,
+        device_id: str,
+        starts_daily_at: str,
+        ends_daily_at: str,
+        name: Optional[str],
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
+        sync: Optional[bool] = None,
     ) -> NoiseThreshold:
         raise NotImplementedError
 
@@ -290,17 +309,32 @@ class AbstractNoiseThresholds(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def list(self) -> List[NoiseThreshold]:
+    def list(
+        self,
+        device_id: str,
+    ) -> List[NoiseThreshold]:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def delete(self, noise_threshold_id: str) -> None:
+    def delete(
+        self,
+        noise_threshold_id: str,
+        device_id: str,
+        sync: Optional[bool] = None,
+    ) -> None:
         raise NotImplementedError
 
 
 class AbstractNoiseSensors(abc.ABC):
+    @property
     @abc.abstractmethod
-    def list_noise_levels(self, starting_after=None, ending_before=None) -> None:
+    def noise_thresholds(self) -> AbstractNoiseThresholds:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def list_noise_levels(
+        self, starting_after=None, ending_before=None
+    ) -> None:
         raise NotImplementedError
 
 
@@ -384,7 +418,7 @@ class AbstractRoutes(abc.ABC):
     devices: AbstractDevices
     access_codes: AbstractAccessCodes
     action_attempts: AbstractActionAttempts
-    noise_thresholds: AbstractNoiseThresholds
+    noise_sensors: AbstractNoiseSensors
 
     @abc.abstractmethod
     def make_request(self, method: str, path: str, **kwargs) -> Any:

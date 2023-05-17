@@ -100,8 +100,10 @@ class ActionAttempts(AbstractActionAttempts):
 
         Parameters
         ----------
-        action_attempt : ActionAttemptId or ActionAttempt
+        action_attempt: ActionAttemptId or ActionAttempt
             Action attempt id or ActionAttempt to be polled
+        should_raise: bool
+            Should raise an exception if action attempt status is 'error'
 
         Returns
         ------
