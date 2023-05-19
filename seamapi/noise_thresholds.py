@@ -28,9 +28,14 @@ class NoiseThresholds(AbstractNoiseThresholds):
     -------
     list(device_id)
         Gets a list of noise thresholds of a noise-monitoring device
-    create(device_id, starts_daily_at, ends_daily_at, sync=None, noise_threshold_decibels=None, noise_threshold_nrs=None)
+
+    create(device_id, starts_daily_at, ends_daily_at, name=None noise_threshold_decibels=None, noise_threshold_nrs=None, wait_for_action_attempt=True)
         Creates a noise threshold on a noise-monitoring device
-    delete(noise_threshold_id, device_id, sync=None)
+
+    update(device_id, noise_threshold_id, name=None, starts_daily_at=None, ends_daily_at=None, noise_threshold_decibels=None, noise_threshold_nrs=None, wait_for_action_attempt=True)
+        Updates a noise threshold on a noise-monitoring device
+
+    delete(noise_threshold_id, device_id, wait_for_action_attempt=True)
         Deletes a noise threshold on a noise-monitoring device
     """
 
@@ -173,7 +178,6 @@ class NoiseThresholds(AbstractNoiseThresholds):
         self,
         device_id: str,
         noise_threshold_id: str,
-        sync: Optional[bool] = None,
         name: Optional[str] = None,
         starts_daily_at: Optional[str] = None,
         ends_daily_at: Optional[str] = None,
@@ -188,8 +192,6 @@ class NoiseThresholds(AbstractNoiseThresholds):
             Device ID of a device to update noise threshold of
         noise_threshold_id : str
             Id of a noise threshold to update
-        sync: Optional[bool]
-            Should wait for update action attempt to resolve
         name: Optional[str]
             Noise threshold name
         starts_daily_at: Optional[str],
@@ -218,7 +220,6 @@ class NoiseThresholds(AbstractNoiseThresholds):
         }
 
         arguments = {
-            "sync": sync,
             "name": name,
             "starts_daily_at": starts_daily_at,
             "ends_daily_at": ends_daily_at,
