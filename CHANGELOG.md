@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [2.12.1](https://github.com/seamapi/python/compare/v2.12.0...v2.12.1) (2023-05-19)
+
+
+### Bug Fixes
+
+* Add update noise threshold method ([#87](https://github.com/seamapi/python/issues/87)) ([8eab60d](https://github.com/seamapi/python/commit/8eab60d216d7ddb8ebf76e7c71f89fa78490cbdb))
+
 ## [2.12.0](https://github.com/seamapi/python/compare/v2.11.0...v2.12.0) (2023-05-17)
 
 
