@@ -1,7 +1,8 @@
 from seamapi import Seam
 from tests.fixtures.run_august_factory import run_august_factory
 
-EMAIL = "user-3@example.com"
+EMAIL = "user-4@example.com"
+
 
 def test_connected_accounts(seam: Seam):
     run_august_factory(seam)
@@ -24,5 +25,7 @@ def test_connected_accounts(seam: Seam):
     try:
         seam.connected_accounts.get()
     except Exception as e:
-        assert str(e) == "Must provide either ConnectedAccount (ConnectedAccount or ConnectedAccountId) or Email"
-    
+        assert (
+            str(e)
+            == "Must provide either ConnectedAccount (ConnectedAccount or ConnectedAccountId) or Email"
+        )

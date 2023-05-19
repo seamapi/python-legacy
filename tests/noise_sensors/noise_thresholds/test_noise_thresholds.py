@@ -30,7 +30,7 @@ def test_noise_thresholds(seam: Seam):
     noise_thresholds = get_minut_device_noise_thresholds()
     assert len(noise_thresholds) == 1
 
-    seam.noise_sensors.noise_thresholds.create(
+    noise_threshold = seam.noise_sensors.noise_thresholds.create(
         device_id=device.device_id,
         starts_daily_at="20:00:00[America/Los_Angeles]",
         ends_daily_at="08:00:00[America/Los_Angeles]",
@@ -38,3 +38,10 @@ def test_noise_thresholds(seam: Seam):
     )
     noise_thresholds = get_minut_device_noise_thresholds()
     assert len(noise_thresholds) == 2
+
+    updated_noise_threshold = seam.noise_sensors.noise_thresholds.update(
+        device_id=device.device_id,
+        noise_threshold_id=noise_threshold.noise_threshold_id,
+        noise_threshold_decibels=80,
+    )
+    assert updated_noise_threshold.noise_threshold_decibels == 80
