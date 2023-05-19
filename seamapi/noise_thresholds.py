@@ -105,6 +105,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
             The noise level in decibels
         noise_threshold_nrs: Optional[float],
             Noise Level in Noiseaware Noise Risk Score (NRS)
+
         Raises
         ------
         Exception
@@ -178,7 +179,8 @@ class NoiseThresholds(AbstractNoiseThresholds):
         ends_daily_at: Optional[str] = None,
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
-    ) -> ActionAttempt:
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> Union[ActionAttempt, NoiseThreshold]:
         """Updates a noise threshold.
         Parameters
         ----------
@@ -198,13 +200,17 @@ class NoiseThresholds(AbstractNoiseThresholds):
             Noise level in decibels
         noise_threshold_nrs: Optional[float],
             Noise Level in Noiseaware Noise Risk Score (NRS)
+        wait_for_action_attempt: Optional[bool]
+            Should wait for action attempt to resolve
+
         Raises
         ------
         Exception
             If the API request wasn't successful.
+
         Returns
         ------
-            ActionAttempt
+            ActionAttempt or NoiseThreshold
         """
         params = {
             "device_id": device_id,
@@ -231,20 +237,35 @@ class NoiseThresholds(AbstractNoiseThresholds):
         )
 
         json_aa = res["action_attempt"]
-        error = None
+        aa_error = None
         if "error" in json_aa and json_aa["error"] is not None:
-            error = ActionAttemptError(
+            aa_error = ActionAttemptError(
                 type=json_aa["error"]["type"],
                 message=json_aa["error"]["message"],
             )
 
-        return ActionAttempt(
-            action_attempt_id=json_aa["action_attempt_id"],
-            status=json_aa["status"],
-            action_type=json_aa["action_type"],
-            result=json_aa["result"],
-            error=error,
+        if not wait_for_action_attempt or aa_error:
+            return ActionAttempt(
+                action_attempt_id=json_aa["action_attempt_id"],
+                status=json_aa["status"],
+                action_type=json_aa["action_type"],
+                result=json_aa["result"],
+                error=aa_error,
+            )
+
+        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+            json_aa["action_attempt_id"]
         )
+
+        action_attempt_result = getattr(updated_action_attempt, "result", None)
+        noise_threshold = action_attempt_result.get("noise_threshold", None)
+        if not action_attempt_result or not noise_threshold:
+            raise Exception(
+                "Failed to create noise_threshold: no noise_threshold returned: "
+                + json.dumps(asdict(updated_action_attempt))
+            )
+
+        return NoiseThreshold.from_dict(noise_threshold)
 
     @report_error
     def delete(
