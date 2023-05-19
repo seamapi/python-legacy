@@ -294,18 +294,22 @@ class AbstractNoiseThresholds(abc.ABC):
         name: Optional[str],
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
-        sync: Optional[bool] = None,
-    ) -> NoiseThreshold:
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> Union[ActionAttempt, NoiseThreshold]:
         raise NotImplementedError
 
     @abc.abstractmethod
     def update(
         self,
+        device_id: str,
         noise_threshold_id: str,
         name: Optional[str] = None,
+        starts_daily_at: Optional[str] = None,
+        ends_daily_at: Optional[str] = None,
         noise_threshold_decibels: Optional[str] = None,
         noise_threshold_nrs: Optional[str] = None,
-    ) -> None:
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> Union[ActionAttempt, NoiseThreshold]:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -320,8 +324,8 @@ class AbstractNoiseThresholds(abc.ABC):
         self,
         noise_threshold_id: str,
         device_id: str,
-        sync: Optional[bool] = None,
-    ) -> None:
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> ActionAttempt:
         raise NotImplementedError
 
 
