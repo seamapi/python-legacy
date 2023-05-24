@@ -262,7 +262,7 @@ class NoiseThresholds(AbstractNoiseThresholds):
         noise_threshold = action_attempt_result.get("noise_threshold", None)
         if not action_attempt_result or not noise_threshold:
             raise Exception(
-                "Failed to create noise_threshold: no noise_threshold returned: "
+                "Failed to update noise_threshold: no noise_threshold returned: "
                 + json.dumps(asdict(updated_action_attempt))
             )
 
