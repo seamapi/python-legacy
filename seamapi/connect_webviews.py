@@ -105,7 +105,8 @@ class ConnectWebviews(AbstractConnectWebviews):
     @report_error
     def create(
         self,
-        accepted_providers: List[AcceptedProvider],
+        accepted_providers: Optional[List[AcceptedProvider]] = None,
+        category: Optional[str] = None,
         custom_redirect_url: Optional[str] = None,
         custom_redirect_failure_url: Optional[str] = None,
         device_selection_mode: Optional[str] = None,
@@ -115,7 +116,9 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         Parameters
         ----------
-        accepted_providers : list[AcceptedProvider]
+        category : str, optional
+            Provider category e.g. stable
+        accepted_providers : list[AcceptedProvider], optional
             A list of accepted providers e.g. august or noiseaware
         custom_redirect_url : str, optional
             Custom redirect url
@@ -135,7 +138,17 @@ class ConnectWebviews(AbstractConnectWebviews):
             ConnectWebview
         """
 
-        create_payload = {"accepted_providers": accepted_providers}
+        create_payload = {}
+
+        if accepted_providers is None and category is None:
+            raise Exception(
+                "Must provide either accepted_providers or category"
+            )
+
+        if accepted_providers is not None:
+            create_payload["accepted_providers"] = accepted_providers
+        if category is not None:
+            create_payload["category"] = category
         if custom_redirect_url is not None:
             create_payload["custom_redirect_url"] = custom_redirect_url
         if custom_redirect_failure_url is not None:
