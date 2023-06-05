@@ -15,6 +15,7 @@ ConnectedAccountId = str
 Email = str
 DeviceType = str  # e.g. august_lock
 WorkspaceId = str
+ClimateSettingScheduleId = str
 
 
 class SeamAPIException(Exception):
@@ -192,6 +193,38 @@ class NoiseThreshold:
             noise_threshold_nrs=nt.get("noise_threshold_nrs", None),
         )
 
+
+@dataclass_json
+@dataclass
+class ClimateSetting:
+    automatic_heating_enabled: Optional[bool]
+    automatic_cooling_enabled: Optional[bool]
+    hvac_mode_setting: Optional[str]
+    cooling_set_point_celsius: Optional[float]
+    heating_set_point_celsius: Optional[float]
+    cooling_set_point_fahrenheit: Optional[float]
+    heating_set_point_fahrenheit: Optional[float]
+    manual_override_allowed: Optional[bool]
+
+@dataclass_json
+@dataclass
+class ClimateSettingScheduleBase(ClimateSetting):
+    schedule_type: Optional[str]
+    name: Optional[str]
+    schedule_starts_at: str
+    schedule_ends_at: str
+
+@dataclass_json
+@dataclass
+class ClimateSettingSchedule(ClimateSettingScheduleBase):
+    climate_setting_schedule_id: str
+    created_at: str
+    device_id: str
+
+@dataclass_json
+@dataclass
+class ClimateSettingScheduleUpdate(ClimateSettingSchedule):
+    pass
 
 class AbstractActionAttempts(abc.ABC):
     @abc.abstractmethod
@@ -413,6 +446,97 @@ class AbstractConnectedAccounts(abc.ABC):
     ) -> ConnectedAccount:
         raise NotImplementedError
 
+class AbstractThermostats(abc.ABC):
+    @abc.abstractmethod
+    def list(
+        self,
+        connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
+        connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
+        device_ids: Optional[list] = None,
+    ) -> List[Device]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        name: Optional[str] = None,
+    ) -> Device:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def update(
+        self,
+        device: Union[DeviceId, Device],
+        name: Optional[str] = None,
+        default_climate_setting: Optional[dict] = None,
+    ) -> bool:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete(self, device: Union[DeviceId, Device]) -> bool:
+        raise NotImplementedError
+
+class AbstractClimateSettingSchedules(abc.ABC):
+    @abc.abstractmethod
+    def get(
+        self,
+        climate_setting_schedule: Union[ClimateSettingScheduleId, ClimateSettingSchedule]
+    ) -> Device:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def create(
+        self,
+        device: Union[DeviceId, Device],
+        schedule_starts_at: str,
+        schedule_ends_at: str,
+        name: Optional[str] = None,
+        automatic_heating_enabled: Optional[bool] = None,
+        automatic_cooling_enabled: Optional[bool] = None,
+        hvac_mode_setting: Optional[str] = None,
+        cooling_set_point_celsius: Optional[float] = None,
+        heating_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
+        manual_override_allowed: Optional[bool] = None,
+        schedule_type: Optional[str] = None,
+    ) -> bool:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def update(
+        self,
+        climate_setting_schedule: Union[str, ClimateSettingSchedule],
+        schedule_starts_at: Optional[str] = None,
+        schedule_ends_at: Optional[str] = None,
+        name: Optional[str] = None,
+        automatic_heating_enabled: Optional[bool] = None,
+        automatic_cooling_enabled: Optional[bool] = None,
+        hvac_mode_setting: Optional[str] = None,
+        cooling_set_point_celsius: Optional[float] = None,
+        heating_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
+        manual_override_allowed: Optional[bool] = None,
+        schedule_type: Optional[str] = None,
+    ) -> bool:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def list(
+        self,
+        device: Union[DeviceId, Device],
+    ) -> List[Device]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete(
+        self,
+        climate_setting_schedule: Optional[Union[str, ClimateSettingSchedule]]
+    ) -> bool:
+        raise NotImplementedError
+
 
 @dataclass
 class AbstractRoutes(abc.ABC):
@@ -423,6 +547,8 @@ class AbstractRoutes(abc.ABC):
     access_codes: AbstractAccessCodes
     action_attempts: AbstractActionAttempts
     noise_sensors: AbstractNoiseSensors
+    thermostats: AbstractThermostats
+    climate_setting_schedules: AbstractClimateSettingSchedules
 
     @abc.abstractmethod
     def make_request(self, method: str, path: str, **kwargs) -> Any:

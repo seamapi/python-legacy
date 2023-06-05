@@ -13,6 +13,8 @@ from seamapi.types import (
     DeviceId,
     Workspace,
     WorkspaceId,
+    ClimateSettingSchedule,
+    ClimateSettingScheduleId,
 )
 
 
@@ -26,6 +28,11 @@ def to_device_id(device: Union[DeviceId, Device]) -> str:
     if isinstance(device, str):
         return device
     return device.device_id
+
+def to_climate_setting_schedule_id(climate_setting_schedule: Union[ClimateSettingScheduleId, ClimateSettingSchedule]) -> str:
+    if isinstance(climate_setting_schedule, str):
+        return climate_setting_schedule
+    return climate_setting_schedule.climate_setting_schedule_id
 
 
 def to_action_attempt_id(
