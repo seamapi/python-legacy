@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [2.12.3](https://github.com/seamapi/python/compare/v2.12.2...v2.12.3) (2023-06-05)
+
+
+### Bug Fixes
+
+* Add Category to Connect Webview Create ([#96](https://github.com/seamapi/python/issues/96)) ([f82be14](https://github.com/seamapi/python/commit/f82be144ad96c9e439a7e222b15eafe023cdb1ad))
+
 ### [2.12.2](https://github.com/seamapi/python/compare/v2.12.1...v2.12.2) (2023-05-25)
 
 
