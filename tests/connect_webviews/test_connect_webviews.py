@@ -10,3 +10,10 @@ def test_connect_webviews(seam: Seam):
 
     webviews = seam.connect_webviews.list()
     assert len(webviews) > 0
+
+    # Test with Category
+    new_webview = seam.connect_webviews.create(category=["stable"])
+    assert created_webview.url is not None
+
+    webview = seam.connect_webviews.get(new_webview.connect_webview_id)
+    assert len(webview.accepted_providers) > 0
