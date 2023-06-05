@@ -398,8 +398,8 @@ class AbstractConnectWebviews(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
-        category: Optional[str] = None,
         accepted_providers: Optional[List[AcceptedProvider]] = None,
+        category: Optional[str] = None,
     ) -> ConnectWebview:
         raise NotImplementedError
 
