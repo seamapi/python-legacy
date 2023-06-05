@@ -140,7 +140,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         create_payload = {}
 
-        if accepted_providers is None and category is None:
+        if accepted_providers is None and provider_category is None:
             raise Exception(
                 "Must provide either accepted_providers or category"
             )
