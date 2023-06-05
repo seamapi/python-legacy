@@ -6,7 +6,6 @@ from seamapi.types import (ClimateSettingSchedule,
                            ClimateSettingScheduleId, Device, DeviceId)
 from seamapi.utils.convert_to_id import (to_climate_setting_schedule_id,
                                          to_device_id)
-from seamapi.utils.remove_none_from_dataclass import remove_none_from_dataclass
 from seamapi.utils.report_error import report_error
 
 class ClimateSettingSchedules(AbstractClimateSettingSchedules):
