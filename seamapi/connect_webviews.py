@@ -106,7 +106,7 @@ class ConnectWebviews(AbstractConnectWebviews):
     def create(
         self,
         accepted_providers: Optional[List[AcceptedProvider]] = None,
-        category: Optional[str] = None,
+        provider_category: Optional[str] = None,
         custom_redirect_url: Optional[str] = None,
         custom_redirect_failure_url: Optional[str] = None,
         device_selection_mode: Optional[str] = None,
@@ -116,7 +116,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         Parameters
         ----------
-        category : str, optional
+        provider_category : str, optional
             Provider category e.g. stable
         accepted_providers : list[AcceptedProvider], optional
             A list of accepted providers e.g. august or noiseaware
@@ -147,8 +147,8 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         if accepted_providers is not None:
             create_payload["accepted_providers"] = accepted_providers
-        if category is not None:
-            create_payload["category"] = category
+        if provider_category is not None:
+            create_payload["provider_category"] = provider_category
         if custom_redirect_url is not None:
             create_payload["custom_redirect_url"] = custom_redirect_url
         if custom_redirect_failure_url is not None:
