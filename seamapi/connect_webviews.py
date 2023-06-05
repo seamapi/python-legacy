@@ -116,7 +116,9 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         Parameters
         ----------
-        accepted_providers : list[AcceptedProvider]
+        category : str, optional
+            Provider category e.g. stable
+        accepted_providers : list[AcceptedProvider], optional
             A list of accepted providers e.g. august or noiseaware
         custom_redirect_url : str, optional
             Custom redirect url
