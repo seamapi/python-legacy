@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [2.12.4](https://github.com/seamapi/python/compare/v2.12.3...v2.12.4) (2023-06-06)
+
+
+### Bug Fixes
+
+* Update Provider Category Property Name ([#97](https://github.com/seamapi/python/issues/97)) ([9c0b3d2](https://github.com/seamapi/python/commit/9c0b3d27142bf3067465b237b8be4c9ae1543d76))
+
 ### [2.12.3](https://github.com/seamapi/python/compare/v2.12.2...v2.12.3) (2023-06-05)
 
 
