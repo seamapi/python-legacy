@@ -9,6 +9,7 @@ from seamapi.utils.deep_attr_dict import DeepAttrDict
 AccessCodeId = str
 ActionAttemptId = str
 DeviceId = str
+EventId = str
 AcceptedProvider = str  # e.g. august or noiseaware
 ConnectWebviewId = str
 ConnectedAccountId = str
