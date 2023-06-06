@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [2.12.5](https://github.com/seamapi/python/compare/v2.12.4...v2.12.5) (2023-06-06)
+
+
+### Bug Fixes
+
+* Update events methods params ([#93](https://github.com/seamapi/python/issues/93)) ([3743539](https://github.com/seamapi/python/commit/37435391dd198886087662940c39b6174487426b))
+
 ### [2.12.4](https://github.com/seamapi/python/compare/v2.12.3...v2.12.4) (2023-06-06)
 
 
