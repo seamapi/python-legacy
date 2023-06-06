@@ -71,11 +71,11 @@ class Events(AbstractEvents):
         between : Optional[list]
             List of two ISO 8601 timestamps to specify a date range for filtering events
         device_id : Union[str, Device]
-            Device ID to filter events by
+            Device ID or Device to filter events by
         device_ids : Optional[list]
             Device IDs to filter events by
         access_code_id : Union[str, AccessCode]
-            Access Code ID to filter events by
+            Access Code ID or AccessCode to filter events by
         access_code_ids : Optional[list]
             Access Code IDs to filter events by
         event_type : Optional[str]
@@ -83,7 +83,7 @@ class Events(AbstractEvents):
         event_types : Optional[list]
             Event types to filter events by
         connected_account_id : Union[str, ConnectedAccount]
-            Connected Account ID to filter events by
+            Connected Account ID or ConnectedAccount to filter events by
 
         Raises
         ------
@@ -141,11 +141,11 @@ class Events(AbstractEvents):
         Parameters
         ----------
             event_id : Union[str, Event]
-                Event ID to filter events by
+                Event ID or Event to filter events by
             event_type : Optional[str]
                 Event type to filter events by
             device_id : Union[str, Device]
-                Device ID to filter events by
+                Device ID or Device to filter events by
 
         Raises
         ------
