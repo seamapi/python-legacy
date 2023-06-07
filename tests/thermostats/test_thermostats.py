@@ -7,7 +7,6 @@ def test_thermostats(seam: Seam):
     # Test List
     thermostats = seam.thermostats.list()
 
-    print(thermostats)
     assert len(thermostats) == 3
 
     thermostat = thermostats[0]
