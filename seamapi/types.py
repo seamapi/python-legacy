@@ -9,6 +9,7 @@ from seamapi.utils.deep_attr_dict import DeepAttrDict
 AccessCodeId = str
 ActionAttemptId = str
 DeviceId = str
+EventId = str
 AcceptedProvider = str  # e.g. august or noiseaware
 ConnectWebviewId = str
 ConnectedAccountId = str
@@ -431,7 +432,9 @@ class AbstractConnectWebviews(abc.ABC):
 
     @abc.abstractmethod
     def create(
-        self, accepted_providers: Optional[List[AcceptedProvider]] = None
+        self,
+        accepted_providers: Optional[List[AcceptedProvider]] = None,
+        provider_category: Optional[str] = None,
     ) -> ConnectWebview:
         raise NotImplementedError
 

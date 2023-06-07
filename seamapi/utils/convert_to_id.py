@@ -15,6 +15,8 @@ from seamapi.types import (
     WorkspaceId,
     ClimateSettingSchedule,
     ClimateSettingScheduleId,
+    Event,
+    EventId,
 )
 
 
@@ -63,3 +65,9 @@ def to_workspace_id(workspace: Union[WorkspaceId, Workspace]) -> str:
     if isinstance(workspace, str):
         return workspace
     return workspace.workspace_id
+
+
+def to_event_id(event: Union[EventId, Event]) -> str:
+    if isinstance(event, str):
+        return event
+    return event.event_id
