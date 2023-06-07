@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.13.0](https://github.com/seamapi/python/compare/v2.12.5...v2.13.0) (2023-06-07)
+
+
+### Features
+
+* Add Thermostats and Climate Settings ([#95](https://github.com/seamapi/python/issues/95)) ([f7c5762](https://github.com/seamapi/python/commit/f7c5762f21132d73d56d6615fddd6cabd9fc9397))
+
 ### [2.12.5](https://github.com/seamapi/python/compare/v2.12.4...v2.12.5) (2023-06-06)
 
 
