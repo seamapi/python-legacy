@@ -43,7 +43,7 @@ def seam_backend():
             db_host = container_host
 
         with DockerContainer(
-            os.environ.get("SEAM_CONNECT_IMAGE", "ghcr.io/seamapi/seam-connect")
+            "seam-connect-local"
         ).with_env("DATABASE_URL", db_url).with_env(
             "POSTGRES_DATABASE", "postgres"
         ).with_env(

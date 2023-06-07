@@ -15,6 +15,7 @@ from seamapi.utils.convert_to_id import (
     to_device_id,
 )
 from seamapi.utils.report_error import report_error
+from .climate_setting_schedules import ClimateSettingSchedules
 
 
 class Thermostats(AbstractThermostats):
@@ -49,6 +50,7 @@ class Thermostats(AbstractThermostats):
         """
 
         self.seam = seam
+        self.climate_setting_schedules = ClimateSettingSchedules(seam=self.seam)
 
     @report_error
     def list(
@@ -140,8 +142,7 @@ class Thermostats(AbstractThermostats):
     def update(
         self,
         device: Union[DeviceId, Device],
-        name: Optional[str] = None,
-        default_climate_setting: Optional[dict] = None,
+        default_climate_setting: dict,
     ) -> bool:
         """Updates a device.
 
@@ -171,14 +172,11 @@ class Thermostats(AbstractThermostats):
             "device_id": to_device_id(device),
         }
 
-        if name:
-            update_payload["name"] = name
-        if default_climate_setting:
-            update_payload["default_climate_setting"] = default_climate_setting
+        update_payload["default_climate_setting"] = default_climate_setting
 
         self.seam.make_request(
             "POST",
-            "/thremostats/update",
+            "/thermostats/update",
             json=update_payload,
         )
 

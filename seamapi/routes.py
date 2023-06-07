@@ -9,7 +9,6 @@ from .locks import Locks
 from .access_codes import AccessCodes
 from .action_attempts import ActionAttempts
 from .thermostats import Thermostats
-from .climate_setting_schedules import ClimateSettingSchedules
 
 class Routes(AbstractRoutes):
     def __init__(self):
@@ -23,7 +22,6 @@ class Routes(AbstractRoutes):
       self.action_attempts = ActionAttempts(seam=self)
       self.noise_sensors = NoiseSensors(seam=self)
       self.thermostats = Thermostats(seam=self)
-      self.climate_setting_schedules = ClimateSettingSchedules(seam=self)
 
     def make_request(self):
       raise NotImplementedError()

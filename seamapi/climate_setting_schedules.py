@@ -78,7 +78,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
     def list(
         self,
         device: Union[DeviceId, Device],
-    ) -> List[Device]:
+    ) -> List[ClimateSettingSchedule]:
         """Gets a list of Climate Setting Schedules.
 
         Parameters
@@ -101,7 +101,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
             "GET",
             "/thermostats/climate_setting_schedules/list",
             params={
-                device_id
+                "device_id": device_id
             },
         )
         climate_setting_schedules = res["climate_setting_schedules"]
@@ -112,7 +112,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
     def get(
         self,
         climate_setting_schedule: Union[ClimateSettingScheduleId, ClimateSettingSchedule]
-    ) -> Device:
+    ) -> ClimateSettingSchedule:
         """Gets a Climate Setting Schedule.
 
         Parameters
@@ -154,7 +154,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
         heating_set_point_fahrenheit: Optional[float] = None,
         manual_override_allowed: Optional[bool] = None,
         schedule_type: Optional[str] = None,
-    ) -> bool:
+    ) -> ClimateSettingSchedule:
         """Creates a Climate Setting Schedule.
 
         Parameters
@@ -216,7 +216,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
         heating_set_point_fahrenheit: Optional[float] = None,
         manual_override_allowed: Optional[bool] = None,
         schedule_type: Optional[str] = None,
-    ) -> bool:
+    ) -> ClimateSettingSchedule:
         """Updates a Climate Setting Schedule.
 
         Parameters
@@ -255,19 +255,20 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
 
         params["climate_setting_schedule_id"] = climate_setting_schedule_id
 
-        self.seam.make_request(
-            "PATCH",
+        res = self.seam.make_request(
+            "POST",
             "/thermostats/climate_setting_schedules/update",
             json=params,
         )
 
-        return True
+        json_response = res["climate_setting_schedule"]
+        return ClimateSettingSchedule.from_dict(json_response)
 
     @report_error
     def delete(
         self,
-        climate_setting_schedule: Optional[Union[str, ClimateSettingSchedule]]
-    ) -> bool:
+        climate_setting_schedule: Union[ClimateSettingScheduleId, ClimateSettingSchedule]
+    ) -> None:
         """Deletes a climate setting schedule.
 
         Parameters
@@ -288,7 +289,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
         climate_setting_schedule_id = to_climate_setting_schedule_id(climate_setting_schedule)
 
         delete_payload = {
-            "climate_setting_schedule_id": climate_setting_schedule_id,
+            "climate_setting_schedule_id": climate_setting_schedule_id
         }
 
         self.seam.make_request(
