@@ -15,6 +15,186 @@ import requests
 from seamapi.utils.convert_to_id import to_access_code_id, to_device_id
 from seamapi.utils.report_error import report_error
 
+class UnmanagedAccessCodes(AbstractUnmanagedAccessCodes):
+    """
+    A class used to retreive unmanaged access code data
+    through interaction with Seam API
+
+    ...
+
+    Attributes
+    ----------
+    seam : Seam
+        Initial seam class
+
+    Methods
+    -------
+    list(device)
+        Gets a list of unmanaged access codes for a device
+    get(access_code=None, device=None)
+        Gets a certain unmanaged access code of a device
+    delete(access_code, device=None)
+        Deletes an unmanaged access code on a device
+    update(access_code)
+        Updates an unmanaged access code to convert it to managed
+    """
+
+    seam: Seam
+
+    def __init__(self, seam: Seam):
+        """
+        Parameters
+        ----------
+        seam : Seam
+          Intial seam class
+        """
+
+        self.seam = seam
+
+    @report_error
+    def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
+        """Gets a list of unmanaged access codes for a device.
+
+        Parameters
+        ----------
+        device : DeviceId or Device
+            Device id or Device to list unmanaged access codes for
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            A list of unmanaged access codes for a device.
+        """
+
+        device_id = to_device_id(device)
+        res = self.seam.make_request(
+            "GET",
+            "/access_codes/unmanaged/list",
+            params={"device_id": device_id},
+        )
+        access_codes = res["access_codes"]
+
+        return [AccessCode.from_dict(ac) for ac in access_codes]
+
+    @report_error
+    def get(
+        self,
+        access_code: Optional[Union[AccessCodeId, AccessCode]] = None,
+        device: Optional[Union[DeviceId, AccessCode]] = None,
+        code: Optional[str] = None,
+    ) -> AccessCode:
+        """Gets a certain unmanaged access code for a device.
+
+        Parameters
+        ----------
+        access_code : AccessCodeId or AccessCode, optional
+            Access code id or AccessCode to get latest version of
+        device : DeviceId or Device, optional
+            Device id or Device to get an unmanaged access code for
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            AccessCode
+        """
+
+        params = {}
+        if access_code:
+            params["access_code_id"] = to_access_code_id(access_code)
+        if device:
+            params["device_id"] = to_device_id(device)
+        if code:
+            params["code"] = code
+
+        res = self.seam.make_request(
+            "GET",
+            "/access_codes/unmanaged/get",
+            params=params,
+        )
+
+        return AccessCode.from_dict(res["access_code"])
+
+    @report_error
+    def update(
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+        is_managed: bool = True,
+    ) -> None:
+        """Updates an unmanaged access code on a device to convert it to managed.
+
+        Parameters
+        ----------
+        access_code: AccessCodeId or AccessCode
+            Access code id or Access code to update
+        is_managed : bool, optional
+            Whether to convert to managed
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            None
+        """
+
+        access_code_id = to_access_code_id(access_code)
+        update_payload = {"access_code_id": access_code_id}
+        update_payload["is_managed"] = is_managed
+
+        res = self.seam.make_request(
+            "POST",
+            "/access_codes/unmanaged/update",
+            json=update_payload,
+        )
+
+    @report_error
+    def delete(
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+    ) -> ActionAttempt:
+        """Deletes an unmanaged access code on a device.
+
+        Parameters
+        ----------
+        access_code : AccessCodeId or AccessCode
+            Access code id or AccessCode to delete it
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+        Exception
+            If action attempt failed.
+
+        Returns
+        ------
+            ActionAttempt
+        """
+
+        access_code_id = to_access_code_id(access_code)
+        create_payload = {"access_code_id": access_code_id}
+
+        res = self.seam.make_request(
+            "DELETE",
+            "/access_codes/unmanaged/delete",
+            json=create_payload,
+        )
+
+        action_attempt = self.seam.action_attempts.poll_until_ready(
+            res["action_attempt"]["action_attempt_id"]
+        )
+
+        return action_attempt
 
 class AccessCodes(AbstractAccessCodes):
     """
@@ -51,6 +231,7 @@ class AccessCodes(AbstractAccessCodes):
         """
 
         self.seam = seam
+        self.unmanaged = UnmanagedAccessCodes(seam=self)
 
     @report_error
     def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:

@@ -261,8 +261,38 @@ class AbstractLocks(abc.ABC):
     def unlock_door(self, device: Union[DeviceId, Device]) -> ActionAttempt:
         raise NotImplementedError
 
+class AbstractUnmanagedAccessCodes(abc.ABC):
+    @abc.abstractmethod
+    def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get(
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+        device: Optional[Union[DeviceId, Device]] = None,
+        code: Optional[str] = None,
+    ) -> AccessCode:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def update(
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+        is_managed: bool = True,
+    ) -> None:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete(
+        self,
+        access_code: Union[AccessCodeId, AccessCode],
+    ) -> ActionAttempt:
+        raise NotImplementedError
 
 class AbstractAccessCodes(abc.ABC):
+    unmanaged: AbstractUnmanagedAccessCodes
+
     @abc.abstractmethod
     def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
         raise NotImplementedError

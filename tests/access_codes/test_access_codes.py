@@ -36,6 +36,23 @@ def test_access_codes(seam: Seam):
     assert len(all_devices) > 1
     assert len(set([ac.common_code_key for ac in access_codes])) == 1
 
+def test_unmanaged_access_codes(seam: Seam):
+    run_august_factory(seam)
+
+    all_devices = seam.devices.list()
+    some_device = all_devices[0]
+
+    unmanaged_access_codes = seam.access_codes.unmanaged.list(some_device.device_id)
+    assert len(unmanaged_access_codes) == 1
+
+    unmanaged_access_code = seam.access_codes.unmanaged.get(created_access_code.access_code_id)
+    assert unmanaged_access_code.code == "4444"
+
+    delete_action_attempt = seam.access_codes.unmanaged.delete(created_access_code)
+    assert delete_action_attempt.status == "success"
+
+    unmanaged_access_codes = seam.access_codes.unmanaged.list(some_device.device_id)
+    assert len(unmanaged_access_codes) == 0
 
 def test_access_codes_create_wait_for_code(seam: Seam):
     run_august_factory(seam)
