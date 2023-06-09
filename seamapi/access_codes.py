@@ -3,6 +3,7 @@ from datetime import datetime, timezone, timedelta
 from seamapi.types import (
     WaitForAccessCodeFailedException,
     AbstractAccessCodes,
+    AbstractUnmanagedAccessCodes,
     AccessCode,
     AccessCodeId,
     ActionAttempt,
