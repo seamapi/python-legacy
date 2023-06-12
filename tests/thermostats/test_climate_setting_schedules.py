@@ -26,6 +26,7 @@ def test_climate_setting_schedules(seam: Seam):
         automatic_cooling_enabled=True,
         heating_set_point_fahrenheit=40,
         cooling_set_point_fahrenheit=80,
+        manual_override_allowed=True,
     )
 
     assert climate_setting_schedule.name == "Vacation Setting"
