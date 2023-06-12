@@ -40,7 +40,7 @@ class Workspaces(AbstractWorkspaces):
         Parameters
         ----------
         seam : Seam
-          Intial seam class
+          Initial seam class
         """
 
         self.seam = seam

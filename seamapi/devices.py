@@ -49,7 +49,7 @@ class Devices(AbstractDevices):
         Parameters
         ----------
         seam : Seam
-          Intial seam class
+          Initial seam class
         """
 
         self.seam = seam
@@ -251,7 +251,7 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
         Parameters
         ----------
         seam : Seam
-          Intial seam class
+          Initial seam class
         """
 
         self.seam = seam
