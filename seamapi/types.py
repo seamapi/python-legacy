@@ -464,6 +464,7 @@ class AbstractClimateSettingSchedules(abc.ABC):
         device: Union[DeviceId, Device],
         schedule_starts_at: str,
         schedule_ends_at: str,
+        manual_override_allowed: bool,
         name: Optional[str] = None,
         automatic_heating_enabled: Optional[bool] = None,
         automatic_cooling_enabled: Optional[bool] = None,
@@ -472,7 +473,6 @@ class AbstractClimateSettingSchedules(abc.ABC):
         heating_set_point_celsius: Optional[float] = None,
         cooling_set_point_fahrenheit: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
-        manual_override_allowed: Optional[bool] = None,
         schedule_type: Optional[str] = None,
     ) -> ClimateSettingSchedule:
         raise NotImplementedError
