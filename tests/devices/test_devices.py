@@ -10,6 +10,20 @@ def test_devices(seam: Seam):
     devices = seam.devices.list()
     assert len(devices) > 0
 
+    connected_account = seam.connected_accounts.list()[0]
+    devices = seam.devices.list(connected_account=connected_account)
+    assert len(devices) > 0
+    devices = seam.devices.list(connected_accounts=[connected_account])
+    assert len(devices) > 0
+
+    devices = seam.devices.list(device_type="august_lock")
+    assert len(devices) > 0
+    devices = seam.devices.list(device_types=["august_lock"])
+    assert len(devices) > 0
+
+    devices = seam.devices.list(manufacturer="august")
+    assert len(devices) > 0
+
     device_ids = [devices[0]]
     devices = seam.devices.list(device_ids=device_ids)
     assert len(devices) == 1
@@ -50,6 +64,7 @@ def test_devices(seam: Seam):
         assert type(error.request_id) == str
         assert error.metadata["type"] == "device_not_found"
 
+
 def test_unmanaged_devices(seam: Seam):
     run_august_factory(seam)
 
@@ -64,6 +79,22 @@ def test_unmanaged_devices(seam: Seam):
     seam.devices.update(device=device, is_managed=False)
     unmanaged_devices = seam.devices.unmanaged.list()
     assert len(unmanaged_devices) == 1
+
+    connected_account = seam.connected_accounts.list()[0]
+    devices = seam.devices.unmanaged.list(connected_account=connected_account)
+    assert len(devices) > 0
+    devices = seam.devices.unmanaged.list(
+        connected_accounts=[connected_account]
+    )
+    assert len(devices) > 0
+
+    devices = seam.devices.unmanaged.list(device_type="august_lock")
+    assert len(devices) > 0
+    devices = seam.devices.unmanaged.list(device_types=["august_lock"])
+    assert len(devices) > 0
+
+    devices = seam.devices.unmanaged.list(manufacturer="august")
+    assert len(devices) > 0
 
     seam.devices.unmanaged.update(device=device, is_managed=True)
     unmanaged_devices = seam.devices.unmanaged.list()

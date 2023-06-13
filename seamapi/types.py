@@ -207,6 +207,7 @@ class ClimateSetting:
     heating_set_point_fahrenheit: Optional[float]
     manual_override_allowed: Optional[bool]
 
+
 @dataclass_json
 @dataclass
 class ClimateSettingScheduleBase(ClimateSetting):
@@ -214,6 +215,7 @@ class ClimateSettingScheduleBase(ClimateSetting):
     name: Optional[str]
     schedule_starts_at: str
     schedule_ends_at: str
+
 
 @dataclass_json
 @dataclass
@@ -223,10 +225,12 @@ class ClimateSettingSchedule(ClimateSettingScheduleBase):
     device_id: str
     created_at: str
 
+
 @dataclass_json
 @dataclass
 class ClimateSettingScheduleUpdate(ClimateSettingSchedule):
     pass
+
 
 class AbstractActionAttempts(abc.ABC):
     @abc.abstractmethod
@@ -377,7 +381,19 @@ class AbstractNoiseSensors(abc.ABC):
         raise NotImplementedError
 
 
+class AbstractUnmanagedDevices(abc.ABC):
+    @abc.abstractmethod
+    def list(self) -> List[UnmanagedDevice]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def update(self) -> bool:
+        raise NotImplementedError
+
+
 class AbstractDevices(abc.ABC):
+    unmanaged: AbstractUnmanagedDevices
+
     @abc.abstractmethod
     def list(self) -> List[Device]:
         raise NotImplementedError
@@ -388,16 +404,6 @@ class AbstractDevices(abc.ABC):
         device: Optional[Union[DeviceId, Device]] = None,
         name: Optional[str] = None,
     ) -> Device:
-        raise NotImplementedError
-
-
-class AbstractUnmanagedDevices(abc.ABC):
-    @abc.abstractmethod
-    def list(self) -> List[UnmanagedDevice]:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def update(self) -> bool:
         raise NotImplementedError
 
 
@@ -450,11 +456,14 @@ class AbstractConnectedAccounts(abc.ABC):
     ) -> ConnectedAccount:
         raise NotImplementedError
 
+
 class AbstractClimateSettingSchedules(abc.ABC):
     @abc.abstractmethod
     def get(
         self,
-        climate_setting_schedule: Union[ClimateSettingScheduleId, ClimateSettingSchedule]
+        climate_setting_schedule: Union[
+            ClimateSettingScheduleId, ClimateSettingSchedule
+        ],
     ) -> ClimateSettingSchedule:
         raise NotImplementedError
 
@@ -506,7 +515,7 @@ class AbstractClimateSettingSchedules(abc.ABC):
     @abc.abstractmethod
     def delete(
         self,
-        climate_setting_schedule: Optional[Union[str, ClimateSettingSchedule]]
+        climate_setting_schedule: Optional[Union[str, ClimateSettingSchedule]],
     ) -> None:
         raise NotImplementedError
 
@@ -543,6 +552,7 @@ class AbstractThermostats(abc.ABC):
     def delete(self, device: Union[DeviceId, Device]) -> None:
         raise NotImplementedError
 
+
 @dataclass
 class AbstractRoutes(abc.ABC):
     workspaces: AbstractWorkspaces
@@ -553,6 +563,8 @@ class AbstractRoutes(abc.ABC):
     action_attempts: AbstractActionAttempts
     noise_sensors: AbstractNoiseSensors
     thermostats: AbstractThermostats
+    events: AbstractEvents
+    connected_accounts: AbstractConnectedAccounts
 
     @abc.abstractmethod
     def make_request(self, method: str, path: str, **kwargs) -> Any:
