@@ -395,7 +395,18 @@ class AbstractDevices(abc.ABC):
     unmanaged: AbstractUnmanagedDevices
 
     @abc.abstractmethod
-    def list(self) -> List[Device]:
+    def list(
+        self,
+        connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
+        connected_accounts: List[
+            Union[ConnectedAccountId, ConnectedAccount]
+        ] = None,
+        connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
+        device_type: Optional[DeviceType] = None,
+        device_types: Optional[List[DeviceType]] = None,
+        device_ids: Optional[list] = None,
+        manufacturer: Optional[str] = None,
+    ) -> List[Device]:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -404,6 +415,27 @@ class AbstractDevices(abc.ABC):
         device: Optional[Union[DeviceId, Device]] = None,
         name: Optional[str] = None,
     ) -> Device:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def update(
+        self,
+        device: Union[DeviceId, Device],
+        name: Optional[str] = None,
+        properties: Optional[dict] = None,
+        location: Optional[dict] = None,
+        is_managed: Optional[bool] = None,
+    ) -> bool:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete(self, device: Union[DeviceId, Device]) -> bool:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def list_device_providers(
+        self, provider_category: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
         raise NotImplementedError
 
 

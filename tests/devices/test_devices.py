@@ -64,6 +64,11 @@ def test_devices(seam: Seam):
         assert type(error.request_id) == str
         assert error.metadata["type"] == "device_not_found"
 
+    stable_device_providers = seam.devices.list_device_providers(
+        provider_category="stable"
+    )
+    assert len(stable_device_providers) > 0
+
 
 def test_unmanaged_devices(seam: Seam):
     run_august_factory(seam)

@@ -226,7 +226,7 @@ class Devices(AbstractDevices):
 
         Returns
         ------
-            None
+            Boolean
         """
 
         if not device:
@@ -239,7 +239,7 @@ class Devices(AbstractDevices):
             json=delete_payload,
         )
 
-        return None
+        return True
 
     @report_error
     def list_device_providers(
@@ -266,13 +266,13 @@ class Devices(AbstractDevices):
         if provider_category:
             params["provider_category"] = provider_category
 
-        device_providers_list = self.seam.make_request(
+        res = self.seam.make_request(
             "GET",
             "/devices/list_device_providers",
             params=params,
         )
 
-        return device_providers_list
+        return res["device_providers"]
 
 
 class UnmanagedDevices(AbstractUnmanagedDevices):
