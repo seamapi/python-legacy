@@ -28,6 +28,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
         device: Union[DeviceId, Device],
         schedule_starts_at: str,
         schedule_ends_at: str,
+        manual_override_allowed: bool,
         name: Optional[str],
         automatic_heating_enabled: Optional[bool],
         automatic_cooling_enabled: Optional[bool],
@@ -36,7 +37,6 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
         heating_set_point_celsius: Optional[float],
         cooling_set_point_fahrenheit: Optional[float],
         heating_set_point_fahrenheit: Optional[float],
-        manual_override_allowed: Optional[bool],
         schedule_type: Optional[str],
     )
         Creates a climate setting schedule for a Device
@@ -69,7 +69,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
         Parameters
         ----------
         seam : Seam
-          Intial seam class
+          Initial seam class
         """
 
         self.seam = seam
@@ -144,6 +144,7 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
         device: Union[DeviceId, Device],
         schedule_starts_at: str,
         schedule_ends_at: str,
+        manual_override_allowed: bool,
         name: Optional[str] = None,
         automatic_heating_enabled: Optional[bool] = None,
         automatic_cooling_enabled: Optional[bool] = None,
@@ -152,7 +153,6 @@ class ClimateSettingSchedules(AbstractClimateSettingSchedules):
         heating_set_point_celsius: Optional[float] = None,
         cooling_set_point_fahrenheit: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
-        manual_override_allowed: Optional[bool] = None,
         schedule_type: Optional[str] = None,
     ) -> ClimateSettingSchedule:
         """Creates a Climate Setting Schedule.

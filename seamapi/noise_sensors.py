@@ -27,7 +27,7 @@ class NoiseSensors(AbstractNoiseSensors):
         Parameters
         ----------
         seam : Seam
-          Intial seam class
+          Initial seam class
         """
         self.seam = seam
         self._noise_thresholds = NoiseThresholds(seam=seam)
