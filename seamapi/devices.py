@@ -1,3 +1,4 @@
+from ast import Dict
 from seamapi.types import (
     AbstractDevices,
     AbstractUnmanagedDevices,
@@ -11,7 +12,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     DeviceType,
 )
-from typing import List, Union, Optional
+from typing import Any, List, Union, Optional
 from seamapi.utils.convert_to_id import (
     to_connect_webview_id,
     to_connected_account_id,
@@ -34,12 +35,14 @@ class Devices(AbstractDevices):
 
     Methods
     -------
-    list(connected_account=None, connect_webview=None, device_type=None, device_ids=None)
+    list(connected_account=None, connected_accounts=None, connect_webview=None, device_type=None, device_ids=None, manufacturer=None)
         Gets a list of devices
     get(device=None, name=None)
         Gets a device
     update(device, name=None, properties=None, location=None)
         Updates a device
+    list_device_providers(provider_category=None):
+        Gets a list of device providers
     """
 
     seam: Seam
@@ -59,9 +62,14 @@ class Devices(AbstractDevices):
     def list(
         self,
         connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
+        connected_accounts: List[
+            Union[ConnectedAccountId, ConnectedAccount]
+        ] = None,
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
+        device_types: Optional[List[DeviceType]] = None,
         device_ids: Optional[list] = None,
+        manufacturer: Optional[str] = None,
     ) -> List[Device]:
         """Gets a list of devices.
 
@@ -69,12 +77,18 @@ class Devices(AbstractDevices):
         ----------
         connected_account : ConnectedAccountId or ConnectedAccount, optional
             Connected account id or ConnectedAccount to get devices associated with
+        connected_accounts : ConnectedAccountId(s) or ConnectedAccount(s), optional
+            Connected account ids or ConnectedAccount(s) to get devices associated with
         connect_webview : ConnectWebviewId or ConnectWebview, optional
             Connect webview id or ConnectWebview to get devices associated with
         device_type : DeviceType, optional
             Device type e.g. august_lock
+        device_types : List[DeviceType], optional
+            List of device types e.g. august_lock
         device_ids : Optional[list]
             Device IDs to filter devices by
+        manufacturer : Optional[str]
+            Manufacturer name to filter devices by e.g. august, schlage
 
         Raises
         ------
@@ -88,9 +102,12 @@ class Devices(AbstractDevices):
 
         params = parse_list_params(
             connected_account,
+            connected_accounts,
             connect_webview,
             device_type,
-            device_ids
+            device_types,
+            device_ids,
+            manufacturer,
         )
 
         res = self.seam.make_request(
@@ -224,6 +241,40 @@ class Devices(AbstractDevices):
 
         return None
 
+    @report_error
+    def list_device_providers(
+        self, provider_category: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        """Retrieve a list of device providers
+
+        Parameters
+        ----------
+        provider_category : Optional[str]
+            Provider category to filter by eg. stable
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            List of device providers
+        """
+        params = {}
+
+        if provider_category:
+            params["provider_category"] = provider_category
+
+        device_providers_list = self.seam.make_request(
+            "GET",
+            "/devices/list_device_providers",
+            params=params,
+        )
+
+        return device_providers_list
+
+
 class UnmanagedDevices(AbstractUnmanagedDevices):
     """
     A class used to retrieve unmanaged device data
@@ -238,7 +289,7 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
 
     Methods
     -------
-    list(connected_account=None, connect_webview=None, device_type=None, device_ids=None)
+    list(connected_account=None, connected_accounts=None, connect_webview=None, device_type=None, device_ids=None, manufacturer=None)
         Gets a list of unmanaged devices
     update(device, is_managed=False)
         Updates an unmanaged device
@@ -260,22 +311,33 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
     def list(
         self,
         connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
+        connected_accounts: List[
+            Union[ConnectedAccountId, ConnectedAccount]
+        ] = None,
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
+        device_types: Optional[List[DeviceType]] = None,
         device_ids: Optional[list] = None,
+        manufacturer: Optional[str] = None,
     ) -> List[Device]:
-        """Gets a list of devices.
+        """Gets a list of unmanaged devices.
 
         Parameters
         ----------
         connected_account : ConnectedAccountId or ConnectedAccount, optional
             Connected account id or ConnectedAccount to get devices associated with
+        connected_accounts : ConnectedAccountId(s) or ConnectedAccount(s), optional
+            Connected account ids or ConnectedAccount(s) to get devices associated with
         connect_webview : ConnectWebviewId or ConnectWebview, optional
             Connect webview id or ConnectWebview to get devices associated with
         device_type : DeviceType, optional
             Device type e.g. august_lock
+        device_types : List[DeviceType], optional
+            List of device types e.g. august_lock
         device_ids : Optional[list]
             Device IDs to filter devices by
+        manufacturer : Optional[str]
+            Manufacturer name to filter devices by e.g. august, schlage
 
         Raises
         ------
@@ -284,14 +346,17 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
 
         Returns
         ------
-            A list of devices.
+            A list of unmanaged devices.
         """
 
         params = parse_list_params(
             connected_account,
+            connected_accounts,
             connect_webview,
             device_type,
-            device_ids
+            device_types,
+            device_ids,
+            manufacturer,
         )
 
         res = self.seam.make_request(
@@ -345,23 +410,33 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
 
         return True
 
-def parse_list_params (
+
+def parse_list_params(
     connected_account,
+    connected_accounts,
     connect_webview,
     device_type,
+    device_types,
     device_ids,
+    manufacturer,
 ):
     params = {}
     if connected_account:
         params["connected_account_id"] = to_connected_account_id(
             connected_account
         )
+    if connected_accounts:
+        params["connected_account_ids"] = [
+            to_connected_account_id(ca) for ca in connected_accounts
+        ]
     if connect_webview:
-        params["connect_webview_id"] = to_connect_webview_id(
-            connect_webview
-        )
+        params["connect_webview_id"] = to_connect_webview_id(connect_webview)
     if device_type:
         params["device_type"] = device_type
+    if device_types is not None:
+        params["device_types"] = device_types
     if device_ids is not None:
-        params["device_ids"] =  [to_device_id(d) for d in device_ids]
+        params["device_ids"] = [to_device_id(d) for d in device_ids]
+    if manufacturer:
+        params["manufacturer"] = manufacturer
     return params

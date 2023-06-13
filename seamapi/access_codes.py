@@ -18,7 +18,7 @@ from seamapi.utils.report_error import report_error
 
 class AccessCodes(AbstractAccessCodes):
     """
-    A class used to retreive access code data
+    A class used to retrieve access code data
     through interaction with Seam API
 
     ...
