@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [2.13.1](https://github.com/seamapi/python/compare/v2.13.0...v2.13.1) (2023-06-13)
+
+
+### Bug Fixes
+
+* Fix tests ([#100](https://github.com/seamapi/python/issues/100)) ([dda6100](https://github.com/seamapi/python/commit/dda6100012dd094c156621c2c23324e0dea9381f))
+
 ## [2.13.0](https://github.com/seamapi/python/compare/v2.12.5...v2.13.0) (2023-06-07)
 
 
