@@ -103,7 +103,7 @@ class UnmanagedDevice:
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
-        return Device(
+        return UnmanagedDevice(
             device_id=d["device_id"],
             device_type=d["device_type"],
             properties=DeepAttrDict(d["properties"]),

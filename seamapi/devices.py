@@ -1,4 +1,3 @@
-from ast import Dict
 from seamapi.types import (
     AbstractDevices,
     AbstractUnmanagedDevices,
