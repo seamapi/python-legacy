@@ -12,7 +12,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     DeviceType,
 )
-from typing import Any, List, Union, Optional
+from typing import Any, List, Union, Optional, Dict
 from seamapi.utils.convert_to_id import (
     to_connect_webview_id,
     to_connected_account_id,
