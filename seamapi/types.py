@@ -69,6 +69,10 @@ class Device:
     properties: Any
     capabilities_supported: List[str]
     errors: List[Dict[str, Any]]
+    warnings: List[Dict[str, Any]]
+    connected_account_id: str
+    workspace_id: str
+    created_at: str
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -79,15 +83,36 @@ class Device:
             properties=DeepAttrDict(d["properties"]),
             capabilities_supported=d["capabilities_supported"],
             errors=d["errors"],
+            warnings=d["warnings"],
+            connected_account_id=d["connected_account_id"],
+            workspace_id=d["workspace_id"],
+            created_at=d["created_at"],
         )
 
 
-@dataclass_json
 @dataclass
 class UnmanagedDevice:
     device_id: DeviceId
     device_type: str
+    properties: Any
+    connected_account_id: str
+    workspace_id: str
+    created_at: str
     errors: List[Dict[str, Any]]
+    warnings: List[Dict[str, Any]]
+
+    @staticmethod
+    def from_dict(d: Dict[str, Any]):
+        return Device(
+            device_id=d["device_id"],
+            device_type=d["device_type"],
+            properties=DeepAttrDict(d["properties"]),
+            connected_account_id=d["connected_account_id"],
+            workspace_id=d["workspace_id"],
+            created_at=d["created_at"],
+            errors=d["errors"],
+            warnings=d["warnings"],
+        )
 
 
 @dataclass
@@ -383,11 +408,26 @@ class AbstractNoiseSensors(abc.ABC):
 
 class AbstractUnmanagedDevices(abc.ABC):
     @abc.abstractmethod
-    def list(self) -> List[UnmanagedDevice]:
+    def list(
+        self,
+        connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
+        connected_accounts: List[
+            Union[ConnectedAccountId, ConnectedAccount]
+        ] = None,
+        connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
+        device_type: Optional[DeviceType] = None,
+        device_types: Optional[List[DeviceType]] = None,
+        device_ids: Optional[list] = None,
+        manufacturer: Optional[str] = None,
+    ) -> List[UnmanagedDevice]:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def update(self) -> bool:
+    def update(
+        self,
+        device: Union[DeviceId, UnmanagedDevice],
+        is_managed: bool,
+    ) -> bool:
         raise NotImplementedError
 
 

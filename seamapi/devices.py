@@ -68,7 +68,7 @@ class Devices(AbstractDevices):
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
         device_types: Optional[List[DeviceType]] = None,
-        device_ids: Optional[list] = None,
+        device_ids: Optional[List[Union[DeviceId, Device]]] = None,
         manufacturer: Optional[str] = None,
     ) -> List[Device]:
         """Gets a list of devices.
@@ -85,7 +85,7 @@ class Devices(AbstractDevices):
             Device type e.g. august_lock
         device_types : List[DeviceType], optional
             List of device types e.g. august_lock
-        device_ids : Optional[list]
+        device_ids : Optional[List[Union[DeviceId, Device]]]
             Device IDs to filter devices by
         manufacturer : Optional[str]
             Manufacturer name to filter devices by e.g. august, schlage
@@ -291,7 +291,7 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
     -------
     list(connected_account=None, connected_accounts=None, connect_webview=None, device_type=None, device_ids=None, manufacturer=None)
         Gets a list of unmanaged devices
-    update(device, is_managed=False)
+    update(device, is_managed)
         Updates an unmanaged device
     """
 
@@ -317,9 +317,9 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
         device_types: Optional[List[DeviceType]] = None,
-        device_ids: Optional[list] = None,
+        device_ids: Optional[List[Union[DeviceId, Device]]] = None,
         manufacturer: Optional[str] = None,
-    ) -> List[Device]:
+    ) -> List[UnmanagedDevice]:
         """Gets a list of unmanaged devices.
 
         Parameters
@@ -334,7 +334,7 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
             Device type e.g. august_lock
         device_types : List[DeviceType], optional
             List of device types e.g. august_lock
-        device_ids : Optional[list]
+        device_ids : Optional[List[Union[DeviceId, Device]]]
             Device IDs to filter devices by
         manufacturer : Optional[str]
             Manufacturer name to filter devices by e.g. august, schlage
@@ -372,15 +372,15 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
     def update(
         self,
         device: Union[DeviceId, UnmanagedDevice],
-        is_managed: Optional[bool] = False,
+        is_managed: bool,
     ) -> bool:
-        """Updates a device.
+        """Updates a device transitioning it from an unmanaged state to a managed one.
 
         Parameters
         ----------
         device : DeviceId or Device
             Device id or Device to update
-        is_managed : bool, optional
+        is_managed : bool
             The managed state of the device
 
         Raises
@@ -396,16 +396,13 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
         if not device:
             raise Exception("device is required")
 
-        update_payload = {
-            "device_id": to_device_id(device),
-        }
-        if is_managed is not None:
-            update_payload["is_managed"] = is_managed
-
         self.seam.make_request(
             "POST",
             "/devices/unmanaged/update",
-            json=update_payload,
+            json={
+                "device_id": to_device_id(device),
+                "is_managed": is_managed,
+            },
         )
 
         return True

@@ -71,7 +71,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
                 user_identifier=json_account["user_identifier"],
                 account_type=json_account["account_type"],
                 errors=json_account.get("errors", []),
-                custom_metadata=json_account.get("custom_metadata", {})
+                custom_metadata=json_account.get("custom_metadata", {}),
             )
             for json_account in json_accounts
         ]
