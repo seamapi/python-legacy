@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [2.13.2](https://github.com/seamapi/python/compare/v2.13.1...v2.13.2) (2023-06-14)
+
+
+### Bug Fixes
+
+* Update `Devices` and `UnmanagedDevices` clients ([#101](https://github.com/seamapi/python/issues/101)) ([8021cdc](https://github.com/seamapi/python/commit/8021cdcb687b75d327b290c2662f96e706ce77e8))
+
 ### [2.13.1](https://github.com/seamapi/python/compare/v2.13.0...v2.13.1) (2023-06-13)
 
 
