@@ -232,7 +232,7 @@ class AccessCodes(AbstractAccessCodes):
         """
 
         self.seam = seam
-        self.unmanaged = UnmanagedAccessCodes(seam=self)
+        self.unmanaged = UnmanagedAccessCodes(seam=seam)
 
     @report_error
     def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
