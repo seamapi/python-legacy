@@ -620,10 +620,6 @@ class AbstractThermostats(abc.ABC):
     ) -> None:
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def delete(self, device: Union[DeviceId, Device]) -> None:
-        raise NotImplementedError
-
 
 @dataclass
 class AbstractRoutes(abc.ABC):

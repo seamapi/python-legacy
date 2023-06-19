@@ -1,6 +1,7 @@
 from seamapi import Seam
 from tests.fixtures.run_nest_factory import run_nest_factory
 
+
 def test_thermostats(seam: Seam):
     run_nest_factory(seam)
 
@@ -24,14 +25,7 @@ def test_thermostats(seam: Seam):
             "hvac_mode_setting": "cool",
             "cooling_set_point_celsius": 20,
             "manual_override_allowed": True,
-        }
+        },
     )
 
     assert result == True
-
-    # Test Delete
-    result = seam.thermostats.delete(thermostat)
-    assert result == None
-
-    thermostats = seam.thermostats.list()
-    assert len(thermostats) == 2

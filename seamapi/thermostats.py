@@ -50,7 +50,9 @@ class Thermostats(AbstractThermostats):
         """
 
         self.seam = seam
-        self.climate_setting_schedules = ClimateSettingSchedules(seam=self.seam)
+        self.climate_setting_schedules = ClimateSettingSchedules(
+            seam=self.seam
+        )
 
     @report_error
     def list(
@@ -91,7 +93,7 @@ class Thermostats(AbstractThermostats):
                 connect_webview
             )
         if device_ids is not None:
-            params["device_ids"] =  [to_device_id(d) for d in device_ids]
+            params["device_ids"] = [to_device_id(d) for d in device_ids]
 
         res = self.seam.make_request(
             "GET",
@@ -181,34 +183,3 @@ class Thermostats(AbstractThermostats):
         )
 
         return True
-
-    @report_error
-    def delete(self, device: Union[DeviceId, Device]) -> bool:
-        """Deletes a device.
-
-        Parameters
-        ----------
-        device : DeviceId or Device
-            Device id or Device to delete
-
-        Raises
-        ------
-        Exception
-            If the API request wasn't successful.
-
-        Returns
-        ------
-            None
-        """
-
-        if not device:
-            raise Exception("device is required")
-
-        delete_payload = {"device_id": to_device_id(device)}
-        self.seam.make_request(
-            "DELETE",
-            "/thermostats/delete",
-            json=delete_payload,
-        )
-
-        return None
