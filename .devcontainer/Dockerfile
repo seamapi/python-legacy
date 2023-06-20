@@ -3,7 +3,7 @@ ARG VARIANT="3"
 FROM mcr.microsoft.com/vscode/devcontainers/python:${VARIANT}
 
 ARG POETRY_VERSION="1.3.1"
-ARG POETRY_SRC="https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py"
+ARG POETRY_SRC="https://install.python-poetry.org"
 
 RUN apt-get update \
  && apt-get install -y ca-certificates curl gnupg lsb-release \
