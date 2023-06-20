@@ -137,8 +137,8 @@ class ActionAttempt:
     action_attempt_id: str
     action_type: str
     status: str
-    result: Optional[Any]
-    error: Optional[ActionAttemptError]
+    result: Optional[Any] = None
+    error: Optional[ActionAttemptError] = None
 
 
 @dataclass_json
