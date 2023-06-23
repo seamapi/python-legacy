@@ -1,5 +1,6 @@
 from seamapi.types import (
     AbstractThermostats,
+    ActionAttempt,
     ConnectWebview,
     ConnectWebviewId,
     ConnectedAccount,
@@ -50,7 +51,9 @@ class Thermostats(AbstractThermostats):
         """
 
         self.seam = seam
-        self.climate_setting_schedules = ClimateSettingSchedules(seam=self.seam)
+        self.climate_setting_schedules = ClimateSettingSchedules(
+            seam=self.seam
+        )
 
     @report_error
     def list(
@@ -91,7 +94,7 @@ class Thermostats(AbstractThermostats):
                 connect_webview
             )
         if device_ids is not None:
-            params["device_ids"] =  [to_device_id(d) for d in device_ids]
+            params["device_ids"] = [to_device_id(d) for d in device_ids]
 
         res = self.seam.make_request(
             "GET",
@@ -183,13 +186,28 @@ class Thermostats(AbstractThermostats):
         return True
 
     @report_error
-    def delete(self, device: Union[DeviceId, Device]) -> bool:
-        """Deletes a device.
+    def set_mode(
+        self,
+        device: Union[DeviceId, Device],
+        automatic_heating_enabled: Optional[bool] = None,
+        automatic_cooling_enabled: Optional[bool] = None,
+        hvac_mode_setting: Optional[str] = None,
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> ActionAttempt:
+        """Sets a thermostat to a given mode.
 
         Parameters
         ----------
         device : DeviceId or Device
-            Device id or Device to delete
+            Device id or Device to update
+        automatic_heating_enabled : bool, optional
+            Enable automatic heating
+        automatic_cooling_enabled : bool, optional
+            Enable cooling heating
+        hvac_mode_setting : str, optional
+            HVAC mode eg. "heat", "cool", "heatcool" or "off"
+        wait_for_action_attempt: bool, optional
+            Should wait for action attempt to resolve
 
         Raises
         ------
@@ -198,17 +216,38 @@ class Thermostats(AbstractThermostats):
 
         Returns
         ------
-            None
+            ActionAttempt
         """
 
         if not device:
-            raise Exception("device is required")
+            raise Exception("Device is required")
 
-        delete_payload = {"device_id": to_device_id(device)}
-        self.seam.make_request(
-            "DELETE",
-            "/thermostats/delete",
-            json=delete_payload,
+        params = {
+            "device_id": to_device_id(device),
+        }
+
+        arguments = {
+            "automatic_heating_enabled": automatic_heating_enabled,
+            "automatic_cooling_enabled": automatic_cooling_enabled,
+            "hvac_mode_setting": hvac_mode_setting,
+        }
+
+        for name in arguments:
+            if arguments[name]:
+                params.update({name: arguments[name]})
+
+        res = self.seam.make_request(
+            "POST",
+            "/thermostats/set_mode",
+            json=params,
+        )
+        action_attempt = res["action_attempt"]
+
+        if not wait_for_action_attempt:
+            return ActionAttempt.from_dict(action_attempt)
+
+        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+            action_attempt["action_attempt_id"]
         )
 
-        return None
+        return ActionAttempt.from_dict(updated_action_attempt)

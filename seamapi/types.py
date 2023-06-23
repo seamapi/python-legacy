@@ -137,8 +137,8 @@ class ActionAttempt:
     action_attempt_id: str
     action_type: str
     status: str
-    result: Optional[Any]
-    error: Optional[ActionAttemptError]
+    result: Optional[Any] = None
+    error: Optional[ActionAttemptError] = None
 
 
 @dataclass_json
@@ -618,10 +618,6 @@ class AbstractThermostats(abc.ABC):
         device: Union[DeviceId, Device],
         default_climate_setting: Optional[dict] = None,
     ) -> None:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def delete(self, device: Union[DeviceId, Device]) -> None:
         raise NotImplementedError
 
 
