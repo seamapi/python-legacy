@@ -38,6 +38,9 @@ class Thermostats(AbstractThermostats):
         Gets a device
     update(device, name=None, properties=None, location=None)
         Updates a device
+    set_mode(device, automatic_heating_enabled=None, automatic_cooling_enabled=None, hvac_mode_setting=None, wait_for_action_attempt=True)
+        Sets a thermostat to a given mode
+    set_cooling_set_point(device, cooling_set_point_celsius=None, cooling_set_point_fahrenheit=None, wait_for_action_attempt=True)
     """
 
     seam: Seam
@@ -251,3 +254,101 @@ class Thermostats(AbstractThermostats):
         )
 
         return ActionAttempt.from_dict(updated_action_attempt)
+
+    @report_error
+    def set_cooling_set_point(
+        self,
+        device: Union[DeviceId, Device],
+        cooling_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> ActionAttempt:
+        """Sets thermostat's cooling set point.
+
+        Parameters
+        ----------
+        device : DeviceId or Device
+            Device id or Device to update
+        cooling_set_point_celsius : float, optional
+            Cooling set point in celsius
+        cooling_set_point_fahrenheit : bool, optional
+            Cooling set point in fahrenheit
+        wait_for_action_attempt: bool, optional
+            Should wait for action attempt to resolve
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            ActionAttempt
+        """
+
+        if not device:
+            raise Exception("Device is required")
+
+        params = {
+            "device_id": to_device_id(device),
+        }
+
+        arguments = {
+            "cooling_set_point_celsius": cooling_set_point_celsius,
+            "cooling_set_point_fahrenheit": cooling_set_point_fahrenheit,
+        }
+
+        for name in arguments:
+            if arguments[name]:
+                params.update({name: arguments[name]})
+
+        res = self.seam.make_request(
+            "POST",
+            "/thermostats/set_cooling_set_point",
+            json=params,
+        )
+        action_attempt = res["action_attempt"]
+
+        if not wait_for_action_attempt:
+            return ActionAttempt.from_dict(action_attempt)
+
+        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+            action_attempt["action_attempt_id"]
+        )
+
+        return ActionAttempt.from_dict(updated_action_attempt)
+
+
+# /**
+#  * Sets thermostat's cooling set point
+#  * @return ActionAttempt
+#  */
+# public function set_cooling_set_point(
+#   string $device_id,
+#   float $cooling_set_point_celsius = null,
+#   float $cooling_set_point_fahrenheit = null,
+#   bool $wait_for_action_attempt = true,
+# ) {
+#   $json = filter_out_null_params([
+#     "device_id" => $device_id,
+#     "cooling_set_point_celsius" => $cooling_set_point_celsius,
+#     "cooling_set_point_fahrenheit" => $cooling_set_point_fahrenheit,
+#   ]);
+
+#   $action_attempt = ActionAttempt::from_json(
+#     $this->seam->request(
+#       "POST",
+#       "thermostats/set_cooling_set_point",
+#       json: $json,
+#       inner_object: "action_attempt"
+#     )
+#   );
+
+#   if (!$wait_for_action_attempt) {
+#     return $action_attempt;
+#   }
+
+#   $updated_action_attempt = $this->seam->action_attempts->poll_until_ready($action_attempt->action_attempt_id);
+
+#   return $updated_action_attempt;
+# }
