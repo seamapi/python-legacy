@@ -34,9 +34,18 @@ def test_thermostats(seam: Seam):
         thermostat.properties.current_climate_setting.hvac_mode_setting
         == "heatcool"
     )
-    seam.thermostats.set_mode(device=thermostat, hvac_mode_setting="heat")
+    seam.thermostats.set_mode(device=thermostat, hvac_mode_setting="cool")
     updated_thermostat = seam.thermostats.get(thermostat.device_id)
     assert (
         updated_thermostat.properties.current_climate_setting.hvac_mode_setting
-        == "heat"
+        == "cool"
+    )
+
+    seam.thermostats.set_cooling_set_point(
+        device=thermostat, cooling_set_point_fahrenheit=74
+    )
+    updated_thermostat = seam.thermostats.get(thermostat)
+    assert (
+        updated_thermostat.properties.current_climate_setting.cooling_set_point_fahrenheit
+        == 74
     )

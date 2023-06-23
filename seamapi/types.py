@@ -620,6 +620,27 @@ class AbstractThermostats(abc.ABC):
     ) -> None:
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def set_mode(
+        self,
+        device: Union[DeviceId, Device],
+        automatic_heating_enabled: Optional[bool] = None,
+        automatic_cooling_enabled: Optional[bool] = None,
+        hvac_mode_setting: Optional[str] = None,
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> ActionAttempt:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def set_cooling_set_point(
+        self,
+        device: Union[DeviceId, Device],
+        cooling_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> ActionAttempt:
+        raise NotImplementedError
+
 
 @dataclass
 class AbstractRoutes(abc.ABC):
