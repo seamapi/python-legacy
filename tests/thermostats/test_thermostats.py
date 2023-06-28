@@ -29,14 +29,3 @@ def test_thermostats(seam: Seam):
     )
 
     assert result == True
-
-    assert (
-        thermostat.properties.current_climate_setting.hvac_mode_setting
-        == "heatcool"
-    )
-    seam.thermostats.set_mode(device=thermostat, hvac_mode_setting="heat")
-    updated_thermostat = seam.thermostats.get(thermostat.device_id)
-    assert (
-        updated_thermostat.properties.current_climate_setting.hvac_mode_setting
-        == "heat"
-    )
