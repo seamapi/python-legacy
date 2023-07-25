@@ -8,12 +8,12 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.7"
 requests = "^2.26.0"
-python-dotenv = "^0.19.2"
 dataclasses-json = "^0.5.6"
 sentry-sdk = "^1.9.10"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
+python-dotenv = "^0.19.2"
 black = "^21.12b0"
 testcontainers = {extras = ["postgresql"], version = "^3.4.2"}
 responses = "^0.22.0"
