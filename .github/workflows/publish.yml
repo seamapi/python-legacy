@@ -39,4 +39,4 @@ jobs:
     with:
       artifact_name: ${{ needs.build.outputs.artifact_name }}
     secrets:
-      registry_token: ${{ secrets.PYPI_API_TOKEN }}
+      registry_token: ${{ secrets.PYPI_TOKEN }}
