@@ -1,0 +1,64 @@
+---
+name: Check
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build:
+    name: Build (Python ${{ matrix.python }} on ${{ matrix.os_name }})
+    uses: ./.github/workflows/_build.yml
+    with:
+      python_version: ${{ matrix.python }}
+      runs_on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        include:
+          - os: ubuntu-latest
+            os_name: Linux
+  install:
+    name: Install (Python ${{ matrix.python }} on ${{ matrix.os_name }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+        python:
+          - '3.8'
+        include:
+          - os: ubuntu-latest
+            os_name: Linux
+    steps:
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ needs.build.outputs.artifact_name }}
+          path: .
+      - name: Find wheels
+        uses: tj-actions/glob@v16
+        id: wheels
+        with:
+          files: '*.whl'
+      - name: Install
+        run: pip install ${{ steps.wheels.outputs.paths }}
+      - name: Create main.py
+        uses: DamianReeves/write-file-action@v1.2
+        with:
+          write-mode: overwrite
+          path: main.py
+          contents: |
+            import seamapi
+      - name: Run
+        run: python main.py
