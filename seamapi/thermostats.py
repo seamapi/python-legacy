@@ -290,8 +290,8 @@ class Thermostats(AbstractThermostats):
     def heat(
         self,
         device: Union[DeviceId, Device],
-        cooling_set_point_celsius: Optional[float] = None,
-        cooling_set_point_fahrenheit: Optional[float] = None,
+        heating_set_point_celsius: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
         wait_for_action_attempt: Optional[bool] = True,
     ) -> ActionAttempt:
         """Sets the the thermostat mode to heat with the provided set point.
@@ -300,10 +300,10 @@ class Thermostats(AbstractThermostats):
         ----------
         device : DeviceId or Device
             Device id or Device to update
-        cooling_set_point_celsius : float, optional
-            Cooling set point in celsius
-        cooling_set_point_fahrenheit : float, optional
-            Cooling set point in fahrenheit
+        heating_set_point_celsius : float, optional
+            Heating set point in celsius
+        heating_set_point_fahrenheit : float, optional
+            Heating set point in fahrenheit
         wait_for_action_attempt: bool, optional
             Should wait for action attempt to resolve
 
@@ -325,8 +325,8 @@ class Thermostats(AbstractThermostats):
         }
 
         arguments = {
-            "cooling_set_point_celsius": cooling_set_point_celsius,
-            "cooling_set_point_fahrenheit": cooling_set_point_fahrenheit,
+            "heating_set_point_celsius": heating_set_point_celsius,
+            "heating_set_point_fahrenheit": heating_set_point_fahrenheit,
         }
 
         for name in arguments:

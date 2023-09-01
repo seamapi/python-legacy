@@ -644,8 +644,8 @@ class AbstractThermostats(abc.ABC):
     def heat(
         self,
         device: Union[DeviceId, Device],
-        cooling_set_point_celsius: Optional[float] = None,
-        cooling_set_point_fahrenheit: Optional[float] = None,
+        heating_set_point_celsius: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
         wait_for_action_attempt: Optional[bool] = True,
     ) -> None:
         raise NotImplementedError
