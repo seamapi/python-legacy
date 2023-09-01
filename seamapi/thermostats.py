@@ -13,8 +13,6 @@ from seamapi.types import (
 from typing import List, Union, Optional
 from seamapi.utils import parse_list_device_params
 from seamapi.utils.convert_to_id import (
-    to_connect_webview_id,
-    to_connected_account_id,
     to_device_id,
 )
 from seamapi.utils.report_error import report_error
