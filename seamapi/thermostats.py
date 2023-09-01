@@ -11,7 +11,7 @@ from seamapi.types import (
     DeviceType,
 )
 from typing import List, Union, Optional
-from seamapi.utils import parse_list_device_params
+from seamapi.utils.parse_list_device_params import parse_list_device_params
 from seamapi.utils.convert_to_id import (
     to_device_id,
 )
