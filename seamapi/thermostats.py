@@ -468,6 +468,7 @@ class Thermostats(AbstractThermostats):
     def set_fan_mode(
         self,
         device: Union[DeviceId, Device],
+        fan_mode: str,
         wait_for_action_attempt: Optional[bool] = True,
     ) -> ActionAttempt:
         """Sets the thermostat mode to heat_cool with the provided set points.
@@ -476,6 +477,8 @@ class Thermostats(AbstractThermostats):
         ----------
         device : DeviceId or Device
             Device id or Device to update
+        fan_mode : str
+            Fan mode of the thermostat: "auto" or "on"
         wait_for_action_attempt: bool, optional
             Should wait for action attempt to resolve
 
@@ -491,12 +494,15 @@ class Thermostats(AbstractThermostats):
 
         if not device:
             raise Exception("device is required")
+        if not fan_mode:
+            raise Exception("fan_mode is required")
 
         res = self.seam.make_request(
             "POST",
             "/thermostats/set_fan_mode",
             json={
                 "device_id": to_device_id(device),
+                "fan_mode": fan_mode
             },
         )
         action_attempt = res["action_attempt"]
