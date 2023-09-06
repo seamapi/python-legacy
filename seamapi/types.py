@@ -293,7 +293,13 @@ class AbstractLocks(abc.ABC):
 
 class AbstractAccessCodes(abc.ABC):
     @abc.abstractmethod
-    def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
+    def list(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        access_codes: Optional[
+            Union[List[AccessCode], List[AccessCodeId]]
+        ] = None,
+    ) -> List[AccessCode]:
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -336,7 +342,7 @@ class AbstractAccessCodes(abc.ABC):
         code: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
-        status: Optional[str] = None,
+        type: Optional[str] = None,
     ) -> AccessCode:
         raise NotImplementedError
 

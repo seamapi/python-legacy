@@ -53,13 +53,21 @@ class AccessCodes(AbstractAccessCodes):
         self.seam = seam
 
     @report_error
-    def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
+    def list(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        access_codes: Optional[
+            Union[List[AccessCode], List[AccessCodeId]]
+        ] = None,
+    ) -> List[AccessCode]:
         """Gets a list of access codes for a device.
 
         Parameters
         ----------
-        device : DeviceId or Device
+        device : Union[DeviceId, Device], optional
             Device id or Device to list access codes for
+        access_codes : Union[List[AccessCode], List[AccessCodeId]], optional
+            Access Code IDs or Access Codes to filter access_codes by
 
         Raises
         ------
@@ -71,15 +79,22 @@ class AccessCodes(AbstractAccessCodes):
             A list of access codes for a device.
         """
 
-        device_id = to_device_id(device)
+        params = {}
+        if device:
+            params["device_id"] = to_device_id(device)
+        if access_codes:
+            params["access_code_ids"] = [
+                to_access_code_id(ac) for ac in access_codes
+            ]
+
         res = self.seam.make_request(
             "GET",
             "/access_codes/list",
-            params={"device_id": device_id},
+            params=params,
         )
-        access_codes = res["access_codes"]
+        res_access_codes = res["access_codes"]
 
-        return [AccessCode.from_dict(ac) for ac in access_codes]
+        return [AccessCode.from_dict(ac) for ac in res_access_codes]
 
     @report_error
     def get(
@@ -180,13 +195,19 @@ class AccessCodes(AbstractAccessCodes):
         if common_code_key is not None:
             create_payload["common_code_key"] = common_code_key
         if attempt_for_offline_device is not None:
-            create_payload["attempt_for_offline_device"] = attempt_for_offline_device
+            create_payload[
+                "attempt_for_offline_device"
+            ] = attempt_for_offline_device
 
-        if (wait_for_code
+        if (
+            wait_for_code
             and starts_at is not None
-            and datetime.fromisoformat(starts_at) > datetime.now() + timedelta(seconds=5)
+            and datetime.fromisoformat(starts_at)
+            > datetime.now() + timedelta(seconds=5)
         ):
-            raise RuntimeError("Cannot use wait_for_code with a future time bound code")
+            raise RuntimeError(
+                "Cannot use wait_for_code with a future time bound code"
+            )
 
         res = self.seam.make_request(
             "POST",
@@ -199,25 +220,25 @@ class AccessCodes(AbstractAccessCodes):
         duration = 0
         poll_interval = 0.25
         if wait_for_code:
-            while (access_code.code is None):
-                if (access_code.status == "unknown"):
+            while access_code.code is None:
+                if access_code.status == "unknown":
                     raise WaitForAccessCodeFailedException(
                         "Access code status returned unknown",
-                        access_code_id=access_code.access_code_id
+                        access_code_id=access_code.access_code_id,
                     )
-                if (len(access_code.errors) > 0):
+                if len(access_code.errors) > 0:
                     raise WaitForAccessCodeFailedException(
                         "Access code returned errors",
                         access_code_id=access_code.access_code_id,
-                        errors=access_code.errors
+                        errors=access_code.errors,
                     )
                 time.sleep(poll_interval)
                 duration += poll_interval
-                if (duration > timeout):
+                if duration > timeout:
                     raise WaitForAccessCodeFailedException(
                         f"Gave up after waiting the maximum timeout of {timeout} seconds",
                         access_code_id=access_code.access_code_id,
-                        errors=access_code.errors
+                        errors=access_code.errors,
                     )
 
                 access_code = access_codes.get(access_code)
@@ -294,6 +315,7 @@ class AccessCodes(AbstractAccessCodes):
         code: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
+        type: Optional[str] = None,
     ) -> AccessCode:
         """Updates an access code on a device.
 
@@ -311,6 +333,8 @@ class AccessCodes(AbstractAccessCodes):
             Time when access code becomes effective
         ends_at : str, optional
             Time when access code ceases to be effective
+        type : str, optional
+            Access code type eg. ongoing or time_bound
 
         Raises
         ------
@@ -334,6 +358,8 @@ class AccessCodes(AbstractAccessCodes):
             update_payload["starts_at"] = starts_at
         if ends_at is not None:
             update_payload["ends_at"] = ends_at
+        if type is not None:
+            update_payload["type"] = type
 
         res = self.seam.make_request(
             "POST",

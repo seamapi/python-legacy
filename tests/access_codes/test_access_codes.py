@@ -16,17 +16,33 @@ def test_access_codes(seam: Seam):
     assert created_access_code.name == "Test code"
     assert created_access_code.status == "setting"
 
+    seam.access_codes.create(some_device.device_id, "Test code 2", "5555")
+
     access_codes = seam.access_codes.list(some_device.device_id)
+    assert len(access_codes) == 2
+    access_codes = seam.access_codes.list(
+        some_device, access_codes=[created_access_code]
+    )
     assert len(access_codes) == 1
 
     access_code = seam.access_codes.get(created_access_code.access_code_id)
     assert access_code.code == "4444"
 
     with pytest.raises(SeamAPIException):
-        seam.access_codes.create(some_device.device_id, "Duplicate Access Code", "4444")
+        seam.access_codes.create(
+            some_device.device_id, "Duplicate Access Code", "4444"
+        )
 
     access_code = seam.access_codes.update(access_code, name="Updated name")
     assert access_code.name == "Updated name"
+
+    access_code = seam.access_codes.update(
+        access_code,
+        type="time_bound",
+        starts_at="3001-01-01",
+        ends_at="3001-01-03",
+    )
+    assert access_code.type == "time_bound"
 
     delete_action_attempt = seam.access_codes.delete(created_access_code)
     assert delete_action_attempt.status == "success"
