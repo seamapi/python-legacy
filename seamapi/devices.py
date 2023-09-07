@@ -12,9 +12,8 @@ from seamapi.types import (
     DeviceType,
 )
 from typing import Any, List, Union, Optional, Dict
+from seamapi.utils.parse_list_device_params import parse_list_device_params
 from seamapi.utils.convert_to_id import (
-    to_connect_webview_id,
-    to_connected_account_id,
     to_device_id,
 )
 from seamapi.utils.report_error import report_error
@@ -69,6 +68,8 @@ class Devices(AbstractDevices):
         device_types: Optional[List[DeviceType]] = None,
         device_ids: Optional[List[Union[DeviceId, Device]]] = None,
         manufacturer: Optional[str] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
     ) -> List[Device]:
         """Gets a list of devices.
 
@@ -88,6 +89,10 @@ class Devices(AbstractDevices):
             Device IDs to filter devices by
         manufacturer : Optional[str]
             Manufacturer name to filter devices by e.g. august, schlage
+        limit : str, optional
+            Limit the number of devices returned
+        created_before : str, optional
+            If specified, only devices created before this date will be returned
 
         Raises
         ------
@@ -99,7 +104,7 @@ class Devices(AbstractDevices):
             A list of devices.
         """
 
-        params = parse_list_params(
+        params = parse_list_device_params(
             connected_account,
             connected_accounts,
             connect_webview,
@@ -107,6 +112,8 @@ class Devices(AbstractDevices):
             device_types,
             device_ids,
             manufacturer,
+            limit,
+            created_before,
         )
 
         res = self.seam.make_request(
@@ -318,6 +325,8 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
         device_types: Optional[List[DeviceType]] = None,
         device_ids: Optional[List[Union[DeviceId, Device]]] = None,
         manufacturer: Optional[str] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
     ) -> List[UnmanagedDevice]:
         """Gets a list of unmanaged devices.
 
@@ -333,10 +342,14 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
             Device type e.g. august_lock
         device_types : List[DeviceType], optional
             List of device types e.g. august_lock
-        device_ids : Optional[List[Union[DeviceId, Device]]]
+        device_ids : List[Union[DeviceId, Device]], optional
             Device IDs to filter devices by
-        manufacturer : Optional[str]
+        manufacturer : str, optional
             Manufacturer name to filter devices by e.g. august, schlage
+        limit : str, optional
+            Limit the number of devices returned
+        created_before : str, optional
+            If specified, only devices created before this date will be returned
 
         Raises
         ------
@@ -348,7 +361,7 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
             A list of unmanaged devices.
         """
 
-        params = parse_list_params(
+        params = parse_list_device_params(
             connected_account,
             connected_accounts,
             connect_webview,
@@ -356,6 +369,8 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
             device_types,
             device_ids,
             manufacturer,
+            limit,
+            created_before,
         )
 
         res = self.seam.make_request(
@@ -405,34 +420,3 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
         )
 
         return True
-
-
-def parse_list_params(
-    connected_account,
-    connected_accounts,
-    connect_webview,
-    device_type,
-    device_types,
-    device_ids,
-    manufacturer,
-):
-    params = {}
-    if connected_account:
-        params["connected_account_id"] = to_connected_account_id(
-            connected_account
-        )
-    if connected_accounts:
-        params["connected_account_ids"] = [
-            to_connected_account_id(ca) for ca in connected_accounts
-        ]
-    if connect_webview:
-        params["connect_webview_id"] = to_connect_webview_id(connect_webview)
-    if device_type:
-        params["device_type"] = device_type
-    if device_types is not None:
-        params["device_types"] = device_types
-    if device_ids is not None:
-        params["device_ids"] = [to_device_id(d) for d in device_ids]
-    if manufacturer:
-        params["manufacturer"] = manufacturer
-    return params

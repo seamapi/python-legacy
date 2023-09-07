@@ -1,9 +1,10 @@
 from seamapi import Seam
-from tests.fixtures.run_nest_factory import run_nest_factory
+from tests.fixtures.run_ecobee_factory import run_ecobee_factory
+import json
 
 
 def test_thermostats(seam: Seam):
-    run_nest_factory(seam)
+    run_ecobee_factory(seam)
 
     # Test List
     thermostats = seam.thermostats.list()
@@ -12,11 +13,11 @@ def test_thermostats(seam: Seam):
 
     thermostat = thermostats[0]
 
-    assert thermostat.device_type == "nest_thermostat"
+    assert thermostat.device_type == "ecobee_thermostat"
 
     # Test Get
     thermostat = seam.thermostats.get(thermostat.device_id)
-    assert thermostat.device_type == "nest_thermostat"
+    assert thermostat.device_type == "ecobee_thermostat"
 
     # Test Update
     result = seam.thermostats.update(
@@ -27,5 +28,60 @@ def test_thermostats(seam: Seam):
             "manual_override_allowed": True,
         },
     )
-
     assert result == True
+
+    # Test Cool
+    seam.thermostats.cool(
+        device=thermostat,
+        cooling_set_point_celsius=27,
+    )
+    thermostat = seam.thermostats.get(thermostat)
+    assert (
+        round(thermostat.properties.current_climate_setting.cooling_set_point_celsius)
+        == 27
+    )
+    assert thermostat.properties.current_climate_setting.hvac_mode_setting == "cool"
+
+    # Test Heat
+    seam.thermostats.heat(
+        device=thermostat,
+        heating_set_point_celsius=18,
+    )
+    thermostat = seam.thermostats.get(thermostat)
+    assert (
+        round(thermostat.properties.current_climate_setting.heating_set_point_celsius)
+        == 18
+    )
+
+    # Test Heat Cool
+    seam.thermostats.heat_cool(
+        device=thermostat,
+        cooling_set_point_celsius=28,
+        heating_set_point_celsius=19,
+    )
+    thermostat = seam.thermostats.get(thermostat)
+    assert thermostat.properties.current_climate_setting.hvac_mode_setting == "heat_cool"
+    assert (
+    round(thermostat.properties.current_climate_setting.cooling_set_point_celsius)
+    == 28
+    )
+    assert (
+    round(thermostat.properties.current_climate_setting.heating_set_point_celsius)
+    == 19
+    )
+
+    # Test Off
+    seam.thermostats.off(
+        device=thermostat,
+
+    )
+    thermostat = seam.thermostats.get(thermostat)
+    assert thermostat.properties.current_climate_setting.hvac_mode_setting == "off"
+
+    # Test Set Fan Mode
+    seam.thermostats.set_fan_mode(
+        device=thermostat,
+        fan_mode="on",
+    )
+    thermostat = seam.thermostats.get(thermostat)
+    assert thermostat.properties.is_fan_running == True

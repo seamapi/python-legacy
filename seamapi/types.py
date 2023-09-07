@@ -423,8 +423,10 @@ class AbstractUnmanagedDevices(abc.ABC):
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
         device_types: Optional[List[DeviceType]] = None,
-        device_ids: Optional[list] = None,
+        device_ids: Optional[List[Union[DeviceId, Device]]] = None,
         manufacturer: Optional[str] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
     ) -> List[UnmanagedDevice]:
         raise NotImplementedError
 
@@ -605,8 +607,16 @@ class AbstractThermostats(abc.ABC):
     def list(
         self,
         connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
+        connected_accounts: List[
+            Union[ConnectedAccountId, ConnectedAccount]
+        ] = None,
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
-        device_ids: Optional[list] = None,
+        device_type: Optional[DeviceType] = None,
+        device_types: Optional[List[DeviceType]] = None,
+        device_ids: Optional[List[Union[DeviceId, Device]]] = None,
+        manufacturer: Optional[str] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
     ) -> List[Device]:
         raise NotImplementedError
 
@@ -623,6 +633,54 @@ class AbstractThermostats(abc.ABC):
         self,
         device: Union[DeviceId, Device],
         default_climate_setting: Optional[dict] = None,
+    ) -> None:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def cool(
+        self,
+        device: Union[DeviceId, Device],
+        cooling_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> None:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def heat(
+        self,
+        device: Union[DeviceId, Device],
+        heating_set_point_celsius: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> None:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def heat_cool(
+        self,
+        device: Union[DeviceId, Device],
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        cooling_set_point_celsius: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
+        heating_set_point_celsius: Optional[float] = None,
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> None:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def off(
+        self,
+        device: Union[DeviceId, Device],
+        wait_for_action_attempt: Optional[bool] = True,
+    ) -> None:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def set_fan_mode(
+        self,
+        device: Union[DeviceId, Device],
+        wait_for_action_attempt: Optional[bool] = True,
     ) -> None:
         raise NotImplementedError
 
