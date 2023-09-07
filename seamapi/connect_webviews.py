@@ -30,7 +30,7 @@ class ConnectWebviews(AbstractConnectWebviews):
     get(connect_webview)
         Gets a connect webview
     create(
-      accepted_providers, custom_redirect_url=None, custom_redirect_failure_url=None, device_selection_mode=None
+      accepted_providers, custom_redirect_url=None, custom_redirect_failure_url=None, device_selection_mode=None, provider_category=None, custom_metadata=None, automatically_manage_new_devices=None, wait_for_device_creation=None
     )
         Creates a connect webview
     """
@@ -68,7 +68,8 @@ class ConnectWebviews(AbstractConnectWebviews):
         json_webviews = res["connect_webviews"]
 
         return [
-            ConnectWebview.from_dict(json_webview) for json_webview in json_webviews
+            ConnectWebview.from_dict(json_webview)
+            for json_webview in json_webviews
         ]
 
     @report_error
@@ -111,6 +112,8 @@ class ConnectWebviews(AbstractConnectWebviews):
         custom_redirect_failure_url: Optional[str] = None,
         device_selection_mode: Optional[str] = None,
         custom_metadata: Optional[dict] = None,
+        automatically_manage_new_devices: Optional[bool] = None,
+        wait_for_device_creation: Optional[bool] = None,
     ) -> ConnectWebview:
         """Creates a connect webview.
 
@@ -127,6 +130,10 @@ class ConnectWebviews(AbstractConnectWebviews):
         device_selection_mode : str, optional
             Selection mode: 'none', 'single' or 'multiple'
         custom_metadata : dict, optional
+        automatically_manage_new_devices : bool, optional
+            Defaults to true, whether newly added devices should appear as a Managed Device
+        wait_for_device_creation : bool, optional
+            Wait until your connected account and devices are synced
 
         Raises
         ------
@@ -152,11 +159,21 @@ class ConnectWebviews(AbstractConnectWebviews):
         if custom_redirect_url is not None:
             create_payload["custom_redirect_url"] = custom_redirect_url
         if custom_redirect_failure_url is not None:
-            create_payload["custom_redirect_failure_url"] = custom_redirect_failure_url
+            create_payload[
+                "custom_redirect_failure_url"
+            ] = custom_redirect_failure_url
         if device_selection_mode is not None:
             create_payload["device_selection_mode"] = device_selection_mode
         if custom_metadata is not None:
             create_payload["custom_metadata"] = custom_metadata
+        if automatically_manage_new_devices is not None:
+            create_payload[
+                "automatically_manage_new_devices"
+            ] = automatically_manage_new_devices
+        if wait_for_device_creation is not None:
+            create_payload[
+                "wait_for_device_creation"
+            ] = wait_for_device_creation
 
         res = self.seam.make_request(
             "POST",
