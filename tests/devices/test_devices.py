@@ -85,6 +85,11 @@ def test_unmanaged_devices(seam: Seam):
     unmanaged_devices = seam.devices.unmanaged.list()
     assert len(unmanaged_devices) == 1
 
+    unmanaged_device = seam.devices.unmanaged.get(device=device)
+    assert unmanaged_device.device_id == device.device_id
+    unmanaged_device = seam.devices.unmanaged.get(name=device.properties.name)
+    assert unmanaged_device.properties.name == device.properties.name
+
     connected_account = seam.connected_accounts.list()[0]
     devices = seam.devices.unmanaged.list(connected_account=connected_account)
     assert len(devices) > 0

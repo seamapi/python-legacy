@@ -73,6 +73,8 @@ class Device:
     connected_account_id: str
     workspace_id: str
     created_at: str
+    capabilities_supported: List[str]
+    is_managed: bool
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -87,6 +89,8 @@ class Device:
             connected_account_id=d["connected_account_id"],
             workspace_id=d["workspace_id"],
             created_at=d["created_at"],
+            capabilities_supported=d["capabilities_supported"],
+            is_managed=d["is_managed"],
         )
 
 
@@ -100,6 +104,8 @@ class UnmanagedDevice:
     created_at: str
     errors: List[Dict[str, Any]]
     warnings: List[Dict[str, Any]]
+    capabilities_supported: List[str]
+    is_managed: bool
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -112,6 +118,8 @@ class UnmanagedDevice:
             created_at=d["created_at"],
             errors=d["errors"],
             warnings=d["warnings"],
+            capabilities_supported=d["capabilities_supported"],
+            is_managed=d["is_managed"],
         )
 
 
@@ -407,6 +415,14 @@ class AbstractNoiseSensors(abc.ABC):
 
 
 class AbstractUnmanagedDevices(abc.ABC):
+    @abc.abstractmethod
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        name: Optional[str] = None,
+    ) -> UnmanagedDevice:
+        raise NotImplementedError
+
     @abc.abstractmethod
     def list(
         self,
