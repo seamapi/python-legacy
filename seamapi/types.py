@@ -186,13 +186,21 @@ class ConnectedAccount:
 @dataclass
 class AccessCode:
     access_code_id: str
+    device_id: str
     type: str
     code: str
+    created_at: str
     starts_at: Optional[str] = None
     ends_at: Optional[str] = None
     name: Optional[str] = ""
     status: Optional[str] = None
     common_code_key: Optional[str] = None
+    is_managed: Optional[bool] = None
+    is_waiting_for_code_assignment: Optional[bool] = None
+    is_scheduled_on_device: Optional[bool] = None
+    pulled_backup_access_code_id: Optional[str] = None
+    is_backup_access_code_available: Optional[bool] = None
+    is_backup: Optional[bool] = None
 
 
 @dataclass
@@ -317,13 +325,18 @@ class AbstractAccessCodes(abc.ABC):
 
     @abc.abstractmethod
     def create(
-        self,
         device: Union[DeviceId, Device],
         name: Optional[str] = None,
         code: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
+        attempt_for_offline_device: Optional[bool] = True,
+        wait_for_code: Optional[bool] = False,
+        timeout: Optional[int] = 300,
+        allow_external_modification: Optional[bool] = None,
+        prefer_native_scheduling: Optional[bool] = None,
+        use_backup_access_code_pool: Optional[bool] = None,
     ) -> AccessCode:
         raise NotImplementedError
 
@@ -345,6 +358,13 @@ class AbstractAccessCodes(abc.ABC):
         self,
         access_code: Union[AccessCodeId, AccessCode],
     ) -> ActionAttempt:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def pull_backup_access_code(
+        self,
+        access_code: Union[AccessCode, AccessCodeId],
+    ) -> AccessCode:
         raise NotImplementedError
 
 
