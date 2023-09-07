@@ -169,6 +169,8 @@ class ConnectWebview:
     accepted_providers: Optional[List[AcceptedProvider]] = None
     accepted_devices: Optional[List[str]] = None
     selected_provider: Optional[str] = None
+    wait_for_device_creation: Optional[bool] = None
+    automatically_manage_new_devices: Optional[bool] = None
 
 
 @dataclass_json
