@@ -73,7 +73,6 @@ class Device:
     connected_account_id: str
     workspace_id: str
     created_at: str
-    capabilities_supported: List[str]
     is_managed: bool
 
     @staticmethod
@@ -89,7 +88,6 @@ class Device:
             connected_account_id=d["connected_account_id"],
             workspace_id=d["workspace_id"],
             created_at=d["created_at"],
-            capabilities_supported=d["capabilities_supported"],
             is_managed=d["is_managed"],
         )
 
