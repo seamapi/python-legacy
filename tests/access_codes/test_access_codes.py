@@ -29,7 +29,9 @@ def test_access_codes(seam: Seam):
     assert access_code.code == "4444"
 
     with pytest.raises(SeamAPIException):
-        seam.access_codes.create(some_device.device_id, "Duplicate Access Code", "4444")
+        seam.access_codes.create(
+            some_device.device_id, "Duplicate Access Code", "4444"
+        )
 
     access_code = seam.access_codes.update(access_code, name="Updated name")
     assert access_code.name == "Updated name"
