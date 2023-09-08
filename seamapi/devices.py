@@ -295,6 +295,8 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
 
     Methods
     -------
+    get(device=None, name=None)
+        Gets an unmanaged device
     list(connected_account=None, connected_accounts=None, connect_webview=None, device_type=None, device_ids=None, manufacturer=None)
         Gets a list of unmanaged devices
     update(device, is_managed)
@@ -312,6 +314,47 @@ class UnmanagedDevices(AbstractUnmanagedDevices):
         """
 
         self.seam = seam
+
+    @report_error
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        name: Optional[str] = None,
+    ) -> UnmanagedDevice:
+        """Gets an unmanaged devices.
+
+        Parameters
+        ----------
+        device : Union[DeviceId, Device], optional
+            Device ID or Device
+        name : str, optional
+            Device name
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            An unmanaged device.
+        """
+
+        params = {}
+
+        if device:
+            params["device_id"] = to_device_id(device)
+        if name:
+            params["name"] = name
+
+        res = self.seam.make_request(
+            "GET",
+            "/devices/unmanaged/get",
+            params=params,
+        )
+        json_device = res["device"]
+
+        return UnmanagedDevice.from_dict(json_device)
 
     @report_error
     def list(
