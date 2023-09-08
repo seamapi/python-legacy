@@ -34,10 +34,12 @@ class AccessCodes(AbstractAccessCodes):
         Gets a list of access codes for a device
     get(access_code=None, device=None)
         Gets a certain access code of a device
-    create(device, name=None, code=None, starts_at=None, ends_at=None)
+    create(device, name=None, code=None, starts_at=None, ends_at=None, attempt_for_offline_device=None, wait_for_code=None, timeout=None, allow_external_modification=None, prefer_native_scheduling=None, use_backup_access_code_pool=None)
         Creates an access code on a device
     delete(access_code, device=None)
         Deletes an access code on a device
+    pull_backup_access_code(access_code)
+        Pulls a backup access code.
     """
 
     seam: Seam
@@ -147,6 +149,9 @@ class AccessCodes(AbstractAccessCodes):
         attempt_for_offline_device: Optional[bool] = True,
         wait_for_code: Optional[bool] = False,
         timeout: Optional[int] = 300,
+        allow_external_modification: Optional[bool] = None,
+        prefer_native_scheduling: Optional[bool] = None,
+        use_backup_access_code_pool: Optional[bool] = None,
     ) -> AccessCode:
         """Creates an access code on a device.
 
@@ -169,6 +174,12 @@ class AccessCodes(AbstractAccessCodes):
             Poll the access code until the code is known.
         timeout : int, optional:
             Maximum polling time in seconds.
+        allow_external_modification : bool, optional:
+            Allow external modifications of the access code e.g. through the lock provider's app. False by default.
+        prefer_native_scheduling : bool, optional:
+            Where possible, prefer lock provider's native access code scheduling. True by default.
+        use_backup_access_code_pool : bool, optional:
+            Activate backup access code pool. False by default.
 
         Raises
         ------
@@ -198,6 +209,18 @@ class AccessCodes(AbstractAccessCodes):
             create_payload[
                 "attempt_for_offline_device"
             ] = attempt_for_offline_device
+        if allow_external_modification is not None:
+            create_payload[
+                "allow_external_modification"
+            ] = allow_external_modification
+        if prefer_native_scheduling is not None:
+            create_payload[
+                "prefer_native_scheduling"
+            ] = prefer_native_scheduling
+        if use_backup_access_code_pool is not None:
+            create_payload[
+                "use_backup_access_code_pool"
+            ] = use_backup_access_code_pool
 
         if (
             wait_for_code
@@ -241,7 +264,7 @@ class AccessCodes(AbstractAccessCodes):
                         errors=access_code.errors,
                     )
 
-                access_code = access_codes.get(access_code)
+                access_code = self.seam.access_codes.get(access_code)
 
         return access_code
 
@@ -417,3 +440,33 @@ class AccessCodes(AbstractAccessCodes):
         )
 
         return action_attempt
+
+    @report_error
+    def pull_backup_access_code(
+        self,
+        access_code: Union[AccessCode, AccessCodeId],
+    ) -> AccessCode:
+        """Pulls a backup access code.
+
+        Parameters
+        ----------
+        access_code : Union[AccessCode, AccessCodeId]
+            Access code ID or AccessCode
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            AccessCode
+        """
+
+        res = self.seam.make_request(
+            "POST",
+            "/access_codes/pull_backup_access_code",
+            json={"access_code_id": to_access_code_id(access_code)},
+        )
+
+        return AccessCode.from_dict(res["backup_access_code"])
