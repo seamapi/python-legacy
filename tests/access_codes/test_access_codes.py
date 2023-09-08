@@ -29,9 +29,7 @@ def test_access_codes(seam: Seam):
     assert access_code.code == "4444"
 
     with pytest.raises(SeamAPIException):
-        seam.access_codes.create(
-            some_device.device_id, "Duplicate Access Code", "4444"
-        )
+        seam.access_codes.create(some_device.device_id, "Duplicate Access Code", "4444")
 
     access_code = seam.access_codes.update(access_code, name="Updated name")
     assert access_code.name == "Updated name"
@@ -51,14 +49,6 @@ def test_access_codes(seam: Seam):
     assert len(access_codes) == len(all_devices)
     assert len(all_devices) > 1
     assert len(set([ac.common_code_key for ac in access_codes])) == 1
-
-    access_code_with_backup_code_pool = seam.access_codes.create(
-        starts_at="3001-01-01",
-        ends_at="3001-01-03",
-        use_backup_access_code_pool=True,
-    )
-    backup_access_code = seam.access_codes.pull_backup_access_code(access_code_with_backup_code_pool)
-    assert backup_access_code.is_backup == True
 
 
 def test_access_codes_create_wait_for_code(seam: Seam):

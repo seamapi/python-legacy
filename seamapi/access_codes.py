@@ -465,7 +465,7 @@ class AccessCodes(AbstractAccessCodes):
 
         res = self.seam.make_request(
             "POST",
-            "/access_codes/create_multiple",
+            "/access_codes/pull_backup_access_code",
             json={"access_code_id": to_access_code_id(access_code)},
         )
 
