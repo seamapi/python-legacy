@@ -55,13 +55,21 @@ class AccessCodes(AbstractAccessCodes):
         self.seam = seam
 
     @report_error
-    def list(self, device: Union[DeviceId, Device]) -> List[AccessCode]:
+    def list(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        access_codes: Optional[
+            Union[List[AccessCode], List[AccessCodeId]]
+        ] = None,
+    ) -> List[AccessCode]:
         """Gets a list of access codes for a device.
 
         Parameters
         ----------
-        device : DeviceId or Device
+        device : Union[DeviceId, Device], optional
             Device id or Device to list access codes for
+        access_codes : Union[List[AccessCode], List[AccessCodeId]], optional
+            Access Code IDs or Access Codes to filter access_codes by
 
         Raises
         ------
@@ -73,15 +81,22 @@ class AccessCodes(AbstractAccessCodes):
             A list of access codes for a device.
         """
 
-        device_id = to_device_id(device)
+        params = {}
+        if device:
+            params["device_id"] = to_device_id(device)
+        if access_codes:
+            params["access_code_ids"] = [
+                to_access_code_id(ac) for ac in access_codes
+            ]
+
         res = self.seam.make_request(
             "GET",
             "/access_codes/list",
-            params={"device_id": device_id},
+            params=params,
         )
-        access_codes = res["access_codes"]
+        res_access_codes = res["access_codes"]
 
-        return [AccessCode.from_dict(ac) for ac in access_codes]
+        return [AccessCode.from_dict(ac) for ac in res_access_codes]
 
     @report_error
     def get(
@@ -323,6 +338,7 @@ class AccessCodes(AbstractAccessCodes):
         code: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
+        type: Optional[str] = None,
     ) -> AccessCode:
         """Updates an access code on a device.
 
@@ -340,6 +356,8 @@ class AccessCodes(AbstractAccessCodes):
             Time when access code becomes effective
         ends_at : str, optional
             Time when access code ceases to be effective
+        type : str, optional
+            Access code type eg. ongoing or time_bound
 
         Raises
         ------
@@ -363,6 +381,8 @@ class AccessCodes(AbstractAccessCodes):
             update_payload["starts_at"] = starts_at
         if ends_at is not None:
             update_payload["ends_at"] = ends_at
+        if type is not None:
+            update_payload["type"] = type
 
         res = self.seam.make_request(
             "POST",
