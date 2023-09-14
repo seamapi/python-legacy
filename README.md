@@ -43,7 +43,7 @@ first create a sandbox workspace [on your Developer Console](https://console.get
 then create a sandbox workspace.
 
 > NOTE: For installation on m1 mac, you may need to export the following lines
-> prior to `poetry install`...
+> prior to `poetry install`
 >
 > `export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"`
 >
