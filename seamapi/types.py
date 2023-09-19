@@ -221,8 +221,8 @@ class UnmanagedAccessCode:
     access_code_id: str
     device_id: str
     type: str
-    name: Optional[str] = ""
     created_at: str
+    name: Optional[str] = ""
     errors: List[Dict[str, Any]]
     warnings: List[Dict[str, Any]]
     code: Optional[str] = None
