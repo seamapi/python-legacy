@@ -198,6 +198,8 @@ class AccessCode:
     type: str
     code: str
     created_at: str
+    errors: List[Dict[str, Any]]
+    warnings: List[Dict[str, Any]]
     starts_at: Optional[str] = None
     ends_at: Optional[str] = None
     name: Optional[str] = ""
@@ -209,6 +211,25 @@ class AccessCode:
     pulled_backup_access_code_id: Optional[str] = None
     is_backup_access_code_available: Optional[bool] = None
     is_backup: Optional[bool] = None
+    appearance: Optional[Dict[str, Any]] = None
+    allow_external_modification: Optional[bool] = None
+
+
+@dataclass_json
+@dataclass
+class UnmanagedAccessCode:
+    access_code_id: str
+    device_id: str
+    type: str
+    name: Optional[str] = ""
+    created_at: str
+    errors: List[Dict[str, Any]]
+    warnings: List[Dict[str, Any]]
+    code: Optional[str] = None
+    is_managed: Optional[bool] = None
+    starts_at: Optional[str] = None
+    ends_at: Optional[str] = None
+    status: Optional[str] = None
 
 
 @dataclass
@@ -379,6 +400,32 @@ class AbstractAccessCodes(abc.ABC):
         self,
         access_code: Union[AccessCode, AccessCodeId],
     ) -> AccessCode:
+        raise NotImplementedError
+
+
+class AbstractUnmanagedAccessCodes(abc.ABC):
+    @abc.abstractmethod
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        access_code: Optional[Union[AccessCodeId, UnmanagedAccessCode]] = None,
+        code: Optional[str] = None,
+    ) -> UnmanagedAccessCode:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def list(
+        self,
+        device: Union[DeviceId, Device],
+    ) -> List[UnmanagedAccessCode]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def convert_to_managed(
+        self,
+        access_code: Union[AccessCodeId, UnmanagedAccessCode],
+        allow_external_modification: Optional[bool] = None,
+    ) -> ActionAttempt:
         raise NotImplementedError
 
 

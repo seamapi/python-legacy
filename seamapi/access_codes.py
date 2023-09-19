@@ -1,6 +1,8 @@
 import time
 from datetime import datetime, timezone, timedelta
 from seamapi.types import (
+    AbstractUnmanagedAccessCodes,
+    UnmanagedAccessCode,
     WaitForAccessCodeFailedException,
     AbstractAccessCodes,
     AccessCode,
@@ -30,12 +32,16 @@ class AccessCodes(AbstractAccessCodes):
 
     Methods
     -------
-    list(device)
+    list(device, access_codes=None)
         Gets a list of access codes for a device
     get(access_code=None, device=None)
         Gets a certain access code of a device
     create(device, name=None, code=None, starts_at=None, ends_at=None, attempt_for_offline_device=None, wait_for_code=None, timeout=None, allow_external_modification=None, prefer_native_scheduling=None, use_backup_access_code_pool=None)
         Creates an access code on a device
+    create_multiple(devices, name=None, code=None, starts_at=None, ends_at=None)
+        Creates multiple access codes across devices
+    update(access_code, device=None, name=None, code=None, starts_at=None, ends_at=None, type=None, allow_external_modification=None)
+        Updates an access code on a device
     delete(access_code, device=None)
         Deletes an access code on a device
     pull_backup_access_code(access_code)
@@ -53,6 +59,7 @@ class AccessCodes(AbstractAccessCodes):
         """
 
         self.seam = seam
+        self.unmanaged = UnmanagedAccessCodes(seam)
 
     @report_error
     def list(
@@ -339,6 +346,7 @@ class AccessCodes(AbstractAccessCodes):
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         type: Optional[str] = None,
+        allow_external_modification: Optional[bool] = None,
     ) -> AccessCode:
         """Updates an access code on a device.
 
@@ -358,6 +366,8 @@ class AccessCodes(AbstractAccessCodes):
             Time when access code ceases to be effective
         type : str, optional
             Access code type eg. ongoing or time_bound
+        allow_external_modification : bool, optional:
+            Allow external modifications of the access code e.g. through the lock provider's app. False by default.
 
         Raises
         ------
@@ -383,6 +393,10 @@ class AccessCodes(AbstractAccessCodes):
             update_payload["ends_at"] = ends_at
         if type is not None:
             update_payload["type"] = type
+        if allow_external_modification is not None:
+            update_payload[
+                "allow_external_modification"
+            ] = allow_external_modification
 
         res = self.seam.make_request(
             "POST",
@@ -470,3 +484,161 @@ class AccessCodes(AbstractAccessCodes):
         )
 
         return AccessCode.from_dict(res["backup_access_code"])
+
+
+class UnmanagedAccessCodes(AbstractUnmanagedAccessCodes):
+    """
+    A class used to retrieve unmanaged access code data
+    through interaction with Seam API
+
+    ...
+
+    Attributes
+    ----------
+    seam : Seam
+        Initial seam class
+
+    Methods
+    -------
+    get(device=None, access_code=None, code=None)
+        Gets an unmanaged access code
+    list(device)
+        Gets a list of unmanaged access codes
+    convert_to_managed(access_code, allow_external_modification=None)
+        Converts an unmanaged access code to a managed one
+    """
+
+    seam: Seam
+
+    def __init__(self, seam: Seam):
+        """
+        Parameters
+        ----------
+        seam : Seam
+          Initial seam class
+        """
+
+        self.seam = seam
+
+    @report_error
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        access_code: Optional[Union[AccessCodeId, AccessCode]] = None,
+        code: Optional[str] = None,
+    ) -> UnmanagedAccessCode:
+        """Gets an unmanaged access code.
+
+        Parameters
+        ----------
+        device : Union[DeviceId, Device], optional
+            Device ID or Device
+        access_code : Union[AccessCodeId, UnmanagedAccessCode], optional
+            Access Code ID or Access Code
+        code : str, optional
+            Pin code of an access code
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            An unmanaged access code.
+        """
+
+        params = {}
+
+        if device:
+            params["device_id"] = to_device_id(device)
+        if access_code:
+            params["access_code_id"] = to_access_code_id(device)
+        if code:
+            params["code"] = code
+
+        res = self.seam.make_request(
+            "GET",
+            "/access_codes/unmanaged/get",
+            params=params,
+        )
+        json_access_code = res["access_code"]
+
+        return UnmanagedAccessCode.from_dict(json_access_code)
+
+    @report_error
+    def list(
+        self,
+        device: Union[DeviceId, Device],
+    ) -> List[UnmanagedAccessCode]:
+        """Gets a list of unmanaged access codes.
+
+        Parameters
+        ----------
+        device : Union[DeviceId, Device], optional
+            Device ID or Device
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            A list of unmanaged access codes.
+        """
+
+        res = self.seam.make_request(
+            "GET",
+            "/access_codes/unmanaged/list",
+            params={"device_id": to_device_id(device)},
+        )
+        access_codes = res["access_codes"]
+
+        return [UnmanagedAccessCode.from_dict(ac) for ac in access_codes]
+
+    @report_error
+    def convert_to_managed(
+        self,
+        access_code: Union[AccessCodeId, UnmanagedAccessCode],
+        allow_external_modification: Optional[bool] = None,
+    ) -> ActionAttempt:
+        """Converts an unmanaged access code to a managed one.
+
+        Parameters
+        ----------
+        access_code : AccessCodeId or UnmanagedAccessCode
+            Access Code ID or UnmanagedAccessCode update
+        allow_external_modification : bool
+            Allow external modifications of the access code e.g. through the lock provider's app. False by default.
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            ActionAttempt
+        """
+
+        payload = {
+            "access_code_id": to_access_code_id(access_code),
+        }
+
+        if allow_external_modification is not None:
+            payload[
+                "allow_external_modification"
+            ] = allow_external_modification
+
+        res = self.seam.make_request(
+            "POST",
+            "/access_codes/unmanaged/convert_to_managed",
+            json=payload,
+        )
+
+        action_attempt = self.seam.action_attempts.poll_until_ready(
+            res["action_attempt"]["action_attempt_id"]
+        )
+        
+        return action_attempt
