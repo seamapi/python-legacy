@@ -222,9 +222,9 @@ class UnmanagedAccessCode:
     device_id: str
     type: str
     created_at: str
-    name: Optional[str] = ""
     errors: List[Dict[str, Any]]
     warnings: List[Dict[str, Any]]
+    name: Optional[str] = ""
     code: Optional[str] = None
     is_managed: Optional[bool] = None
     starts_at: Optional[str] = None

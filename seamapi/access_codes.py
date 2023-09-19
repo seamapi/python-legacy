@@ -523,18 +523,18 @@ class UnmanagedAccessCodes(AbstractUnmanagedAccessCodes):
     @report_error
     def get(
         self,
-        device: Optional[Union[DeviceId, Device]] = None,
         access_code: Optional[Union[AccessCodeId, AccessCode]] = None,
+        device: Optional[Union[DeviceId, Device]] = None,
         code: Optional[str] = None,
     ) -> UnmanagedAccessCode:
         """Gets an unmanaged access code.
 
         Parameters
         ----------
-        device : Union[DeviceId, Device], optional
-            Device ID or Device
         access_code : Union[AccessCodeId, UnmanagedAccessCode], optional
             Access Code ID or Access Code
+        device : Union[DeviceId, Device], optional
+            Device ID or Device
         code : str, optional
             Pin code of an access code
 
@@ -553,7 +553,7 @@ class UnmanagedAccessCodes(AbstractUnmanagedAccessCodes):
         if device:
             params["device_id"] = to_device_id(device)
         if access_code:
-            params["access_code_id"] = to_access_code_id(device)
+            params["access_code_id"] = to_access_code_id(access_code)
         if code:
             params["code"] = code
 
