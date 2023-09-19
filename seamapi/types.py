@@ -328,7 +328,35 @@ class AbstractLocks(abc.ABC):
         raise NotImplementedError
 
 
+class AbstractUnmanagedAccessCodes(abc.ABC):
+    @abc.abstractmethod
+    def get(
+        self,
+        device: Optional[Union[DeviceId, Device]] = None,
+        access_code: Optional[Union[AccessCodeId, UnmanagedAccessCode]] = None,
+        code: Optional[str] = None,
+    ) -> UnmanagedAccessCode:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def list(
+        self,
+        device: Union[DeviceId, Device],
+    ) -> List[UnmanagedAccessCode]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def convert_to_managed(
+        self,
+        access_code: Union[AccessCodeId, UnmanagedAccessCode],
+        allow_external_modification: Optional[bool] = None,
+    ) -> ActionAttempt:
+        raise NotImplementedError
+
+
 class AbstractAccessCodes(abc.ABC):
+    unmanaged: AbstractUnmanagedAccessCodes
+
     @abc.abstractmethod
     def list(
         self,
@@ -400,32 +428,6 @@ class AbstractAccessCodes(abc.ABC):
         self,
         access_code: Union[AccessCode, AccessCodeId],
     ) -> AccessCode:
-        raise NotImplementedError
-
-
-class AbstractUnmanagedAccessCodes(abc.ABC):
-    @abc.abstractmethod
-    def get(
-        self,
-        device: Optional[Union[DeviceId, Device]] = None,
-        access_code: Optional[Union[AccessCodeId, UnmanagedAccessCode]] = None,
-        code: Optional[str] = None,
-    ) -> UnmanagedAccessCode:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def list(
-        self,
-        device: Union[DeviceId, Device],
-    ) -> List[UnmanagedAccessCode]:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def convert_to_managed(
-        self,
-        access_code: Union[AccessCodeId, UnmanagedAccessCode],
-        allow_external_modification: Optional[bool] = None,
-    ) -> ActionAttempt:
         raise NotImplementedError
 
 
