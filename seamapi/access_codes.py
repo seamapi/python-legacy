@@ -608,7 +608,7 @@ class UnmanagedAccessCodes(AbstractUnmanagedAccessCodes):
         Parameters
         ----------
         access_code : AccessCodeId or UnmanagedAccessCode
-            Access Code ID or UnmanagedAccessCode update
+            Access Code ID or UnmanagedAccessCode
         allow_external_modification : bool
             Allow external modifications of the access code e.g. through the lock provider's app. False by default.
 
