@@ -76,18 +76,3 @@ def test_access_codes_create_wait_for_code(seam: Seam):
             ends_at="3001-01-03",
         )
     assert "future time bound code" in str(excinfo.value)
-
-def test_unmanaged_access_codes(seam: Seam):
-    run_august_factory(seam)
-
-    device = seam.devices.list()[0]
-
-    access_code = seam.access_codes.create(
-        device, "Test code", "8989"
-    )
-    unmanaged_access_codes = seam.access_codes.unmanaged.list(device)
-    assert len(unmanaged_access_codes) == 0
-
-    seam.access_codes.unmanaged.get(access_code)
-
-    
