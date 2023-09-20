@@ -212,7 +212,7 @@ class AccessCode:
     is_backup_access_code_available: Optional[bool] = None
     is_backup: Optional[bool] = None
     appearance: Optional[Dict[str, Any]] = None
-    allow_external_modification: Optional[bool] = None
+    is_external_modification_allowed: Optional[bool] = None
 
 
 @dataclass_json
