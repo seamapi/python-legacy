@@ -388,6 +388,7 @@ class AbstractAccessCodes(abc.ABC):
 
     @abc.abstractmethod
     def create(
+        self,
         device: Union[DeviceId, Device],
         name: Optional[str] = None,
         code: Optional[str] = None,
