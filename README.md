@@ -1,6 +1,6 @@
 # Seam for Python
 
-Control locks, lights and other internet of things devices with Seam's simple API. Check out the [documentation](https://docs.getseam.com) or [some examples](examples)
+Control locks, lights and other internet of things devices with Seam's simple API. Check out the [documentation](https://docs.getseam.com) or [some examples](examples).
 
 ## Setup
 
