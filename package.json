@@ -1,0 +1,31 @@
+{
+  "name": "python",
+  "version": "1.0.0",
+  "description": "Control locks, lights and other internet of things devices with Seam's simple API. Check out the [documentation](https://docs.getseam.com) or [some examples](examples).",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "tests"
+  },
+  "scripts": {
+    "generate": "nextlove-sdk-generator generate python ./seamapi2",
+    "prerelease": "npm run generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seamapi/python.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seamapi/python/issues"
+  },
+  "homepage": "https://github.com/seamapi/python#readme",
+  "devDependencies": {
+    "@seamapi/nextlove-sdk-generator": "^1.1.1"
+  },
+  "dependencies": {
+    "@seamapi/types": "^1.22.1"
+  }
+}
