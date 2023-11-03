@@ -8,7 +8,7 @@
     "test": "tests"
   },
   "scripts": {
-    "generate": "nextlove-sdk-generator generate python ./seamapi2",
+    "generate": "./generate.sh",
     "prerelease": "npm run generate"
   },
   "repository": {

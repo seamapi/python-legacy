@@ -1,7 +1,7 @@
-from seamapi.types import (AbstractThermostats,AbstractSeam as Seam,Device)
+from seamapi.types import (AbstractUnmanagedDevices,AbstractSeam as Seam,UnmanagedDevice)
 from typing import (Optional, Any)
 
-class Thermostats(AbstractThermostats):
+class UnmanagedDevices(AbstractUnmanagedDevices):
   seam: Seam
 
   def __init__(self, seam: Seam):
@@ -9,7 +9,7 @@ class Thermostats(AbstractThermostats):
 
   
   
-  def get(self, device_id: Optional[Any] = None, name: Optional[Any] = None):
+  def get(self, device_id: Any, name: Optional[Any] = None):
     json_payload = {}
     if device_id is not None:
       json_payload["device_id"] = device_id
@@ -17,10 +17,10 @@ class Thermostats(AbstractThermostats):
       json_payload["name"] = name
     res = self.seam.make_request(
       "POST",
-      "/thermostats/get",
+      "/devices/unmanaged/get",
       json=json_payload
     )
-    return Device.from_dict(res["thermostat"])
+    return UnmanagedDevice.from_dict(res["device"])
   
   
   def list(self, connected_account_id: Optional[Any] = None, connected_account_ids: Optional[Any] = None, connect_webview_id: Optional[Any] = None, device_types: Optional[Any] = None, manufacturer: Optional[Any] = None, device_ids: Optional[Any] = None, limit: Optional[Any] = None, created_before: Optional[Any] = None, user_identifier_key: Optional[Any] = None):
@@ -45,7 +45,7 @@ class Thermostats(AbstractThermostats):
       json_payload["user_identifier_key"] = user_identifier_key
     res = self.seam.make_request(
       "POST",
-      "/thermostats/list",
+      "/devices/unmanaged/list",
       json=json_payload
     )
-    return [Device.from_dict(item) for item in res["thermostats"]]
+    return [UnmanagedDevice.from_dict(item) for item in res["devices"]]

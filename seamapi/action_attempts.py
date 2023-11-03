@@ -1,134 +1,33 @@
-from seamapi.types import (
-    AbstractActionAttempts,
-    ActionAttemptError,
-    ActionAttempt,
-    AbstractSeam as Seam,
-    ActionAttemptFailedException,
-    ActionAttemptId,
-)
-import time
-import requests
-from typing import Union
-from seamapi.utils.convert_to_id import to_action_attempt_id
-from seamapi.utils.report_error import report_error
-
+from seamapi.types import (AbstractActionAttempts,AbstractSeam as Seam,ActionAttempt)
+from typing import (Optional, Any)
 
 class ActionAttempts(AbstractActionAttempts):
-    """
-    A class used to retrieve action attempt data
-    through interaction with Seam API
+  seam: Seam
 
-    ...
+  def __init__(self, seam: Seam):
+    self.seam = seam
 
-    Attributes
-    ----------
-    seam : Seam
-        Initial seam class
-
-    Methods
-    -------
-    get(action_attempt)
-        Gets data about an action attempt
-    poll_until_ready(action_attempt)
-        Polls an action attempt until its status is 'success' or 'error'
-    """
-
-    seam: Seam
-
-    def __init__(self, seam: Seam):
-        """
-        Parameters
-        ----------
-        seam : Seam
-          Initial seam class
-        """
-
-        self.seam = seam
-
-    @report_error
-    def get(
-        self, action_attempt: Union[ActionAttemptId, ActionAttempt]
-    ) -> ActionAttempt:
-        """Gets data about an action attempt.
-
-        Parameters
-        ----------
-        action_attempt : ActionAttemptId or ActionAttempt
-            Action attempt id or ActionAttempt to get latest state of
-
-        Raises
-        ------
-        Exception
-            If the API request wasn't successful.
-
-        Returns
-        ------
-            ActionAttempt
-        """
-
-        action_attempt_id = to_action_attempt_id(action_attempt)
-        res = self.seam.make_request(
-            "GET",
-            "/action_attempts/get",
-            params={"action_attempt_id": action_attempt_id},
-        )
-
-        json_aa = res["action_attempt"]
-        error = None
-        if "error" in json_aa and json_aa["error"] is not None:
-            error = ActionAttemptError(
-                type=json_aa["error"]["type"],
-                message=json_aa["error"]["message"],
-            )
-
-        return ActionAttempt(
-            action_attempt_id=json_aa["action_attempt_id"],
-            status=json_aa["status"],
-            action_type=json_aa["action_type"],
-            result=json_aa["result"],
-            error=error,
-        )
-
-    @report_error
-    def poll_until_ready(
-        self,
-        action_attempt: Union[ActionAttemptId, ActionAttempt],
-        should_raise: bool = True,
-    ) -> ActionAttempt:
-        """
-        Polls an action attempt until its status is 'success' or 'error'.
-
-        Parameters
-        ----------
-        action_attempt: ActionAttemptId or ActionAttempt
-            Action attempt id or ActionAttempt to be polled
-        should_raise: bool
-            Should raise an exception if action attempt status is 'error'
-
-        Returns
-        ------
-            ActionAttempt
-        """
-
-        updated_action_attempt = None
-        while (
-            updated_action_attempt is None
-            or updated_action_attempt.status == "pending"
-        ):
-            updated_action_attempt = self.get(action_attempt)
-            time.sleep(0.25)
-
-        if updated_action_attempt.status == "error" and should_raise:
-            error_type = None
-            error_message = None
-            if updated_action_attempt.error is not None:
-                error_type = updated_action_attempt.error.type
-                error_message = updated_action_attempt.error.message
-            raise ActionAttemptFailedException(
-                action_attempt_id=updated_action_attempt.action_attempt_id,
-                action_type=updated_action_attempt.action_type,
-                error_type=error_type,
-                error_message=error_message,
-            )
-
-        return updated_action_attempt
+  
+  
+  def get(self, action_attempt_id: Any):
+    json_payload = {}
+    if action_attempt_id is not None:
+      json_payload["action_attempt_id"] = action_attempt_id
+    res = self.seam.make_request(
+      "POST",
+      "/action_attempts/get",
+      json=json_payload
+    )
+    return ActionAttempt.from_dict(res["action_attempt"])
+  
+  
+  def list(self, action_attempt_ids: Optional[Any] = None):
+    json_payload = {}
+    if action_attempt_ids is not None:
+      json_payload["action_attempt_ids"] = action_attempt_ids
+    res = self.seam.make_request(
+      "POST",
+      "/action_attempts/list",
+      json=json_payload
+    )
+    return [ActionAttempt.from_dict(item) for item in res["action_attempts"]]
