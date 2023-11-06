@@ -159,6 +159,10 @@ class AccessCodes(AbstractAccessCodes):
         allow_external_modification: Optional[bool] = None,
         prefer_native_scheduling: Optional[bool] = None,
         use_backup_access_code_pool: Optional[bool] = None,
+        use_offline_access_code: Optional[bool] = None,
+        is_offline_access_code: Optional[bool] = None,
+        is_one_time_use: Optional[bool] = None,
+        max_time_rounding: Optional[str] = None,
     ) -> AccessCode:
         """Creates an access code on a device.
 
@@ -187,6 +191,14 @@ class AccessCodes(AbstractAccessCodes):
             Where possible, prefer lock provider's native access code scheduling. True by default.
         use_backup_access_code_pool : bool, optional:
             Activate backup access code pool. False by default.
+        use_offline_access_code : bool, optional:
+            Use offline access code. False by default.
+        is_offline_access_code : bool, optional:
+            Is offline access code. False by default.
+        is_one_time_use : bool, optional:
+            Is one time use. For offline access codes only. False by default.
+        max_time_rounding : str, optional:
+            Accepts 1day, 1d, 1hour and 1h. For offline access codes only. "1hour" by default.
 
         Raises
         ------
@@ -228,6 +240,22 @@ class AccessCodes(AbstractAccessCodes):
             create_payload[
                 "use_backup_access_code_pool"
             ] = use_backup_access_code_pool
+        if use_offline_access_code is not None:
+            create_payload[
+                "use_offline_access_code"
+            ] = use_offline_access_code
+        if is_offline_access_code is not None:
+            create_payload[
+                "is_offline_access_code"
+            ] = is_offline_access_code
+        if is_one_time_use is not None:
+            create_payload[
+                "is_one_time_use"
+            ] = is_one_time_use
+        if max_time_rounding is not None:
+            create_payload[
+                "max_time_rounding"
+            ] = max_time_rounding
 
         if (
             wait_for_code
