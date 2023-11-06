@@ -213,6 +213,8 @@ class AccessCode:
     is_backup: Optional[bool] = None
     appearance: Optional[Dict[str, Any]] = None
     is_external_modification_allowed: Optional[bool] = None
+    is_offline_access_code: Optional[bool] = None
+    is_one_time_use: Optional[bool] = None
 
 
 @dataclass_json
