@@ -53,9 +53,7 @@ class ActionAttemptFailedException(Exception):
 
 
 class WaitForAccessCodeFailedException(Exception):
-    def __init__(
-        self, message: str, access_code_id: str, errors: Optional[list] = []
-    ):
+    def __init__(self, message: str, access_code_id: str, errors: Optional[list] = []):
         self.access_code_id = access_code_id
         self.errors = errors
         super().__init__(f"Failed while waiting for access code. ${message}")
@@ -363,9 +361,7 @@ class AbstractAccessCodes(abc.ABC):
     def list(
         self,
         device: Optional[Union[DeviceId, Device]] = None,
-        access_codes: Optional[
-            Union[List[AccessCode], List[AccessCodeId]]
-        ] = None,
+        access_codes: Optional[Union[List[AccessCode], List[AccessCodeId]]] = None,
     ) -> List[AccessCode]:
         raise NotImplementedError
 
@@ -394,6 +390,7 @@ class AbstractAccessCodes(abc.ABC):
         device: Union[DeviceId, Device],
         name: Optional[str] = None,
         code: Optional[str] = None,
+        type: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
@@ -486,9 +483,7 @@ class AbstractNoiseSensors(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def list_noise_levels(
-        self, starting_after=None, ending_before=None
-    ) -> None:
+    def list_noise_levels(self, starting_after=None, ending_before=None) -> None:
         raise NotImplementedError
 
 
@@ -505,9 +500,7 @@ class AbstractUnmanagedDevices(abc.ABC):
     def list(
         self,
         connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
-        connected_accounts: List[
-            Union[ConnectedAccountId, ConnectedAccount]
-        ] = None,
+        connected_accounts: List[Union[ConnectedAccountId, ConnectedAccount]] = None,
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
         device_types: Optional[List[DeviceType]] = None,
@@ -534,9 +527,7 @@ class AbstractDevices(abc.ABC):
     def list(
         self,
         connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
-        connected_accounts: List[
-            Union[ConnectedAccountId, ConnectedAccount]
-        ] = None,
+        connected_accounts: List[Union[ConnectedAccountId, ConnectedAccount]] = None,
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
         device_types: Optional[List[DeviceType]] = None,
@@ -695,9 +686,7 @@ class AbstractThermostats(abc.ABC):
     def list(
         self,
         connected_account: Union[ConnectedAccountId, ConnectedAccount] = None,
-        connected_accounts: List[
-            Union[ConnectedAccountId, ConnectedAccount]
-        ] = None,
+        connected_accounts: List[Union[ConnectedAccountId, ConnectedAccount]] = None,
         connect_webview: Union[ConnectWebviewId, ConnectWebview] = None,
         device_type: Optional[DeviceType] = None,
         device_types: Optional[List[DeviceType]] = None,
