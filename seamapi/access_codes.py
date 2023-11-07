@@ -65,9 +65,7 @@ class AccessCodes(AbstractAccessCodes):
     def list(
         self,
         device: Optional[Union[DeviceId, Device]] = None,
-        access_codes: Optional[
-            Union[List[AccessCode], List[AccessCodeId]]
-        ] = None,
+        access_codes: Optional[Union[List[AccessCode], List[AccessCodeId]]] = None,
     ) -> List[AccessCode]:
         """Gets a list of access codes for a device.
 
@@ -92,9 +90,7 @@ class AccessCodes(AbstractAccessCodes):
         if device:
             params["device_id"] = to_device_id(device)
         if access_codes:
-            params["access_code_ids"] = [
-                to_access_code_id(ac) for ac in access_codes
-            ]
+            params["access_code_ids"] = [to_access_code_id(ac) for ac in access_codes]
 
         res = self.seam.make_request(
             "GET",
@@ -150,6 +146,7 @@ class AccessCodes(AbstractAccessCodes):
         device: Union[DeviceId, Device],
         name: Optional[str] = None,
         code: Optional[str] = None,
+        type: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
         common_code_key: Optional[str] = None,
@@ -174,6 +171,8 @@ class AccessCodes(AbstractAccessCodes):
             Access code name
         code : str, optional
             Access code value
+        type : str, optional
+            Access code type eg. ongoing or time_bound
         starts_at : str, optional
             Time when access code becomes effective
         ends_at : str, optional
@@ -224,38 +223,24 @@ class AccessCodes(AbstractAccessCodes):
             create_payload["ends_at"] = ends_at
         if common_code_key is not None:
             create_payload["common_code_key"] = common_code_key
+        if type is not None:
+            create_payload["type"] = type
         if attempt_for_offline_device is not None:
-            create_payload[
-                "attempt_for_offline_device"
-            ] = attempt_for_offline_device
+            create_payload["attempt_for_offline_device"] = attempt_for_offline_device
         if allow_external_modification is not None:
-            create_payload[
-                "allow_external_modification"
-            ] = allow_external_modification
+            create_payload["allow_external_modification"] = allow_external_modification
         if prefer_native_scheduling is not None:
-            create_payload[
-                "prefer_native_scheduling"
-            ] = prefer_native_scheduling
+            create_payload["prefer_native_scheduling"] = prefer_native_scheduling
         if use_backup_access_code_pool is not None:
-            create_payload[
-                "use_backup_access_code_pool"
-            ] = use_backup_access_code_pool
+            create_payload["use_backup_access_code_pool"] = use_backup_access_code_pool
         if use_offline_access_code is not None:
-            create_payload[
-                "use_offline_access_code"
-            ] = use_offline_access_code
+            create_payload["use_offline_access_code"] = use_offline_access_code
         if is_offline_access_code is not None:
-            create_payload[
-                "is_offline_access_code"
-            ] = is_offline_access_code
+            create_payload["is_offline_access_code"] = is_offline_access_code
         if is_one_time_use is not None:
-            create_payload[
-                "is_one_time_use"
-            ] = is_one_time_use
+            create_payload["is_one_time_use"] = is_one_time_use
         if max_time_rounding is not None:
-            create_payload[
-                "max_time_rounding"
-            ] = max_time_rounding
+            create_payload["max_time_rounding"] = max_time_rounding
 
         if (
             wait_for_code
@@ -263,9 +248,7 @@ class AccessCodes(AbstractAccessCodes):
             and datetime.fromisoformat(starts_at)
             > datetime.now() + timedelta(seconds=5)
         ):
-            raise RuntimeError(
-                "Cannot use wait_for_code with a future time bound code"
-            )
+            raise RuntimeError("Cannot use wait_for_code with a future time bound code")
 
         res = self.seam.make_request(
             "POST",
@@ -422,9 +405,7 @@ class AccessCodes(AbstractAccessCodes):
         if type is not None:
             update_payload["type"] = type
         if allow_external_modification is not None:
-            update_payload[
-                "allow_external_modification"
-            ] = allow_external_modification
+            update_payload["allow_external_modification"] = allow_external_modification
 
         res = self.seam.make_request(
             "POST",
@@ -655,9 +636,7 @@ class UnmanagedAccessCodes(AbstractUnmanagedAccessCodes):
         }
 
         if allow_external_modification is not None:
-            payload[
-                "allow_external_modification"
-            ] = allow_external_modification
+            payload["allow_external_modification"] = allow_external_modification
 
         res = self.seam.make_request(
             "POST",
@@ -668,5 +647,5 @@ class UnmanagedAccessCodes(AbstractUnmanagedAccessCodes):
         action_attempt = self.seam.action_attempts.poll_until_ready(
             res["action_attempt"]["action_attempt_id"]
         )
-        
+
         return action_attempt
