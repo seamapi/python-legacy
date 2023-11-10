@@ -244,6 +244,7 @@ class AccessCodes(AbstractAccessCodes):
 
         if (
             wait_for_code
+            and not is_offline_access_code
             and starts_at is not None
             and datetime.fromisoformat(starts_at)
             > datetime.now() + timedelta(seconds=5)
