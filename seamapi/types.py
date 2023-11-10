@@ -194,8 +194,8 @@ class AccessCode:
     access_code_id: str
     device_id: str
     type: str
+    code: Optional[str] = ""
     created_at: str
-    code: Optional[str] = None
     errors: List[Dict[str, Any]]
     warnings: List[Dict[str, Any]]
     starts_at: Optional[str] = None
