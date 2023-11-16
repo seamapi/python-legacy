@@ -17,3 +17,13 @@ class Workspaces(AbstractWorkspaces):
       json=json_payload
     )
     return Workspace.from_dict(res["workspace"])
+  
+  
+  def list(self, ):
+    json_payload = {}
+    res = self.seam.make_request(
+      "POST",
+      "/workspaces/list",
+      json=json_payload
+    )
+    return [Workspace.from_dict(item) for item in res["workspaces"]]

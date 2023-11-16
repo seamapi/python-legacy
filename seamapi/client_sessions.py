@@ -9,7 +9,7 @@ class ClientSessions(AbstractClientSessions):
 
   
   
-  def create(self, user_identifier_key: Optional[Any] = None, connect_webview_ids: Optional[Any] = None, connected_account_ids: Optional[Any] = None):
+  def create(self, user_identifier_key: Optional[Any] = None, connect_webview_ids: Optional[Any] = None, connected_account_ids: Optional[Any] = None, user_identity_ids: Optional[Any] = None, expires_at: Optional[Any] = None):
     json_payload = {}
     if user_identifier_key is not None:
       json_payload["user_identifier_key"] = user_identifier_key
@@ -17,6 +17,10 @@ class ClientSessions(AbstractClientSessions):
       json_payload["connect_webview_ids"] = connect_webview_ids
     if connected_account_ids is not None:
       json_payload["connected_account_ids"] = connected_account_ids
+    if user_identity_ids is not None:
+      json_payload["user_identity_ids"] = user_identity_ids
+    if expires_at is not None:
+      json_payload["expires_at"] = expires_at
     res = self.seam.make_request(
       "POST",
       "/client_sessions/create",
@@ -39,7 +43,7 @@ class ClientSessions(AbstractClientSessions):
     return ClientSession.from_dict(res["client_session"])
   
   
-  def get_or_create(self, user_identifier_key: Optional[Any] = None, connect_webview_ids: Optional[Any] = None, connected_account_ids: Optional[Any] = None):
+  def get_or_create(self, user_identifier_key: Optional[Any] = None, connect_webview_ids: Optional[Any] = None, connected_account_ids: Optional[Any] = None, user_identity_ids: Optional[Any] = None, expires_at: Optional[Any] = None):
     json_payload = {}
     if user_identifier_key is not None:
       json_payload["user_identifier_key"] = user_identifier_key
@@ -47,6 +51,10 @@ class ClientSessions(AbstractClientSessions):
       json_payload["connect_webview_ids"] = connect_webview_ids
     if connected_account_ids is not None:
       json_payload["connected_account_ids"] = connected_account_ids
+    if user_identity_ids is not None:
+      json_payload["user_identity_ids"] = user_identity_ids
+    if expires_at is not None:
+      json_payload["expires_at"] = expires_at
     res = self.seam.make_request(
       "POST",
       "/client_sessions/get_or_create",

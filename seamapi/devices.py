@@ -1,4 +1,4 @@
-from seamapi.types import (AbstractDevices,AbstractSeam as Seam,Device)
+from seamapi.types import (AbstractDevices,AbstractSeam as Seam,Device,DeviceProvider)
 from typing import (Optional, Any)
 
 class Devices(AbstractDevices):
@@ -49,3 +49,15 @@ class Devices(AbstractDevices):
       json=json_payload
     )
     return [Device.from_dict(item) for item in res["devices"]]
+  
+  
+  def list_device_providers(self, provider_category: Optional[Any] = None):
+    json_payload = {}
+    if provider_category is not None:
+      json_payload["provider_category"] = provider_category
+    res = self.seam.make_request(
+      "POST",
+      "/devices/list_device_providers",
+      json=json_payload
+    )
+    return [DeviceProvider.from_dict(item) for item in res["device_providers"]]

@@ -25,6 +25,8 @@ class AccessCode:
   is_backup: bool
   pulled_backup_access_code_id: str
   is_external_modification_allowed: bool
+  is_one_time_use: bool
+  is_offline_access_code: bool
 
   @staticmethod
   def from_dict(d: Dict[str, Any]):
@@ -48,6 +50,8 @@ class AccessCode:
       is_backup=d.get("is_backup", None),
       pulled_backup_access_code_id=d.get("pulled_backup_access_code_id", None),
       is_external_modification_allowed=d.get("is_external_modification_allowed", None),
+      is_one_time_use=d.get("is_one_time_use", None),
+      is_offline_access_code=d.get("is_offline_access_code", None),
       )
 @dataclass
 class UnmanagedAccessCode:
@@ -106,6 +110,7 @@ class ClientSession:
   device_count: float
   connected_account_ids: List[Any]
   connect_webview_ids: List[Any]
+  user_identity_ids: List[Any]
   workspace_id: str
 
   @staticmethod
@@ -118,6 +123,7 @@ class ClientSession:
       device_count=d.get("device_count", None),
       connected_account_ids=d.get("connected_account_ids", None),
       connect_webview_ids=d.get("connect_webview_ids", None),
+      user_identity_ids=d.get("user_identity_ids", None),
       workspace_id=d.get("workspace_id", None),
       )
 @dataclass
@@ -171,6 +177,13 @@ class ConnectWebview:
   created_at: str
   login_successful: bool
   status: str
+  custom_redirect_url: str
+  custom_redirect_failure_url: str
+  custom_metadata: Dict[str, Any]
+  automatically_manage_new_devices: bool
+  wait_for_device_creation: bool
+  authorized_at: str
+  selected_provider: str
 
   @staticmethod
   def from_dict(d: Dict[str, Any]):
@@ -187,6 +200,13 @@ class ConnectWebview:
       created_at=d.get("created_at", None),
       login_successful=d.get("login_successful", None),
       status=d.get("status", None),
+      custom_redirect_url=d.get("custom_redirect_url", None),
+      custom_redirect_failure_url=d.get("custom_redirect_failure_url", None),
+      custom_metadata=d.get("custom_metadata", None),
+      automatically_manage_new_devices=d.get("automatically_manage_new_devices", None),
+      wait_for_device_creation=d.get("wait_for_device_creation", None),
+      authorized_at=d.get("authorized_at", None),
+      selected_provider=d.get("selected_provider", None),
       )
 @dataclass
 class ConnectedAccount:
@@ -241,6 +261,48 @@ class Device:
       is_managed=d.get("is_managed", None),
       )
 @dataclass
+class UnmanagedDevice:
+  device_id: str
+  device_type: Any
+  connected_account_id: str
+  capabilities_supported: List[Any]
+  workspace_id: str
+  errors: List[Any]
+  warnings: List[Any]
+  created_at: str
+  is_managed: bool
+  properties: Dict[str, Any]
+
+  @staticmethod
+  def from_dict(d: Dict[str, Any]):
+    return UnmanagedDevice(
+      device_id=d.get("device_id", None),
+      device_type=d.get("device_type", None),
+      connected_account_id=d.get("connected_account_id", None),
+      capabilities_supported=d.get("capabilities_supported", None),
+      workspace_id=d.get("workspace_id", None),
+      errors=d.get("errors", None),
+      warnings=d.get("warnings", None),
+      created_at=d.get("created_at", None),
+      is_managed=d.get("is_managed", None),
+      properties=d.get("properties", None),
+      )
+@dataclass
+class DeviceProvider:
+  device_provider_name: str
+  display_name: str
+  image_url: str
+  provider_categories: List[Any]
+
+  @staticmethod
+  def from_dict(d: Dict[str, Any]):
+    return DeviceProvider(
+      device_provider_name=d.get("device_provider_name", None),
+      display_name=d.get("display_name", None),
+      image_url=d.get("image_url", None),
+      provider_categories=d.get("provider_categories", None),
+      )
+@dataclass
 class Event:
   event_id: str
   device_id: str
@@ -292,33 +354,6 @@ class ServiceHealth:
       service=d.get("service", None),
       status=d.get("status", None),
       description=d.get("description", None),
-      )
-@dataclass
-class UnmanagedDevice:
-  device_id: str
-  device_type: Any
-  connected_account_id: str
-  capabilities_supported: List[Any]
-  workspace_id: str
-  errors: List[Any]
-  warnings: List[Any]
-  created_at: str
-  is_managed: bool
-  properties: Dict[str, Any]
-
-  @staticmethod
-  def from_dict(d: Dict[str, Any]):
-    return UnmanagedDevice(
-      device_id=d.get("device_id", None),
-      device_type=d.get("device_type", None),
-      connected_account_id=d.get("connected_account_id", None),
-      capabilities_supported=d.get("capabilities_supported", None),
-      workspace_id=d.get("workspace_id", None),
-      errors=d.get("errors", None),
-      warnings=d.get("warnings", None),
-      created_at=d.get("created_at", None),
-      is_managed=d.get("is_managed", None),
-      properties=d.get("properties", None),
       )
 @dataclass
 class Webhook:
@@ -410,6 +445,7 @@ class AcsUser:
   is_suspended: bool
   full_name: str
   email: str
+  email_address: str
   phone_number: str
 
   @staticmethod
@@ -425,6 +461,7 @@ class AcsUser:
       is_suspended=d.get("is_suspended", None),
       full_name=d.get("full_name", None),
       email=d.get("email", None),
+      email_address=d.get("email_address", None),
       phone_number=d.get("phone_number", None),
       )
 
@@ -492,7 +529,7 @@ class AbstractClientSessions(abc.ABC):
   
   
   @abc.abstractmethod
-  def create(self, user_identifier_key: Optional[Any] = None, connect_webview_ids: Optional[Any] = None, connected_account_ids: Optional[Any] = None):
+  def create(self, user_identifier_key: Optional[Any] = None, connect_webview_ids: Optional[Any] = None, connected_account_ids: Optional[Any] = None, user_identity_ids: Optional[Any] = None, expires_at: Optional[Any] = None):
     raise NotImplementedError()
   
   
@@ -502,7 +539,7 @@ class AbstractClientSessions(abc.ABC):
   
   
   @abc.abstractmethod
-  def get_or_create(self, user_identifier_key: Optional[Any] = None, connect_webview_ids: Optional[Any] = None, connected_account_ids: Optional[Any] = None):
+  def get_or_create(self, user_identifier_key: Optional[Any] = None, connect_webview_ids: Optional[Any] = None, connected_account_ids: Optional[Any] = None, user_identity_ids: Optional[Any] = None, expires_at: Optional[Any] = None):
     raise NotImplementedError()
   
   
@@ -550,6 +587,11 @@ class AbstractDevices(abc.ABC):
   @abc.abstractmethod
   def list(self, connected_account_id: Optional[Any] = None, connected_account_ids: Optional[Any] = None, connect_webview_id: Optional[Any] = None, device_types: Optional[Any] = None, manufacturer: Optional[Any] = None, device_ids: Optional[Any] = None, limit: Optional[Any] = None, created_before: Optional[Any] = None, user_identifier_key: Optional[Any] = None):
     raise NotImplementedError()
+  
+  
+  @abc.abstractmethod
+  def list_device_providers(self, provider_category: Optional[Any] = None):
+    raise NotImplementedError()
 class AbstractEvents(abc.ABC):
 
   
@@ -566,6 +608,16 @@ class AbstractHealth(abc.ABC):
   pass
 class AbstractLocks(abc.ABC):
 
+  
+  
+  @abc.abstractmethod
+  def get(self, device_id: Any, name: Optional[Any] = None):
+    raise NotImplementedError()
+  
+  
+  @abc.abstractmethod
+  def list(self, connected_account_id: Optional[Any] = None, connected_account_ids: Optional[Any] = None, connect_webview_id: Optional[Any] = None, device_types: Optional[Any] = None, manufacturer: Optional[Any] = None, device_ids: Optional[Any] = None, limit: Optional[Any] = None, created_before: Optional[Any] = None, user_identifier_key: Optional[Any] = None):
+    raise NotImplementedError()
   
   
   @abc.abstractmethod
@@ -614,6 +666,11 @@ class AbstractWorkspaces(abc.ABC):
   @abc.abstractmethod
   def get(self, ):
     raise NotImplementedError()
+  
+  
+  @abc.abstractmethod
+  def list(self, ):
+    raise NotImplementedError()
 class AbstractSimulateAccessCodes(abc.ABC):
 
   
@@ -641,6 +698,8 @@ class AbstractUnmanagedAccessCodes(abc.ABC):
 class AbstractAccessGroupsAcs(abc.ABC):
   pass
 class AbstractCredentialsAcs(abc.ABC):
+  pass
+class AbstractEntrancesAcs(abc.ABC):
   pass
 class AbstractSystemsAcs(abc.ABC):
   pass
