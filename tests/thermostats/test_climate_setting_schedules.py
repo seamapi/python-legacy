@@ -6,7 +6,7 @@ def add_month_to_date(date: datetime.date, months: int) -> datetime.date:
     return datetime.datetime(date.year + int(date.month / 12), ((date.month % 12) + months), 1)
 
 def test_climate_setting_schedules(seam: Seam):
-    # run_nest_factory(seam)
+    run_nest_factory(seam)
 
     thermostat = seam.thermostats.list()[0]
 
@@ -31,28 +31,28 @@ def test_climate_setting_schedules(seam: Seam):
 
     assert climate_setting_schedule.name == "Vacation Setting"
 
-    # # Test List
-    # climate_setting_schedules = seam.thermostats.climate_setting_schedules.list(device=thermostat)
-    # assert len(climate_setting_schedules) == 1
+    # Test List
+    climate_setting_schedules = seam.thermostats.climate_setting_schedules.list(device=thermostat)
+    assert len(climate_setting_schedules) == 1
 
-    # # Test Update
-    # updated_climate_setting_schedule = seam.thermostats.climate_setting_schedules.update(
-    #     climate_setting_schedule=climate_setting_schedule,
-    #     name="Vacation Setting 2",
-    # )
+    # Test Update
+    updated_climate_setting_schedule = seam.thermostats.climate_setting_schedules.update(
+        climate_setting_schedule=climate_setting_schedule,
+        name="Vacation Setting 2",
+    )
 
-    # assert updated_climate_setting_schedule.name == "Vacation Setting 2"
+    assert updated_climate_setting_schedule.name == "Vacation Setting 2"
 
-    # # Test Get
-    # climate_setting_schedule = seam.thermostats.climate_setting_schedules.get(
-    #     climate_setting_schedule=climate_setting_schedule,
-    # )
+    # Test Get
+    climate_setting_schedule = seam.thermostats.climate_setting_schedules.get(
+        climate_setting_schedule=climate_setting_schedule,
+    )
 
-    # assert climate_setting_schedule.name == "Vacation Setting 2"
+    assert climate_setting_schedule.name == "Vacation Setting 2"
 
-    # # Test Delete
-    # result = seam.thermostats.climate_setting_schedules.delete(
-    #     climate_setting_schedule=climate_setting_schedule,
-    # )
+    # Test Delete
+    result = seam.thermostats.climate_setting_schedules.delete(
+        climate_setting_schedule=climate_setting_schedule,
+    )
 
-    # assert result == None
+    assert result == None
