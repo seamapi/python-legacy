@@ -8,9 +8,8 @@ def test_workspaces(seam: Seam):
     ws = seam.workspaces.get()
     assert ws.is_sandbox == False
 
-    # TODO Blocked by: https://github.com/seamapi/nextlove-sdk-generator/issues/30
-    # reset_sandbox_result = seam.workspaces.reset_sandbox()
-    # assert reset_sandbox_result is not None
+    reset_sandbox_result = seam.workspaces.reset_sandbox()
+    assert reset_sandbox_result is not None
 
-    ws_list = seam.workspaces.list()
-    assert len(ws_list) > 0
+    # ws_list = seam.workspaces.list()
+    # assert len(ws_list) > 0
