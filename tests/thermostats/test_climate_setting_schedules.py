@@ -3,11 +3,12 @@ from tests.fixtures.run_nest_factory import run_nest_factory
 import datetime
 
 def add_month_to_date(date: datetime.date, months: int) -> datetime.date:
-    return datetime.datetime(date.year + int(date.month / 12), ((date.month % 12) + months), 1)
+    year = date.year + (date.month + months - 1) // 12
+    month = (date.month + months - 1) % 12 + 1
+    return datetime.date(year, month, 1)
 
+# Blocked by: AttributeError: 'Thermostats' object has no attribute 'climate_setting_schedules'
 def test_climate_setting_schedules(seam: Seam):
-    run_nest_factory(seam)
-
     thermostat = seam.thermostats.list()[0]
 
     base_date = datetime.date.today()
