@@ -5,16 +5,16 @@ from tests.fixtures.run_minut_factory import run_minut_factory
 
 
 def test_noise_thresholds(seam: Seam):
-    run_minut_factory(seam)
+    # run_minut_factory(seam)
     time.sleep(2)
 
+# blocked by AttributeError: 'Seam' object has no attribute 'noise_sensors'
     device = seam.devices.list()[0]
 
     def get_minut_device_noise_thresholds():
         return seam.noise_sensors.noise_thresholds.list(
             device_id=device.device_id
         )
-
     noise_thresholds = get_minut_device_noise_thresholds()
     assert len(noise_thresholds) == 2
 
