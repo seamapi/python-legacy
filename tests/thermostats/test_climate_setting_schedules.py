@@ -3,7 +3,7 @@ from tests.fixtures.run_nest_factory import run_nest_factory
 import datetime
 
 def add_month_to_date(date: datetime.date, months: int) -> datetime.date:
-    return datetime.datetime(date.year + int(date.month / 12), ((date.month % 12) + months), 1)
+    return datetime.datetime(date.year + ((date.month + months) // 12), (((date.month + months) % 12) + months), 1)
 
 def test_climate_setting_schedules(seam: Seam):
     run_nest_factory(seam)
