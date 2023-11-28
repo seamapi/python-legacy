@@ -137,9 +137,9 @@ class Workspaces(AbstractWorkspaces):
         self,
         name: str,
         connect_partner_name: str,
-        is_sandbox: Optional[bool],
-        webview_primary_button_color: Optional[str],
-        webview_logo_shape: Optional[str],
+        is_sandbox: Optional[bool] = None,
+        webview_primary_button_color: Optional[str] = None,
+        webview_logo_shape: Optional[str] = None,
     ) -> Workspace:
         """Creates a workspace.
 
@@ -167,7 +167,7 @@ class Workspaces(AbstractWorkspaces):
             Workspace
         """
 
-        create_payload = {"name": name, "connect_partner_name": connect_partner_name}
+        create_payload = {"workspace_name": name, "connect_partner_name": connect_partner_name}
 
         if is_sandbox is not None:
             create_payload["is_sandbox"] = is_sandbox
