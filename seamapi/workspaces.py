@@ -131,3 +131,65 @@ class Workspaces(AbstractWorkspaces):
             message="Successfully reset workspace sandbox",
             ok=True,
         )
+
+    @report_error
+    def create(
+        self,
+        name: str,
+        connect_partner_name: str,
+        is_sandbox: Optional[bool] = None,
+        webview_primary_button_color: Optional[str] = None,
+        webview_logo_shape: Optional[str] = None,
+    ) -> Workspace:
+        """Creates a workspace.
+
+        Parameters
+        ----------
+        name : string
+            Workspace name
+        connect_partner_name : string
+            Name shown on the connect webview
+        is_sandbox : string, optional
+            If true, creates a sandbox workspace; if false, creates a production workspace. Defaults to false.
+        webview_primary_button_color : string, optional
+            The color of the primary button in the webview, represented in hex format (e.g., "#RRGGBB").
+        webview_logo_shape : string, optional
+            The shape of the logo in the webview: "circle" or "square".
+
+
+        Raises
+        ------
+        Exception
+            If the API request wasn't successful.
+
+        Returns
+        ------
+            Workspace
+        """
+
+        create_payload = {
+            "workspace_name": name,
+            "name": name,
+            "connect_partner_name": connect_partner_name
+        }
+
+        if is_sandbox is not None:
+            create_payload["is_sandbox"] = is_sandbox
+        if webview_primary_button_color is not None:
+            create_payload["webview_primary_button_color"] = webview_primary_button_color
+        if webview_logo_shape is not None:
+            create_payload["webview_logo_shape"] = webview_logo_shape
+
+        res = self.seam.make_request(
+            "POST",
+            "/workspaces/create",
+            json=create_payload,
+        )
+        return Workspace(
+            workspace_id=res["workspace"]["workspace_id"],
+            name=res["workspace"]["name"],
+            is_sandbox=res["workspace"]["is_sandbox"],
+            connect_partner_name=res["workspace"]["connect_partner_name"],
+            webview_primary_button_color=res["workspace"]["webview_primary_button_color"],
+            webview_logo_shape=res["workspace"]["webview_logo_shape"],
+        )

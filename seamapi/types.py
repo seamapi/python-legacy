@@ -151,6 +151,9 @@ class Workspace:
     workspace_id: str
     name: str
     is_sandbox: bool
+    connect_partner_name: str = None
+    webview_primary_button_color: str = None
+    webview_logo_shape: str = None
 
 
 @dataclass_json
@@ -579,6 +582,17 @@ class AbstractWorkspaces(abc.ABC):
 
     @abc.abstractmethod
     def get(self, workspace_id: Optional[str] = None) -> Workspace:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def create(
+        self,
+        name: str,
+        connect_partner_name: str,
+        is_sandbox: Optional[bool] = None,
+        webview_primary_button_color: Optional[str] = None,
+        webview_logo_shape: Optional[str] = None,
+    ) -> Workspace:
         raise NotImplementedError
 
     @abc.abstractmethod
