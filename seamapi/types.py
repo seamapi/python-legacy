@@ -151,6 +151,9 @@ class Workspace:
     workspace_id: str
     name: str
     is_sandbox: bool
+    connect_partner_name: str = None
+    webview_primary_button_color: str = None
+    webview_logo_shape: str = None
 
 
 @dataclass_json
