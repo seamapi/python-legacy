@@ -585,6 +585,17 @@ class AbstractWorkspaces(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def create(
+        self,
+        name: str,
+        connect_partner_name: str,
+        is_sandbox: Optional[bool],
+        webview_primary_button_color: Optional[str],
+        webview_logo_shape: Optional[str],
+    ) -> Workspace:
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def reset_sandbox(self) -> None:
         raise NotImplementedError
 
