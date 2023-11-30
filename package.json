@@ -9,6 +9,7 @@
   },
   "scripts": {
     "generate": "./generate.sh",
+    "generate:dev": "./generate.sh --dev",
     "prerelease": "npm run generate"
   },
   "repository": {
