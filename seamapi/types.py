@@ -795,10 +795,17 @@ class AbstractRoutes(abc.ABC):
 @dataclass
 class AbstractSeam(AbstractRoutes):
     api_key: str
+    workspace_id: str
     api_url: str
 
     @abc.abstractmethod
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        workspace_id: Optional[str] = None,
+        api_url: Optional[str] = None,
+        should_report_exceptions: Optional[bool] = False,
+    ):
         raise NotImplementedError
 
 
