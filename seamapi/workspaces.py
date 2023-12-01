@@ -75,7 +75,7 @@ class Workspaces(AbstractWorkspaces):
             "/workspaces/list",
             params={"workspace_id": workspace_id},
         )
-        return res["workspaces"]
+        return [Workspace.from_dict(w) for w in res['workspaces']]
 
     @report_error
     def get(
@@ -103,11 +103,7 @@ class Workspaces(AbstractWorkspaces):
             "GET",
             "/workspaces/get",
         )
-        return Workspace(
-            workspace_id=res["workspace"]["workspace_id"],
-            name=res["workspace"]["name"],
-            is_sandbox=res["workspace"]["is_sandbox"],
-        )
+        return Workspace.from_dict(res["workspace"])
 
     @report_error
     def reset_sandbox(self) -> None:
@@ -185,11 +181,4 @@ class Workspaces(AbstractWorkspaces):
             "/workspaces/create",
             json=create_payload,
         )
-        return Workspace(
-            workspace_id=res["workspace"]["workspace_id"],
-            name=res["workspace"]["name"],
-            is_sandbox=res["workspace"]["is_sandbox"],
-            connect_partner_name=res["workspace"]["connect_partner_name"],
-            webview_primary_button_color=res["workspace"]["webview_primary_button_color"],
-            webview_logo_shape=res["workspace"]["webview_logo_shape"],
-        )
+        return Workspace.from_dict(res["workspace"])
