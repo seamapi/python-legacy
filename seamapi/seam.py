@@ -71,9 +71,8 @@ class Seam(AbstractSeam):
             )
         if workspace_id is None:
             workspace_id = os.environ.get("SEAM_WORKSPACE_ID", self.api_url)
-        if workspace_id is not None:
-            self.workspace_id = workspace_id
         self.api_key = api_key
+        self.workspace_id = workspace_id
         self.api_url = cast(str, api_url)
         self.should_report_exceptions = should_report_exceptions
 
