@@ -30,7 +30,7 @@ class SeamAPIException(Exception):
         self.metadata = None
         if "application/json" in response.headers["content-type"]:
             parsed_response = response.json()
-            self.metadata = parsed_response["error"]
+            self.metadata = parsed_response.get("error", None)
 
         super().__init__(
             f"SeamAPIException: status={self.status_code}, request_id={self.request_id}, metadata={self.metadata}"
