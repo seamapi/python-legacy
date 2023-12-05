@@ -22,16 +22,18 @@ ClimateSettingScheduleId = str
 class SeamAPIException(Exception):
     def __init__(
         self,
-        status_code: int,
-        request_id: str,
-        metadata: Optional[Dict[str, any]],
+        response,
     ):
-        self.status_code = status_code
-        self.request_id = request_id
-        self.metadata = metadata
+        self.status_code = response.status_code
+        self.request_id = response.headers.get("seam-request-id", None)
+
+        self.metadata = None
+        if "application/json" in response.headers["content-type"]:
+            parsed_response = response.json()
+            self.metadata = parsed_response["error"]
 
         super().__init__(
-            f"SeamAPIException: status={status_code}, request_id={request_id}, metadata={metadata}"
+            f"SeamAPIException: status={self.status_code}, request_id={self.request_id}, metadata={self.metadata}"
         )
 
 
