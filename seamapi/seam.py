@@ -45,6 +45,7 @@ class Seam(AbstractSeam):
     def __init__(
         self,
         api_key: Optional[str] = None,
+        workspace_id: Optional[str] = None,
         api_url: Optional[str] = None,
         should_report_exceptions: Optional[bool] = False,
     ):
@@ -53,6 +54,8 @@ class Seam(AbstractSeam):
         ----------
         api_key : str, optional
           API key
+        workspace_id : str, optional
+          Workspace id
         api_url : str, optional
           API url
         should_report_exceptions : bool, optional
@@ -66,9 +69,10 @@ class Seam(AbstractSeam):
             raise Exception(
                 "SEAM_API_KEY not found in environment, and api_key not provided"
             )
-        if api_url is None:
-            api_url = os.environ.get("SEAM_API_URL", self.api_url)
+        if workspace_id is None:
+            workspace_id = os.environ.get("SEAM_WORKSPACE_ID", None)
         self.api_key = api_key
+        self.workspace_id = workspace_id
         self.api_url = cast(str, api_url)
         self.should_report_exceptions = should_report_exceptions
 
@@ -102,6 +106,8 @@ class Seam(AbstractSeam):
             "Content-Type": "application/json",
             "User-Agent": "Python SDK v" + pkg_resources.get_distribution("seamapi").version + " (https://github.com/seamapi/python)",
         }
+        if self.workspace_id is not None:
+            headers["seam-workspace"] = self.workspace_id
         response = requests.request(method, url, headers=headers, **kwargs)
 
         if self.should_report_exceptions and response.status_code:
