@@ -70,7 +70,7 @@ class Seam(AbstractSeam):
                 "SEAM_API_KEY not found in environment, and api_key not provided"
             )
         if workspace_id is None:
-            workspace_id = os.environ.get("SEAM_WORKSPACE_ID", self.api_url)
+            workspace_id = os.environ.get("SEAM_WORKSPACE_ID", None)
         self.api_key = api_key
         self.workspace_id = workspace_id
         self.api_url = cast(str, api_url)
