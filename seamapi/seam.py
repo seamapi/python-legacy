@@ -125,13 +125,10 @@ class Seam(AbstractSeam):
             )
 
 
-        parsed_response = response.json()
-
         if response.status_code != 200:
-            raise SeamAPIException(
-                response.status_code,
-                response.headers["seam-request-id"],
-                parsed_response["error"],
-            )
+            raise SeamAPIException(response)
 
-        return parsed_response
+        if "application/json" in response.headers["content-type"]:
+            return response.json()
+
+        return response.text
