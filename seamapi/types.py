@@ -19,7 +19,7 @@ WorkspaceId = str
 ClimateSettingScheduleId = str
 
 
-class SeamAPIException(Exception):
+class SeamApiException(Exception):
     def __init__(
         self,
         response,
@@ -33,7 +33,7 @@ class SeamAPIException(Exception):
             self.metadata = parsed_response.get("error", None)
 
         super().__init__(
-            f"SeamAPIException: status={self.status_code}, request_id={self.request_id}, metadata={self.metadata}"
+            f"SeamApiException: status={self.status_code}, request_id={self.request_id}, metadata={self.metadata}"
         )
 
 

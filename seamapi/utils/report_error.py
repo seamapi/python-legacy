@@ -1,4 +1,4 @@
-from seamapi.types import SeamAPIException
+from seamapi.types import SeamApiException
 
 """
 A decorator for model methods that will report errors to Sentry (if enabled).
@@ -9,7 +9,7 @@ def report_error(f):
     try:
       return f(self, *args, **kwargs)
     except Exception as error:
-      if self.seam.should_report_exceptions and type(error) is not SeamAPIException:
+      if self.seam.should_report_exceptions and type(error) is not SeamApiException:
         self.seam.sentry_client.capture_exception(error)
 
       raise error

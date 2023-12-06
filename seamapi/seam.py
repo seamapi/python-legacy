@@ -6,7 +6,7 @@ import requests
 import sentry_sdk
 import pkg_resources
 from typing import Optional, cast
-from .types import AbstractSeam, SeamAPIException
+from .types import AbstractSeam, SeamApiException
 
 
 class Seam(AbstractSeam):
@@ -126,7 +126,7 @@ class Seam(AbstractSeam):
 
 
         if response.status_code != 200:
-            raise SeamAPIException(response)
+            raise SeamApiException(response)
 
         if "application/json" in response.headers["content-type"]:
             return response.json()

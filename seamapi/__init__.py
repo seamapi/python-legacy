@@ -2,4 +2,4 @@
 # type: ignore
 
 from seamapi.seam import Seam
-from seamapi.seam import SeamAPIException
+from seamapi.seam import SeamApiException
