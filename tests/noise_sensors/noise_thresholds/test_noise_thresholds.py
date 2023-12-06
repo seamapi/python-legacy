@@ -1,6 +1,6 @@
 import time
 from seamapi import Seam
-from seamapi.types import SeamAPIException
+from seamapi.types import SeamApiException
 from tests.fixtures.run_minut_factory import run_minut_factory
 
 
