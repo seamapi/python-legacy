@@ -121,7 +121,7 @@ class Webhooks(AbstractWebhooks):
     def get(
         self,
         webhook: Union[WebhookId, Webhook],
-    ) -> bool:
+    ) -> Webhook:
         """Fetches a webhook.
 
         Parameters
@@ -136,7 +136,7 @@ class Webhooks(AbstractWebhooks):
 
         Returns
         ------
-            Boolean.
+            A webhook.
         """
 
         res = self.seam.make_request(
@@ -150,7 +150,7 @@ class Webhooks(AbstractWebhooks):
     @report_error
     def list(
         self,
-    ) -> bool:
+    ) -> List[Webhook]:
         """Lists webhooks.
 
         Raises
@@ -160,7 +160,7 @@ class Webhooks(AbstractWebhooks):
 
         Returns
         ------
-            Boolean.
+            A list of webhooks.
         """
 
         res = self.seam.make_request(
