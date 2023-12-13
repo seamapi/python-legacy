@@ -11,6 +11,8 @@ from seamapi.types import (
     ConnectedAccountId,
     Device,
     DeviceId,
+    Webhook,
+    WebhookId,
     Workspace,
     WorkspaceId,
     ClimateSettingSchedule,
@@ -31,15 +33,16 @@ def to_device_id(device: Union[DeviceId, Device]) -> str:
         return device
     return device.device_id
 
-def to_climate_setting_schedule_id(climate_setting_schedule: Union[ClimateSettingScheduleId, ClimateSettingSchedule]) -> str:
+
+def to_climate_setting_schedule_id(
+    climate_setting_schedule: Union[ClimateSettingScheduleId, ClimateSettingSchedule]
+) -> str:
     if isinstance(climate_setting_schedule, str):
         return climate_setting_schedule
     return climate_setting_schedule.climate_setting_schedule_id
 
 
-def to_action_attempt_id(
-    action_attempt: Union[ActionAttemptId, ActionAttempt]
-) -> str:
+def to_action_attempt_id(action_attempt: Union[ActionAttemptId, ActionAttempt]) -> str:
     if isinstance(action_attempt, str):
         return action_attempt
     return action_attempt.action_attempt_id
@@ -71,3 +74,9 @@ def to_event_id(event: Union[EventId, Event]) -> str:
     if isinstance(event, str):
         return event
     return event.event_id
+
+
+def to_webhook_id(webhook: Union[WebhookId, Webhook]) -> str:
+    if isinstance(webhook, str):
+        return webhook
+    return webhook.webhook_id

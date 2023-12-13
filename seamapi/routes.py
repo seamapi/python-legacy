@@ -9,6 +9,7 @@ from .locks import Locks
 from .access_codes import AccessCodes
 from .action_attempts import ActionAttempts
 from .thermostats import Thermostats
+from .webhooks import Webhooks
 
 class Routes(AbstractRoutes):
     def __init__(self):
@@ -22,6 +23,7 @@ class Routes(AbstractRoutes):
       self.action_attempts = ActionAttempts(seam=self)
       self.noise_sensors = NoiseSensors(seam=self)
       self.thermostats = Thermostats(seam=self)
+      self.webhooks = Webhooks(seam=self)
 
     def make_request(self):
       raise NotImplementedError()

@@ -17,6 +17,7 @@ Email = str
 DeviceType = str  # e.g. august_lock
 WorkspaceId = str
 ClimateSettingScheduleId = str
+WebhookId = str
 
 
 class SeamApiException(Exception):
@@ -295,6 +296,15 @@ class ClimateSettingSchedule(ClimateSettingScheduleBase):
 @dataclass
 class ClimateSettingScheduleUpdate(ClimateSettingSchedule):
     pass
+
+
+@dataclass_json
+@dataclass
+class Webhook:
+    webhook_id: str
+    url: str
+    event_types: List[str] = None
+    secret: str = None
 
 
 class AbstractActionAttempts(abc.ABC):
@@ -776,6 +786,34 @@ class AbstractThermostats(abc.ABC):
         raise NotImplementedError
 
 
+class AbstractWebhooks(abc.ABC):
+    @abc.abstractmethod
+    def create(
+        self,
+        url: str,
+        event_types: Optional[list] = None,
+    ) -> Webhook:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def delete(
+        self,
+        webhook: Union[WebhookId, Webhook],
+    ) -> bool:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get(
+        self,
+        webhook: Union[WebhookId, Webhook],
+    ) -> Webhook:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def list(self) -> List[Webhook]:
+        raise NotImplementedError
+
+
 @dataclass
 class AbstractRoutes(abc.ABC):
     workspaces: AbstractWorkspaces
@@ -788,6 +826,7 @@ class AbstractRoutes(abc.ABC):
     thermostats: AbstractThermostats
     events: AbstractEvents
     connected_accounts: AbstractConnectedAccounts
+    webhooks: AbstractWebhooks
 
     @abc.abstractmethod
     def make_request(self, method: str, path: str, **kwargs) -> Any:
