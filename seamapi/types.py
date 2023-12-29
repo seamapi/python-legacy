@@ -394,6 +394,7 @@ class AcsSystem:
   system_type_display_name: str
   name: str
   created_at: str
+  workspace_id: str
   connected_account_ids: List[Any]
 
   @staticmethod
@@ -406,6 +407,7 @@ class AcsSystem:
       system_type_display_name=d.get("system_type_display_name", None),
       name=d.get("name", None),
       created_at=d.get("created_at", None),
+      workspace_id=d.get("workspace_id", None),
       connected_account_ids=d.get("connected_account_ids", None),
       )
 @dataclass
@@ -437,6 +439,7 @@ class AcsAccessGroup:
 class AcsUser:
   acs_user_id: str
   acs_system_id: str
+  hid_acs_system_id: str
   workspace_id: str
   created_at: str
   display_name: str
@@ -453,6 +456,7 @@ class AcsUser:
     return AcsUser(
       acs_user_id=d.get("acs_user_id", None),
       acs_system_id=d.get("acs_system_id", None),
+      hid_acs_system_id=d.get("hid_acs_system_id", None),
       workspace_id=d.get("workspace_id", None),
       created_at=d.get("created_at", None),
       display_name=d.get("display_name", None),
@@ -604,8 +608,6 @@ class AbstractEvents(abc.ABC):
   @abc.abstractmethod
   def list(self, since: Optional[Any] = None, between: Optional[Any] = None, device_id: Optional[Any] = None, device_ids: Optional[Any] = None, access_code_id: Optional[Any] = None, access_code_ids: Optional[Any] = None, event_type: Optional[Any] = None, event_types: Optional[Any] = None, connected_account_id: Optional[Any] = None):
     raise NotImplementedError()
-class AbstractHealth(abc.ABC):
-  pass
 class AbstractLocks(abc.ABC):
 
   
@@ -628,6 +630,8 @@ class AbstractLocks(abc.ABC):
   @abc.abstractmethod
   def unlock_door(self, device_id: Optional[Any] = None, sync: Optional[Any] = None):
     raise NotImplementedError()
+class AbstractHealth(abc.ABC):
+  pass
 class AbstractThermostats(abc.ABC):
 
   
@@ -697,6 +701,10 @@ class AbstractUnmanagedAccessCodes(abc.ABC):
     raise NotImplementedError()
 class AbstractAccessGroupsAcs(abc.ABC):
   pass
+class AbstractCredentialPoolsAcs(abc.ABC):
+  pass
+class AbstractCredentialProvisioningAutomationsAcs(abc.ABC):
+  pass
 class AbstractCredentialsAcs(abc.ABC):
   pass
 class AbstractEntrancesAcs(abc.ABC):
@@ -739,7 +747,7 @@ class AbstractNoiseThresholdsNoiseSensors(abc.ABC):
   
   
   @abc.abstractmethod
-  def list(self, device_id: Optional[Any] = None):
+  def list(self, device_id: Optional[Any] = None, is_programmed: Optional[Any] = None):
     raise NotImplementedError()
   
   
@@ -781,8 +789,8 @@ class AbstractRoutes(abc.ABC):
   connected_accounts: AbstractConnectedAccounts
   devices: AbstractDevices
   events: AbstractEvents
-  health: AbstractHealth
   locks: AbstractLocks
+  health: AbstractHealth
   thermostats: AbstractThermostats
   user_identities: AbstractUserIdentities
   webhooks: AbstractWebhooks

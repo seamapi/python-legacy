@@ -56,7 +56,9 @@ class Seam(AbstractSeam):
         headers = {
             "Authorization": "Bearer " + self.api_key,
             "Content-Type": "application/json",
-            "User-Agent": "Python SDK v" + version("seamapi") + " (https://github.com/seamapi/python)",
+            "User-Agent": "Python SDK v"
+            + version("seamapi")
+            + " (https://github.com/seamapi/python)", 
         }
         response = requests.request(method, url, headers=headers, **kwargs)
 

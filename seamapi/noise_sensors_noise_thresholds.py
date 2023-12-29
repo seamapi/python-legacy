@@ -61,10 +61,12 @@ class NoiseThresholdsNoiseSensors(AbstractNoiseThresholdsNoiseSensors):
     return NoiseThreshold.from_dict(res["noise_threshold"])
   
   
-  def list(self, device_id: Optional[Any] = None):
+  def list(self, device_id: Optional[Any] = None, is_programmed: Optional[Any] = None):
     json_payload = {}
     if device_id is not None:
       json_payload["device_id"] = device_id
+    if is_programmed is not None:
+      json_payload["is_programmed"] = is_programmed
     res = self.seam.make_request(
       "POST",
       "/noise_sensors/noise_thresholds/list",
