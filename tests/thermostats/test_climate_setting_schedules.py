@@ -6,7 +6,7 @@ def add_month_to_date(date: datetime.date, months: int) -> datetime.date:
     return datetime.datetime(date.year + int(date.month / 12), ((date.month % 12) + months), 1)
 
 def test_climate_setting_schedules(seam: Seam):
-    run_nest_factory(seam)
+    # run_nest_factory(seam)
 
     thermostat = seam.thermostats.list()[0]
 

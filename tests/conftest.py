@@ -1,4 +1,3 @@
-import os
 import pytest
 from seamapi import Seam
 from typing import Any
