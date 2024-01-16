@@ -5,7 +5,7 @@ from tests.fixtures.run_minut_factory import run_minut_factory
 
 
 def test_noise_thresholds(seam: Seam):
-    run_minut_factory(seam)
+    # run_minut_factory(seam)
     time.sleep(2)
 
     device = seam.devices.list()[0]
