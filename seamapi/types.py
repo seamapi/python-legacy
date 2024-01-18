@@ -272,6 +272,7 @@ class Device:
     warnings: List[Any]
     created_at: str
     is_managed: bool
+    custom_metadata: Dict[str, Any]
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -287,6 +288,7 @@ class Device:
             warnings=d.get("warnings", None),
             created_at=d.get("created_at", None),
             is_managed=d.get("is_managed", None),
+            custom_metadata=d.get("custom_metadata", None),
         )
 
 
@@ -561,6 +563,7 @@ class Phone:
     warnings: List[Any]
     created_at: str
     is_managed: bool
+    custom_metadata: Dict[str, Any]
     assa_abloy_credential_service_metadata: Dict[str, Any]
 
     @staticmethod
@@ -576,6 +579,7 @@ class Phone:
             warnings=d.get("warnings", None),
             created_at=d.get("created_at", None),
             is_managed=d.get("is_managed", None),
+            custom_metadata=d.get("custom_metadata", None),
             assa_abloy_credential_service_metadata=d.get(
                 "assa_abloy_credential_service_metadata", None
             ),
@@ -849,6 +853,7 @@ class AbstractDevices(abc.ABC):
         properties: Optional[Any] = None,
         name: Optional[Any] = None,
         is_managed: Optional[Any] = None,
+        custom_metadata: Optional[Any] = None,
     ):
         raise NotImplementedError()
 
