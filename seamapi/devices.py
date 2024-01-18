@@ -73,6 +73,7 @@ class Devices(AbstractDevices):
         properties: Optional[Any] = None,
         name: Optional[Any] = None,
         is_managed: Optional[Any] = None,
+        custom_metadata: Optional[Any] = None,
     ):
         json_payload = {}
         if device_id is not None:
@@ -83,5 +84,7 @@ class Devices(AbstractDevices):
             json_payload["name"] = name
         if is_managed is not None:
             json_payload["is_managed"] = is_managed
+        if custom_metadata is not None:
+            json_payload["custom_metadata"] = custom_metadata
         res = self.seam.make_request("POST", "/devices/update", json=json_payload)
         return None

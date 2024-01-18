@@ -3,8 +3,6 @@ from tests.fixtures.run_august_factory import run_august_factory
 
 
 def test_workspaces(seam: Seam):
-    # run_august_factory(seam)
-
     ws = seam.workspaces.get()
     assert ws.is_sandbox == False
 
