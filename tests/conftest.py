@@ -1,15 +1,10 @@
-import os
+import random
+import string
 import pytest
 from seamapi import Seam
-import time
-import requests
 from dotenv import load_dotenv
 from typing import Any
 from dataclasses import dataclass
-import sys
-from testcontainers.postgres import PostgresContainer
-from testcontainers.core.container import DockerContainer
-from testcontainers.core.waiting_utils import wait_for_logs
 
 
 @pytest.fixture(autouse=True)
@@ -27,55 +22,17 @@ class SeamBackend:
 # dramatically reduce test time to switch
 @pytest.fixture(scope="function")
 def seam_backend():
-    with PostgresContainer("postgres:15", dbname="postgres") as pg:
-        db_host = pg.get_container_host_ip()
-        db_url = pg.get_connection_url()
-
-        # UPSTREAM: https://github.com/testcontainers/testcontainers-python/issues/159
-        docker_info = pg.get_docker_client().client.info()
-        if docker_info["OperatingSystem"] == "Docker Desktop":
-            container_host = "host.docker.internal"
-            db_url = db_url.replace(db_host, container_host)
-            db_host = container_host
-        elif db_host == "localhost":
-            container_host = "172.17.0.1"  # linux equivalent of host.docker.internal
-            db_url = db_url.replace(db_host, container_host)
-            db_host = container_host
-
-        with DockerContainer(
-            os.environ.get("SEAM_CONNECT_IMAGE", "ghcr.io/seamapi/seam-connect")
-        ).with_env("DATABASE_URL", db_url).with_env(
-            "POSTGRES_DATABASE", "postgres"
-        ).with_env(
-            "NODE_ENV", "test"
-        ).with_env(
-            "POSTGRES_HOST",
-            db_host,
-        ).with_env(
-            "SERVER_BASE_URL", "http://localhost:3020"
-        ).with_env(
-            "SEAMTEAM_ADMIN_PASSWORD", "1234"
-        ).with_env(
-            "PORT", "3020"
-        ).with_env(
-            "ENABLE_UNMANAGED_DEVICES", "true"
-        ).with_bind_ports(
-            3020, 3020
-        ).with_command(
-            "start:for-integration-testing"
-        ) as sc_container:
-            wait_for_logs(sc_container, r"started server", timeout=20)
-            requests.get("http://localhost:3020/health")
-            yield SeamBackend(
-                url="http://localhost:3020",
-                sandbox_api_key="seam_sandykey_0000000000000000000sand",
-            )
+    random_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+    yield SeamBackend(
+        url=f"https://{random_string}.fakeseamconnect.seam.vc",
+        sandbox_api_key="seam_apikey1_token",
+    )
 
 
 @pytest.fixture
-def seam(seam_backend: Any, dotenv_fixture: Any):
+def seam(seam_backend: Any):
     seam = Seam(api_url=seam_backend.url, api_key=seam_backend.sandbox_api_key)
-    seam.make_request("POST", "/workspaces/reset_sandbox")
+    # seam.make_request("POST", "/workspaces/reset_sandbox")
     yield seam
 
 
