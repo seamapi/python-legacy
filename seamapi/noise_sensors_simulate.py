@@ -8,11 +8,14 @@ class SimulateNoiseSensors(AbstractSimulateNoiseSensors):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def trigger_noise_threshold(self, device_id: Optional[Any] = None):
+    def trigger_noise_threshold(self, device_id: Any):
         json_payload = {}
+
         if device_id is not None:
             json_payload["device_id"] = device_id
-        res = self.seam.make_request(
+
+        self.seam.make_request(
             "POST", "/noise_sensors/simulate/trigger_noise_threshold", json=json_payload
         )
+
         return None

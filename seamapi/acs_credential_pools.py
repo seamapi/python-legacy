@@ -8,11 +8,12 @@ class CredentialPoolsAcs(AbstractCredentialPoolsAcs):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def list(self, acs_system_id: Optional[Any] = None):
+    def list(self, acs_system_id: Any):
         json_payload = {}
+
         if acs_system_id is not None:
             json_payload["acs_system_id"] = acs_system_id
-        res = self.seam.make_request(
-            "POST", "/acs/credential_pools/list", json=json_payload
-        )
+
+        self.seam.make_request("POST", "/acs/credential_pools/list", json=json_payload)
+
         return None

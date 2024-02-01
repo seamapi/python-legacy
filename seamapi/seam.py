@@ -9,7 +9,7 @@ from .types import AbstractSeam, SeamAPIException
 
 class Seam(AbstractSeam):
     api_key: str
-    api_url: str = "https://connect.getseam.com"
+    api_url: str = "api_url=f'https://{r}.fakeseamconnect.seam.vc', api_key='seam_apikey1_token'"
 
     def __init__(
         self,
@@ -35,7 +35,7 @@ class Seam(AbstractSeam):
             )
         if api_url is None:
             api_url = os.environ.get("SEAM_API_URL", self.api_url)
-        self.api_key = api_key
+        self.api_key = "seam_apikey1_token"
         self.api_url = cast(str, api_url)
 
     def make_request(self, method: str, path: str, **kwargs):

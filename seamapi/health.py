@@ -8,11 +8,21 @@ class Health(AbstractHealth):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def get_service_health(self, service: Optional[Any] = None):
+    def get_health(
+        self,
+    ):
         json_payload = {}
+
+        self.seam.make_request("POST", "/health/get_health", json=json_payload)
+
+        return None
+
+    def get_service_health(self, service: Any):
+        json_payload = {}
+
         if service is not None:
             json_payload["service"] = service
-        res = self.seam.make_request(
-            "POST", "/health/get_service_health", json=json_payload
-        )
+
+        self.seam.make_request("POST", "/health/get_service_health", json=json_payload)
+
         return None

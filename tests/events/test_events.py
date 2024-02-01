@@ -1,6 +1,5 @@
 import time
 from seamapi import Seam
-from tests.fixtures.run_august_factory import run_august_factory
 
 SINCE = "2021-01-01T00:00:00.000Z"
 EVENT_TYPE = "device.connected"
@@ -8,7 +7,6 @@ FAKE_UUID = "00000000-0000-0000-0000-000000000000"
 
 
 def test_events(seam: Seam):
-    run_august_factory(seam)
 
     events = seam.events.list(since=SINCE)
     event = next(e for e in events if e["event_type"] == EVENT_TYPE)

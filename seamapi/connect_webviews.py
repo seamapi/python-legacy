@@ -20,6 +20,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         wait_for_device_creation: Optional[Any] = None,
     ):
         json_payload = {}
+
         if device_selection_mode is not None:
             json_payload["device_selection_mode"] = device_selection_mode
         if custom_redirect_url is not None:
@@ -38,25 +39,31 @@ class ConnectWebviews(AbstractConnectWebviews):
             ] = automatically_manage_new_devices
         if wait_for_device_creation is not None:
             json_payload["wait_for_device_creation"] = wait_for_device_creation
+
         res = self.seam.make_request(
             "POST", "/connect_webviews/create", json=json_payload
         )
+
         return ConnectWebview.from_dict(res["connect_webview"])
 
-    def delete(self, connect_webview_id: Optional[Any] = None):
+    def delete(self, connect_webview_id: Any):
         json_payload = {}
+
         if connect_webview_id is not None:
             json_payload["connect_webview_id"] = connect_webview_id
-        res = self.seam.make_request(
-            "POST", "/connect_webviews/delete", json=json_payload
-        )
+
+        self.seam.make_request("POST", "/connect_webviews/delete", json=json_payload)
+
         return None
 
     def get(self, connect_webview_id: Any):
         json_payload = {}
+
         if connect_webview_id is not None:
             json_payload["connect_webview_id"] = connect_webview_id
+
         res = self.seam.make_request("POST", "/connect_webviews/get", json=json_payload)
+
         return ConnectWebview.from_dict(res["connect_webview"])
 
     def list(
@@ -65,11 +72,14 @@ class ConnectWebviews(AbstractConnectWebviews):
         custom_metadata_has: Optional[Any] = None,
     ):
         json_payload = {}
+
         if user_identifier_key is not None:
             json_payload["user_identifier_key"] = user_identifier_key
         if custom_metadata_has is not None:
             json_payload["custom_metadata_has"] = custom_metadata_has
+
         res = self.seam.make_request(
             "POST", "/connect_webviews/list", json=json_payload
         )
+
         return [ConnectWebview.from_dict(item) for item in res["connect_webviews"]]
