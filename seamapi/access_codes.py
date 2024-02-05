@@ -5,6 +5,8 @@ from seamapi.types import (
     ActionAttempt,
 )
 from typing import Optional, Any
+from seamapi.access_codes_simulate import AccessCodesSimulate
+from seamapi.access_codes_unmanaged import AccessCodesUnmanaged
 
 
 class AccessCodes(AbstractAccessCodes):
@@ -12,6 +14,16 @@ class AccessCodes(AbstractAccessCodes):
 
     def __init__(self, seam: Seam):
         self.seam = seam
+        self._simulate = AccessCodesSimulate(seam=seam)
+        self._unmanaged = AccessCodesUnmanaged(seam=seam)
+
+    @property
+    def simulate(self) -> AccessCodesSimulate:
+        return self._simulate
+
+    @property
+    def unmanaged(self) -> AccessCodesUnmanaged:
+        return self._unmanaged
 
     def create(
         self,

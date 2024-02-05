@@ -1,5 +1,5 @@
 from seamapi.types import (
-    AbstractUnmanagedAccessCodes,
+    AbstractAccessCodesUnmanaged,
     AbstractSeam as Seam,
     ActionAttempt,
     UnmanagedAccessCode,
@@ -7,7 +7,7 @@ from seamapi.types import (
 from typing import Optional, Any
 
 
-class UnmanagedAccessCodes(AbstractUnmanagedAccessCodes):
+class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
     seam: Seam
 
     def __init__(self, seam: Seam):

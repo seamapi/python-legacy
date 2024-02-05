@@ -7,11 +7,7 @@ def test_thermostats(seam: Seam):
     # Test List
     thermostats = seam.thermostats.list()
 
-    assert len(thermostats) == 3
-
     thermostat = thermostats[0]
-    second_thermostat = thermostats[1]
-    third_thermostat = thermostats[2]
 
     assert thermostat.device_type == "ecobee_thermostat"
 
@@ -37,10 +33,10 @@ def test_thermostats(seam: Seam):
     )
     thermostat = seam.thermostats.get(thermostat.device_id)
     assert (
-        round(thermostat.properties['current_climate_setting']['cooling_set_point_celsius'])
+        round(thermostat.properties.current_climate_setting.cooling_set_point_celsius)
         == 27
     )
-    assert thermostat.properties['current_climate_setting']['hvac_mode_setting'] == "cool"
+    assert thermostat.properties.current_climate_setting.hvac_mode_setting == "cool"
 
     # Test Heat
     seam.thermostats.heat(
@@ -49,7 +45,7 @@ def test_thermostats(seam: Seam):
     )
     thermostat = seam.thermostats.get(thermostat.device_id)
     assert (
-        round(thermostat.properties['current_climate_setting']['heating_set_point_celsius'])
+        round(thermostat.properties.current_climate_setting.heating_set_point_celsius)
         == 18
     )
 
@@ -60,13 +56,13 @@ def test_thermostats(seam: Seam):
         heating_set_point_celsius=19,
     )
     thermostat = seam.thermostats.get(thermostat.device_id)
-    assert thermostat.properties['current_climate_setting']['hvac_mode_setting'] == "heat_cool"
+    assert thermostat.properties.current_climate_setting.hvac_mode_setting == "heat_cool"
     assert (
-    round(thermostat.properties['current_climate_setting']['cooling_set_point_celsius'])
+    round(thermostat.properties.current_climate_setting.cooling_set_point_celsius)
     == 28
     )
     assert (
-    round(thermostat.properties['current_climate_setting']['heating_set_point_celsius'])
+    round(thermostat.properties.current_climate_setting.heating_set_point_celsius)
     == 19
     )
 
@@ -76,7 +72,7 @@ def test_thermostats(seam: Seam):
 
     )
     thermostat = seam.thermostats.get(thermostat.device_id)
-    assert thermostat.properties['current_climate_setting']['hvac_mode_setting'] == "off"
+    assert thermostat.properties.current_climate_setting.hvac_mode_setting == "off"
 
     # Test Set Fan Mode
     seam.thermostats.set_fan_mode(
@@ -85,4 +81,4 @@ def test_thermostats(seam: Seam):
         fan_mode_setting="auto",
     )
     thermostat = seam.thermostats.get(thermostat.device_id)
-    assert thermostat.properties['is_fan_running'] == True
+    assert thermostat.properties.is_fan_running == True

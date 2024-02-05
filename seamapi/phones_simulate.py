@@ -1,8 +1,8 @@
-from seamapi.types import AbstractSimulatePhones, AbstractSeam as Seam, Phone
+from seamapi.types import AbstractPhonesSimulate, AbstractSeam as Seam, Phone
 from typing import Optional, Any
 
 
-class SimulatePhones(AbstractSimulatePhones):
+class PhonesSimulate(AbstractPhonesSimulate):
     seam: Seam
 
     def __init__(self, seam: Seam):

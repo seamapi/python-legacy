@@ -1,8 +1,8 @@
-from seamapi.types import AbstractEntrancesAcs, AbstractSeam as Seam
+from seamapi.types import AbstractAcsEntrances, AbstractSeam as Seam
 from typing import Optional, Any
 
 
-class EntrancesAcs(AbstractEntrancesAcs):
+class AcsEntrances(AbstractAcsEntrances):
     seam: Seam
 
     def __init__(self, seam: Seam):
@@ -47,17 +47,12 @@ class EntrancesAcs(AbstractEntrancesAcs):
         return None
 
     def list_credentials_with_access(
-        self,
-        acs_entrance_id: Optional[Any] = None,
-        acs_entrance_ids: Optional[Any] = None,
-        include_if: Optional[Any] = None,
+        self, acs_entrance_id: Any, include_if: Optional[Any] = None
     ):
         json_payload = {}
 
         if acs_entrance_id is not None:
             json_payload["acs_entrance_id"] = acs_entrance_id
-        if acs_entrance_ids is not None:
-            json_payload["acs_entrance_ids"] = acs_entrance_ids
         if include_if is not None:
             json_payload["include_if"] = include_if
 

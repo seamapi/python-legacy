@@ -1,12 +1,12 @@
 from seamapi.types import (
-    AbstractUnmanagedDevices,
+    AbstractDevicesUnmanaged,
     AbstractSeam as Seam,
     UnmanagedDevice,
 )
 from typing import Optional, Any
 
 
-class UnmanagedDevices(AbstractUnmanagedDevices):
+class DevicesUnmanaged(AbstractDevicesUnmanaged):
     seam: Seam
 
     def __init__(self, seam: Seam):

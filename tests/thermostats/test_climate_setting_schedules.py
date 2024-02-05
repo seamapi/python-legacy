@@ -14,9 +14,8 @@ def test_climate_setting_schedules(seam: Seam):
     schedule_ends_at = add_month_to_date(base_date, months=2).isoformat()
 
     # Test Create
-    # TODO AttributeError: 'Thermostats' object has no attribute 'climate_setting_schedules' - this method is not generated
     climate_setting_schedule = seam.thermostats.climate_setting_schedules.create(
-        device=thermostat,
+        device_id=thermostat.device_id,
         name="Vacation Setting",
         schedule_starts_at=schedule_starts_at,
         schedule_ends_at=schedule_ends_at,
@@ -31,12 +30,13 @@ def test_climate_setting_schedules(seam: Seam):
     assert climate_setting_schedule.name == "Vacation Setting"
 
     # Test List
-    climate_setting_schedules = seam.thermostats.climate_setting_schedules.list(device=thermostat)
+    climate_setting_schedules = seam.thermostats.climate_setting_schedules.list(device_id=thermostat.device_id)
     assert len(climate_setting_schedules) == 1
 
     # Test Update
+    # TODO: Updated this to use ids including the climate_setting_schedule id - is that correct usage?
     updated_climate_setting_schedule = seam.thermostats.climate_setting_schedules.update(
-        climate_setting_schedule=climate_setting_schedule,
+        climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
         name="Vacation Setting 2",
     )
 
@@ -44,14 +44,14 @@ def test_climate_setting_schedules(seam: Seam):
 
     # Test Get
     climate_setting_schedule = seam.thermostats.climate_setting_schedules.get(
-        climate_setting_schedule=climate_setting_schedule,
+        climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
     )
 
     assert climate_setting_schedule.name == "Vacation Setting 2"
 
     # Test Delete
     result = seam.thermostats.climate_setting_schedules.delete(
-        climate_setting_schedule=climate_setting_schedule,
+        climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
     )
 
     assert result == None

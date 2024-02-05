@@ -1,12 +1,12 @@
 from seamapi.types import (
-    AbstractCredentialProvisioningAutomationsAcs,
+    AbstractAcsCredentialProvisioningAutomations,
     AbstractSeam as Seam,
 )
 from typing import Optional, Any
 
 
-class CredentialProvisioningAutomationsAcs(
-    AbstractCredentialProvisioningAutomationsAcs
+class AcsCredentialProvisioningAutomations(
+    AbstractAcsCredentialProvisioningAutomations
 ):
     seam: Seam
 

@@ -1,8 +1,8 @@
-from seamapi.types import AbstractServiceHealth, AbstractSeam as Seam
+from seamapi.types import AbstractHealthService, AbstractSeam as Seam
 from typing import Optional, Any
 
 
-class ServiceHealth(AbstractServiceHealth):
+class HealthService(AbstractHealthService):
     seam: Seam
 
     def __init__(self, seam: Seam):

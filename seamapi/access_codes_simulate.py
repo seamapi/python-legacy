@@ -1,12 +1,12 @@
 from seamapi.types import (
-    AbstractSimulateAccessCodes,
+    AbstractAccessCodesSimulate,
     AbstractSeam as Seam,
     UnmanagedAccessCode,
 )
 from typing import Optional, Any
 
 
-class SimulateAccessCodes(AbstractSimulateAccessCodes):
+class AccessCodesSimulate(AbstractAccessCodesSimulate):
     seam: Seam
 
     def __init__(self, seam: Seam):

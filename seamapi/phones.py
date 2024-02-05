@@ -1,5 +1,6 @@
 from seamapi.types import AbstractPhones, AbstractSeam as Seam, Phone
 from typing import Optional, Any
+from seamapi.phones_simulate import PhonesSimulate
 
 
 class Phones(AbstractPhones):
@@ -7,6 +8,11 @@ class Phones(AbstractPhones):
 
     def __init__(self, seam: Seam):
         self.seam = seam
+        self._simulate = PhonesSimulate(seam=seam)
+
+    @property
+    def simulate(self) -> PhonesSimulate:
+        return self._simulate
 
     def list(self, owner_user_identity_id: Optional[Any] = None):
         json_payload = {}

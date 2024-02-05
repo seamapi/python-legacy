@@ -1,5 +1,8 @@
 from seamapi.types import AbstractUserIdentities, AbstractSeam as Seam
 from typing import Optional, Any
+from seamapi.user_identities_enrollment_automations import (
+    UserIdentitiesEnrollmentAutomations,
+)
 
 
 class UserIdentities(AbstractUserIdentities):
@@ -7,6 +10,11 @@ class UserIdentities(AbstractUserIdentities):
 
     def __init__(self, seam: Seam):
         self.seam = seam
+        self._enrollment_automations = UserIdentitiesEnrollmentAutomations(seam=seam)
+
+    @property
+    def enrollment_automations(self) -> UserIdentitiesEnrollmentAutomations:
+        return self._enrollment_automations
 
     def add_acs_user(self, user_identity_id: Any, acs_user_id: Any):
         json_payload = {}

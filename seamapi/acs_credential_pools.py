@@ -1,8 +1,8 @@
-from seamapi.types import AbstractCredentialPoolsAcs, AbstractSeam as Seam
+from seamapi.types import AbstractAcsCredentialPools, AbstractSeam as Seam
 from typing import Optional, Any
 
 
-class CredentialPoolsAcs(AbstractCredentialPoolsAcs):
+class AcsCredentialPools(AbstractAcsCredentialPools):
     seam: Seam
 
     def __init__(self, seam: Seam):

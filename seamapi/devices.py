@@ -1,5 +1,6 @@
 from seamapi.types import AbstractDevices, AbstractSeam as Seam, Device, DeviceProvider
 from typing import Optional, Any
+from seamapi.devices_unmanaged import DevicesUnmanaged
 
 
 class Devices(AbstractDevices):
@@ -7,6 +8,11 @@ class Devices(AbstractDevices):
 
     def __init__(self, seam: Seam):
         self.seam = seam
+        self._unmanaged = DevicesUnmanaged(seam=seam)
+
+    @property
+    def unmanaged(self) -> DevicesUnmanaged:
+        return self._unmanaged
 
     def delete(self, device_id: Any):
         json_payload = {}

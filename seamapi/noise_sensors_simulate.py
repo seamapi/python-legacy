@@ -1,8 +1,8 @@
-from seamapi.types import AbstractSimulateNoiseSensors, AbstractSeam as Seam
+from seamapi.types import AbstractNoiseSensorsSimulate, AbstractSeam as Seam
 from typing import Optional, Any
 
 
-class SimulateNoiseSensors(AbstractSimulateNoiseSensors):
+class NoiseSensorsSimulate(AbstractNoiseSensorsSimulate):
     seam: Seam
 
     def __init__(self, seam: Seam):

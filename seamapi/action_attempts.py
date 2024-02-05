@@ -1,5 +1,6 @@
 from seamapi.types import AbstractActionAttempts, AbstractSeam as Seam, ActionAttempt
 from typing import Optional, Any
+
 import time
 
 

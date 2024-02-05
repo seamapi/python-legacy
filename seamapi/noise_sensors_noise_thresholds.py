@@ -1,5 +1,5 @@
 from seamapi.types import (
-    AbstractNoiseThresholdsNoiseSensors,
+    AbstractNoiseSensorsNoiseThresholds,
     AbstractSeam as Seam,
     NoiseThreshold,
     ActionAttempt,
@@ -7,7 +7,7 @@ from seamapi.types import (
 from typing import Optional, Any
 
 
-class NoiseThresholdsNoiseSensors(AbstractNoiseThresholdsNoiseSensors):
+class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
     seam: Seam
 
     def __init__(self, seam: Seam):

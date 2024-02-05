@@ -1,5 +1,6 @@
 from seamapi.types import AbstractHealth, AbstractSeam as Seam
 from typing import Optional, Any
+from seamapi.health_service import HealthService
 
 
 class Health(AbstractHealth):
@@ -7,6 +8,11 @@ class Health(AbstractHealth):
 
     def __init__(self, seam: Seam):
         self.seam = seam
+        self._service = HealthService(seam=seam)
+
+    @property
+    def service(self) -> HealthService:
+        return self._service
 
     def get_health(
         self,

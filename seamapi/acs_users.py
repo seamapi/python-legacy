@@ -1,8 +1,8 @@
-from seamapi.types import AbstractUsersAcs, AbstractSeam as Seam
+from seamapi.types import AbstractAcsUsers, AbstractSeam as Seam
 from typing import Optional, Any
 
 
-class UsersAcs(AbstractUsersAcs):
+class AcsUsers(AbstractAcsUsers):
     seam: Seam
 
     def __init__(self, seam: Seam):

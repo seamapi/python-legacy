@@ -1,6 +1,6 @@
 import time
 from seamapi import Seam
-from seamapi.types import SeamAPIException
+from seamapi.types import SeamApiException
 
 
 def test_noise_thresholds(seam: Seam):
@@ -9,7 +9,6 @@ def test_noise_thresholds(seam: Seam):
     device = seam.devices.list()[0]
     print(device)
 
-    # TODO: AttributeError: 'Seam' object has no attribute 'noise_sensors'
     def get_minut_device_noise_thresholds():
         return seam.noise_sensors.noise_thresholds.list(
             device_id=device.device_id

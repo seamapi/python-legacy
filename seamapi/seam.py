@@ -4,12 +4,12 @@ from .routes import Routes
 import requests
 from importlib.metadata import version
 from typing import Optional, cast
-from .types import AbstractSeam, SeamAPIException
+from .types import AbstractSeam, SeamApiException
 
 
 class Seam(AbstractSeam):
     api_key: str
-    api_url: str = "api_url=f'https://{r}.fakeseamconnect.seam.vc', api_key='seam_apikey1_token'"
+    api_url: str = "https://connect.getseam.com"
 
     def __init__(
         self,
@@ -35,7 +35,7 @@ class Seam(AbstractSeam):
             )
         if api_url is None:
             api_url = os.environ.get("SEAM_API_URL", self.api_url)
-        self.api_key = "seam_apikey1_token"
+        self.api_key = api_key
         self.api_url = cast(str, api_url)
 
     def make_request(self, method: str, path: str, **kwargs):
@@ -70,7 +70,7 @@ class Seam(AbstractSeam):
                 if isinstance(parsed_response, dict)
                 else parsed_response
             )
-            raise SeamAPIException(
+            raise SeamApiException(
                 response.status_code,
                 response.headers.get("seam-request-id", None),
                 error_message,

@@ -1,5 +1,5 @@
 from seamapi import Seam
-from seamapi.types import SeamAPIException
+from seamapi.types import SeamApiException
 from seamapi.utils.deep_attr_dict import DeepAttrDict
 
 
@@ -55,18 +55,18 @@ def test_devices(seam: Seam):
     assert len(seam.devices.list()) == len(devices) - 1
 
     # Test custom exception
-    # TODO the SeamAPIException might not be generated correctly
-    # # try:
-    # #     seam.devices.get(name="foo")
-    # #     assert False
-    # # except SeamAPIException as error:
-    # #     assert error.status_code == 404
-    # #     assert type(error.request_id) == str
-    # #     assert error.metadata["type"] == "device_not_found"
+    # TODO the SeamApiException might not be generated correctly
+    # try:
+    #     seam.devices.get(name="foo")
+    #     assert False
+    # except SeamApiException as error:
+    #     assert error.status_code == 404
+    #     assert type(error.request_id) == str
+    #     assert error.metadata["type"] == "device_not_found"
 
-    # # stable_device_providers = seam.devices.list_device_providers(
-    # #     provider_category="stable"
-    # # )
+    # stable_device_providers = seam.devices.list_device_providers(
+    #     provider_category="stable"
+    # )
     # assert len(stable_device_providers) > 0
 
 
@@ -86,14 +86,14 @@ def test_unmanaged_devices(seam: Seam):
 
     unmanaged_device = seam.devices.unmanaged.get(device_id=device.device_id)
     assert unmanaged_device.device_id == device.device_id
-    unmanaged_device = seam.devices.unmanaged.get(name=device.properties['name'])
-    assert unmanaged_device.properties['name'] == device.properties['name']
+    unmanaged_device = seam.devices.unmanaged.get(name=device.properties.name)
+    assert unmanaged_device.properties.name == device.properties.name
 
     connected_account = seam.connected_accounts.list()[0]
-    devices = seam.devices.unmanaged.list(connected_account=connected_account)
+    devices = seam.devices.unmanaged.list(connected_account_id=connected_account.connected_account_id)
     assert len(devices) > 0
     devices = seam.devices.unmanaged.list(
-        connected_accounts=[connected_account]
+        connected_account_ids=[connected_account.connected_account_id]
     )
     assert len(devices) > 0
 
@@ -105,6 +105,6 @@ def test_unmanaged_devices(seam: Seam):
     devices = seam.devices.unmanaged.list(manufacturer="august")
     assert len(devices) > 0
 
-    seam.devices.unmanaged.update(device=device, is_managed=True)
+    seam.devices.unmanaged.update(device_id=device.device_id, is_managed=True)
     unmanaged_devices = seam.devices.unmanaged.list()
     assert len(unmanaged_devices) == 0

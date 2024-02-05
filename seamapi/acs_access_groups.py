@@ -1,8 +1,8 @@
-from seamapi.types import AbstractAccessGroupsAcs, AbstractSeam as Seam
+from seamapi.types import AbstractAcsAccessGroups, AbstractSeam as Seam
 from typing import Optional, Any
 
 
-class AccessGroupsAcs(AbstractAccessGroupsAcs):
+class AcsAccessGroups(AbstractAcsAccessGroups):
     seam: Seam
 
     def __init__(self, seam: Seam):

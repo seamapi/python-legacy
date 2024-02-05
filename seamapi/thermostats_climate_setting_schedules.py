@@ -1,12 +1,12 @@
 from seamapi.types import (
-    AbstractClimateSettingSchedulesThermostats,
+    AbstractThermostatsClimateSettingSchedules,
     AbstractSeam as Seam,
     ClimateSettingSchedule,
 )
 from typing import Optional, Any
 
 
-class ClimateSettingSchedulesThermostats(AbstractClimateSettingSchedulesThermostats):
+class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedules):
     seam: Seam
 
     def __init__(self, seam: Seam):

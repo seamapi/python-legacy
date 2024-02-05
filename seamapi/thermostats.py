@@ -1,5 +1,8 @@
 from seamapi.types import AbstractThermostats, AbstractSeam as Seam, Device
 from typing import Optional, Any
+from seamapi.thermostats_climate_setting_schedules import (
+    ThermostatsClimateSettingSchedules,
+)
 
 
 class Thermostats(AbstractThermostats):
@@ -7,6 +10,11 @@ class Thermostats(AbstractThermostats):
 
     def __init__(self, seam: Seam):
         self.seam = seam
+        self._climate_setting_schedules = ThermostatsClimateSettingSchedules(seam=seam)
+
+    @property
+    def climate_setting_schedules(self) -> ThermostatsClimateSettingSchedules:
+        return self._climate_setting_schedules
 
     def cool(
         self,

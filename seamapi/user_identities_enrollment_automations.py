@@ -1,11 +1,11 @@
 from seamapi.types import (
-    AbstractEnrollmentAutomationsUserIdentities,
+    AbstractUserIdentitiesEnrollmentAutomations,
     AbstractSeam as Seam,
 )
 from typing import Optional, Any
 
 
-class EnrollmentAutomationsUserIdentities(AbstractEnrollmentAutomationsUserIdentities):
+class UserIdentitiesEnrollmentAutomations(AbstractUserIdentitiesEnrollmentAutomations):
     seam: Seam
 
     def __init__(self, seam: Seam):
