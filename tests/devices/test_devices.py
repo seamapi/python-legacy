@@ -55,7 +55,6 @@ def test_devices(seam: Seam):
     assert len(seam.devices.list()) == len(devices) - 1
 
     # Test custom exception
-    # TODO the SeamApiException might not be generated correctly
     # try:
     #     seam.devices.get(name="foo")
     #     assert False

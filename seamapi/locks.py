@@ -25,6 +25,7 @@ class Locks(AbstractLocks):
         connected_account_id: Optional[Any] = None,
         connected_account_ids: Optional[Any] = None,
         connect_webview_id: Optional[Any] = None,
+        device_type: Optional[Any] = None,
         device_types: Optional[Any] = None,
         manufacturer: Optional[Any] = None,
         device_ids: Optional[Any] = None,
@@ -41,6 +42,8 @@ class Locks(AbstractLocks):
             json_payload["connected_account_ids"] = connected_account_ids
         if connect_webview_id is not None:
             json_payload["connect_webview_id"] = connect_webview_id
+        if device_type is not None:
+            json_payload["device_type"] = device_type
         if device_types is not None:
             json_payload["device_types"] = device_types
         if manufacturer is not None:

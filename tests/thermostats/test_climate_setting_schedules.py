@@ -1,8 +1,10 @@
 from seamapi import Seam
 import datetime
 
+
 def add_month_to_date(date: datetime.date, months: int) -> datetime.date:
     return datetime.datetime(date.year + int(date.month / 12), ((date.month % 12) + months), 1)
+
 
 def test_climate_setting_schedules(seam: Seam):
 
@@ -30,11 +32,11 @@ def test_climate_setting_schedules(seam: Seam):
     assert climate_setting_schedule.name == "Vacation Setting"
 
     # Test List
-    climate_setting_schedules = seam.thermostats.climate_setting_schedules.list(device_id=thermostat.device_id)
+    climate_setting_schedules = seam.thermostats.climate_setting_schedules.list(
+        device_id=thermostat.device_id)
     assert len(climate_setting_schedules) == 1
 
     # Test Update
-    # TODO: Updated this to use ids including the climate_setting_schedule id - is that correct usage?
     updated_climate_setting_schedule = seam.thermostats.climate_setting_schedules.update(
         climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
         name="Vacation Setting 2",

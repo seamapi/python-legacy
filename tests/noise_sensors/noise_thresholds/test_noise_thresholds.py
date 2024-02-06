@@ -4,10 +4,9 @@ from seamapi.types import SeamApiException
 
 
 def test_noise_thresholds(seam: Seam):
-    time.sleep(2)
+    # time.sleep(2)
 
     device = seam.devices.list()[0]
-    print(device)
 
     def get_minut_device_noise_thresholds():
         return seam.noise_sensors.noise_thresholds.list(
