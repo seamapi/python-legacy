@@ -1,6 +1,8 @@
 import time
 from seamapi import Seam
 
+from seamapi.types import SeamApiException
+
 SINCE = "2021-01-01T00:00:00.000Z"
 EVENT_TYPE = "device.connected"
 FAKE_UUID = "00000000-0000-0000-0000-000000000000"
@@ -20,5 +22,7 @@ def test_events(seam: Seam):
     event_by_device_id = seam.events.get(device_id=event.device_id)
     assert event_by_device_id.device_id == event.device_id
 
-    none_event = seam.events.get(event_id=FAKE_UUID)
-    assert none_event is None
+    try:
+        seam.events.get(event_id=FAKE_UUID)
+    except SeamApiException as e:
+        assert e.metadata['message'] == 'Event not found'

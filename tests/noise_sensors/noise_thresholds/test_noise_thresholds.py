@@ -4,7 +4,6 @@ from seamapi.types import SeamApiException
 
 
 def test_noise_thresholds(seam: Seam):
-    # time.sleep(2)
 
     device = seam.devices.list()[0]
 

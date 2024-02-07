@@ -1,7 +1,7 @@
 from seamapi import Seam
+from seamapi.types import SeamApiException
 
 EMAIL = "john@example.com"
-
 
 def test_connected_accounts(seam: Seam):
 
@@ -16,16 +16,13 @@ def test_connected_accounts(seam: Seam):
     assert connected_account.connected_account_id == connected_account_id
     assert email_account.connected_account_id == connected_account_id
 
-    # TODO: the SeamAPIException inside make_request raises an error AssertionError: Unexpected error message: SeamApiException.__init__() takes 2 positional arguments but 4 were given
-    seam.connected_accounts.delete(connected_account_id=connected_account_id)
-    # assert len(seam.connected_accounts.list()) == 0
+    deleted_account = seam.connected_accounts.delete(connected_account_id=connected_account_id)
+    print(deleted_account)
+    assert deleted_account == None
 
     # Assert that an Exception is raised for the .get() method when
     # connected_account and email parameters are not provided.
-    # try:
-    #     seam.connected_accounts.get()
-    # except Exception as e:
-    #     assert (
-    #         str(e)
-    #         == "Must provide either ConnectedAccount (ConnectedAccount or ConnectedAccountId) or Email"
-    #     )
+    try:
+        seam.connected_accounts.get()
+    except SeamApiException as e:
+        assert e.metadata['message'] == 'Invalid input'
