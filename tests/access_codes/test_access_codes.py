@@ -26,10 +26,10 @@ def test_access_codes(seam: Seam):
     access_code = seam.access_codes.get(access_code_id=created_access_code.access_code_id)
     assert access_code.code == "4444"
 
-    # with pytest.raises(SeamApiException):
-    #     seam.access_codes.create(
-    #         device_id=some_device.device_id, name="Duplicate Access Code", code="4444"
-    #     )
+    with pytest.raises(SeamApiException):
+        seam.access_codes.create(
+            device_id=some_device.device_id, name="Duplicate Access Code", code="4444"
+        )
 
     delete_action_attempt = seam.access_codes.delete(access_code_id=created_access_code.access_code_id)
     assert delete_action_attempt.status == "success"

@@ -1506,6 +1506,7 @@ class AbstractAccessCodes(abc.ABC):
         self,
         device_ids: Any,
         behavior_when_code_cannot_be_shared: Optional[Any] = None,
+        preferred_code_length: Optional[Any] = None,
         name: Optional[Any] = None,
         starts_at: Optional[Any] = None,
         ends_at: Optional[Any] = None,
@@ -1654,6 +1655,8 @@ class AbstractRoutes(abc.ABC):
     user_identities: AbstractUserIdentities
     webhooks: AbstractWebhooks
     workspaces: AbstractWorkspaces
+    acs: AbstractAcs
+    noise_sensors: AbstractNoiseSensors
 
     @abc.abstractmethod
     def make_request(self, method: str, path: str, **kwargs) -> Any:
@@ -1663,8 +1666,15 @@ class AbstractRoutes(abc.ABC):
 @dataclass
 class AbstractSeam(AbstractRoutes):
     api_key: str
+    workspace_id: str
     api_url: str
 
     @abc.abstractmethod
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(
+        self,
+        api_key: Optional[str] = None,
+        workspace_id: Optional[str] = None,
+        api_url: Optional[str] = None,
+        should_report_exceptions: Optional[bool] = False,
+    ):
         raise NotImplementedError

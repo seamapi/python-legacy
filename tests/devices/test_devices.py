@@ -55,18 +55,18 @@ def test_devices(seam: Seam):
     assert len(seam.devices.list()) == len(devices) - 1
 
     # Test custom exception
-    # try:
-    #     seam.devices.get(name="foo")
-    #     assert False
-    # except SeamApiException as error:
-    #     assert error.status_code == 404
-    #     assert type(error.request_id) == str
-    #     assert error.metadata["type"] == "device_not_found"
+    try:
+        seam.devices.get(name="foo")
+        assert False
+    except SeamApiException as error:
+        assert error.status_code == 404
+        assert type(error.request_id) == str
+        assert error.metadata["type"] == "device_not_found"
 
-    # stable_device_providers = seam.devices.list_device_providers(
-    #     provider_category="stable"
-    # )
-    # assert len(stable_device_providers) > 0
+    stable_device_providers = seam.devices.list_device_providers(
+        provider_category="stable"
+    )
+    assert len(stable_device_providers) > 0
 
 
 def test_unmanaged_devices(seam: Seam):

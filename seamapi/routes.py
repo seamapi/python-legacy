@@ -14,6 +14,8 @@ from .thermostats import Thermostats
 from .user_identities import UserIdentities
 from .webhooks import Webhooks
 from .workspaces import Workspaces
+from .acs import Acs
+from .noise_sensors import NoiseSensors
 
 
 class Routes(AbstractRoutes):
@@ -33,6 +35,8 @@ class Routes(AbstractRoutes):
         self.user_identities = UserIdentities(seam=self)
         self.webhooks = Webhooks(seam=self)
         self.workspaces = Workspaces(seam=self)
+        self.acs = Acs(seam=self)
+        self.noise_sensors = NoiseSensors(seam=self)
 
     def make_request(self):
         raise NotImplementedError()

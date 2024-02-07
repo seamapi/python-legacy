@@ -89,6 +89,7 @@ class AccessCodes(AbstractAccessCodes):
         self,
         device_ids: Any,
         behavior_when_code_cannot_be_shared: Optional[Any] = None,
+        preferred_code_length: Optional[Any] = None,
         name: Optional[Any] = None,
         starts_at: Optional[Any] = None,
         ends_at: Optional[Any] = None,
@@ -111,6 +112,8 @@ class AccessCodes(AbstractAccessCodes):
             json_payload[
                 "behavior_when_code_cannot_be_shared"
             ] = behavior_when_code_cannot_be_shared
+        if preferred_code_length is not None:
+            json_payload["preferred_code_length"] = preferred_code_length
         if name is not None:
             json_payload["name"] = name
         if starts_at is not None:
