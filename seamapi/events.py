@@ -10,18 +10,21 @@ class Events(AbstractEvents):
 
     def get(
         self,
-        event_id: Any,
+        event_id: Optional[Any] = None,
         event_type: Optional[Any] = None,
         device_id: Optional[Any] = None,
     ):
         json_payload = {}
+
         if event_id is not None:
             json_payload["event_id"] = event_id
         if event_type is not None:
             json_payload["event_type"] = event_type
         if device_id is not None:
             json_payload["device_id"] = device_id
+
         res = self.seam.make_request("POST", "/events/get", json=json_payload)
+
         return Event.from_dict(res["event"])
 
     def list(
@@ -37,6 +40,7 @@ class Events(AbstractEvents):
         connected_account_id: Optional[Any] = None,
     ):
         json_payload = {}
+
         if since is not None:
             json_payload["since"] = since
         if between is not None:
@@ -55,5 +59,7 @@ class Events(AbstractEvents):
             json_payload["event_types"] = event_types
         if connected_account_id is not None:
             json_payload["connected_account_id"] = connected_account_id
+
         res = self.seam.make_request("POST", "/events/list", json=json_payload)
+
         return [Event.from_dict(item) for item in res["events"]]

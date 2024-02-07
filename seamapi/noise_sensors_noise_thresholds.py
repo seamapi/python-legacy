@@ -1,13 +1,13 @@
 from seamapi.types import (
-    AbstractNoiseThresholdsNoiseSensors,
+    AbstractNoiseSensorsNoiseThresholds,
     AbstractSeam as Seam,
-    ActionAttempt,
     NoiseThreshold,
+    ActionAttempt,
 )
 from typing import Optional, Any
 
 
-class NoiseThresholdsNoiseSensors(AbstractNoiseThresholdsNoiseSensors):
+class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
     seam: Seam
 
     def __init__(self, seam: Seam):
@@ -15,86 +15,106 @@ class NoiseThresholdsNoiseSensors(AbstractNoiseThresholdsNoiseSensors):
 
     def create(
         self,
-        device_id: Optional[Any] = None,
+        device_id: Any,
+        starts_daily_at: Any,
+        ends_daily_at: Any,
         sync: Optional[Any] = None,
         name: Optional[Any] = None,
-        starts_daily_at: Optional[Any] = None,
-        ends_daily_at: Optional[Any] = None,
         noise_threshold_decibels: Optional[Any] = None,
         noise_threshold_nrs: Optional[Any] = None,
     ):
         json_payload = {}
+
         if device_id is not None:
             json_payload["device_id"] = device_id
-        if sync is not None:
-            json_payload["sync"] = sync
-        if name is not None:
-            json_payload["name"] = name
         if starts_daily_at is not None:
             json_payload["starts_daily_at"] = starts_daily_at
         if ends_daily_at is not None:
             json_payload["ends_daily_at"] = ends_daily_at
+        if sync is not None:
+            json_payload["sync"] = sync
+        if name is not None:
+            json_payload["name"] = name
         if noise_threshold_decibels is not None:
             json_payload["noise_threshold_decibels"] = noise_threshold_decibels
         if noise_threshold_nrs is not None:
             json_payload["noise_threshold_nrs"] = noise_threshold_nrs
+
         res = self.seam.make_request(
             "POST", "/noise_sensors/noise_thresholds/create", json=json_payload
         )
-        return ActionAttempt.from_dict(res["action_attempt"])
+
+        return NoiseThreshold.from_dict(res["noise_threshold"])
 
     def delete(
         self,
-        noise_threshold_id: Optional[Any] = None,
-        device_id: Optional[Any] = None,
+        noise_threshold_id: Any,
+        device_id: Any,
         sync: Optional[Any] = None,
+        wait_for_action_attempt: Optional[bool] = True,
     ):
         json_payload = {}
+
         if noise_threshold_id is not None:
             json_payload["noise_threshold_id"] = noise_threshold_id
         if device_id is not None:
             json_payload["device_id"] = device_id
         if sync is not None:
             json_payload["sync"] = sync
+
         res = self.seam.make_request(
             "POST", "/noise_sensors/noise_thresholds/delete", json=json_payload
         )
-        return ActionAttempt.from_dict(res["action_attempt"])
+
+        if not wait_for_action_attempt:
+            return ActionAttempt.from_dict(res["action_attempt"])
+
+        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+            res["action_attempt"]["action_attempt_id"]
+        )
+
+        return updated_action_attempt
 
     def get(self, noise_threshold_id: Any):
         json_payload = {}
+
         if noise_threshold_id is not None:
             json_payload["noise_threshold_id"] = noise_threshold_id
+
         res = self.seam.make_request(
             "POST", "/noise_sensors/noise_thresholds/get", json=json_payload
         )
+
         return NoiseThreshold.from_dict(res["noise_threshold"])
 
-    def list(
-        self, device_id: Optional[Any] = None, is_programmed: Optional[Any] = None
-    ):
+    def list(self, device_id: Any, is_programmed: Optional[Any] = None):
         json_payload = {}
+
         if device_id is not None:
             json_payload["device_id"] = device_id
         if is_programmed is not None:
             json_payload["is_programmed"] = is_programmed
+
         res = self.seam.make_request(
             "POST", "/noise_sensors/noise_thresholds/list", json=json_payload
         )
+
         return [NoiseThreshold.from_dict(item) for item in res["noise_thresholds"]]
 
     def update(
         self,
-        noise_threshold_id: Optional[Any] = None,
-        device_id: Optional[Any] = None,
+        noise_threshold_id: Any,
+        device_id: Any,
         sync: Optional[Any] = None,
         name: Optional[Any] = None,
         starts_daily_at: Optional[Any] = None,
         ends_daily_at: Optional[Any] = None,
         noise_threshold_decibels: Optional[Any] = None,
         noise_threshold_nrs: Optional[Any] = None,
+        wait_for_action_attempt: Optional[bool] = True,
     ):
         json_payload = {}
+
         if noise_threshold_id is not None:
             json_payload["noise_threshold_id"] = noise_threshold_id
         if device_id is not None:
@@ -111,7 +131,16 @@ class NoiseThresholdsNoiseSensors(AbstractNoiseThresholdsNoiseSensors):
             json_payload["noise_threshold_decibels"] = noise_threshold_decibels
         if noise_threshold_nrs is not None:
             json_payload["noise_threshold_nrs"] = noise_threshold_nrs
+
         res = self.seam.make_request(
             "POST", "/noise_sensors/noise_thresholds/update", json=json_payload
         )
-        return ActionAttempt.from_dict(res["action_attempt"])
+
+        if not wait_for_action_attempt:
+            return ActionAttempt.from_dict(res["action_attempt"])
+
+        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+            res["action_attempt"]["action_attempt_id"]
+        )
+
+        return updated_action_attempt

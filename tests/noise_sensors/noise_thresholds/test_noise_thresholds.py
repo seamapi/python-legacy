@@ -1,12 +1,9 @@
 import time
 from seamapi import Seam
-from seamapi.types import SeamAPIException
-from tests.fixtures.run_minut_factory import run_minut_factory
+from seamapi.types import SeamApiException
 
 
 def test_noise_thresholds(seam: Seam):
-    # run_minut_factory(seam)
-    time.sleep(2)
 
     device = seam.devices.list()[0]
 

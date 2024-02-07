@@ -17,6 +17,7 @@ class ClientSessions(AbstractClientSessions):
         expires_at: Optional[Any] = None,
     ):
         json_payload = {}
+
         if user_identifier_key is not None:
             json_payload["user_identifier_key"] = user_identifier_key
         if connect_webview_ids is not None:
@@ -27,27 +28,37 @@ class ClientSessions(AbstractClientSessions):
             json_payload["user_identity_ids"] = user_identity_ids
         if expires_at is not None:
             json_payload["expires_at"] = expires_at
+
         res = self.seam.make_request(
             "POST", "/client_sessions/create", json=json_payload
         )
+
         return ClientSession.from_dict(res["client_session"])
 
-    def delete(self, client_session_id: Optional[Any] = None):
+    def delete(self, client_session_id: Any):
         json_payload = {}
+
         if client_session_id is not None:
             json_payload["client_session_id"] = client_session_id
-        res = self.seam.make_request(
-            "POST", "/client_sessions/delete", json=json_payload
-        )
+
+        self.seam.make_request("POST", "/client_sessions/delete", json=json_payload)
+
         return None
 
-    def get(self, client_session_id: Any, user_identifier_key: Optional[Any] = None):
+    def get(
+        self,
+        client_session_id: Optional[Any] = None,
+        user_identifier_key: Optional[Any] = None,
+    ):
         json_payload = {}
+
         if client_session_id is not None:
             json_payload["client_session_id"] = client_session_id
         if user_identifier_key is not None:
             json_payload["user_identifier_key"] = user_identifier_key
+
         res = self.seam.make_request("POST", "/client_sessions/get", json=json_payload)
+
         return ClientSession.from_dict(res["client_session"])
 
     def get_or_create(
@@ -59,6 +70,7 @@ class ClientSessions(AbstractClientSessions):
         expires_at: Optional[Any] = None,
     ):
         json_payload = {}
+
         if user_identifier_key is not None:
             json_payload["user_identifier_key"] = user_identifier_key
         if connect_webview_ids is not None:
@@ -69,9 +81,11 @@ class ClientSessions(AbstractClientSessions):
             json_payload["user_identity_ids"] = user_identity_ids
         if expires_at is not None:
             json_payload["expires_at"] = expires_at
+
         res = self.seam.make_request(
             "POST", "/client_sessions/get_or_create", json=json_payload
         )
+
         return ClientSession.from_dict(res["client_session"])
 
     def grant_access(
@@ -83,6 +97,7 @@ class ClientSessions(AbstractClientSessions):
         user_identity_ids: Optional[Any] = None,
     ):
         json_payload = {}
+
         if client_session_id is not None:
             json_payload["client_session_id"] = client_session_id
         if user_identifier_key is not None:
@@ -93,9 +108,11 @@ class ClientSessions(AbstractClientSessions):
             json_payload["connect_webview_ids"] = connect_webview_ids
         if user_identity_ids is not None:
             json_payload["user_identity_ids"] = user_identity_ids
-        res = self.seam.make_request(
+
+        self.seam.make_request(
             "POST", "/client_sessions/grant_access", json=json_payload
         )
+
         return None
 
     def list(
@@ -106,6 +123,7 @@ class ClientSessions(AbstractClientSessions):
         without_user_identifier_key: Optional[Any] = None,
     ):
         json_payload = {}
+
         if client_session_id is not None:
             json_payload["client_session_id"] = client_session_id
         if user_identifier_key is not None:
@@ -114,14 +132,17 @@ class ClientSessions(AbstractClientSessions):
             json_payload["connect_webview_id"] = connect_webview_id
         if without_user_identifier_key is not None:
             json_payload["without_user_identifier_key"] = without_user_identifier_key
+
         res = self.seam.make_request("POST", "/client_sessions/list", json=json_payload)
+
         return [ClientSession.from_dict(item) for item in res["client_sessions"]]
 
-    def revoke(self, client_session_id: Optional[Any] = None):
+    def revoke(self, client_session_id: Any):
         json_payload = {}
+
         if client_session_id is not None:
             json_payload["client_session_id"] = client_session_id
-        res = self.seam.make_request(
-            "POST", "/client_sessions/revoke", json=json_payload
-        )
+
+        self.seam.make_request("POST", "/client_sessions/revoke", json=json_payload)
+
         return None
