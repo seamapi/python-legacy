@@ -295,6 +295,7 @@ class AccessCodes(AbstractAccessCodes):
         code: Optional[str] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
+        preferred_code_length: Optional[int] = None,
     ) -> List[AccessCode]:
         """Creates multiple access codes across multiple devices. All access
         codes will have the same code (if possible).
@@ -311,6 +312,8 @@ class AccessCodes(AbstractAccessCodes):
             Time when access code becomes effective
         ends_at : str, optional
             Time when access code ceases to be effective
+        preferred_code_length : int, optional
+            Preferred length of the access codes to be created
 
         Raises
         ------
@@ -335,6 +338,8 @@ class AccessCodes(AbstractAccessCodes):
             create_payload["starts_at"] = starts_at
         if ends_at is not None:
             create_payload["ends_at"] = ends_at
+        if preferred_code_length is not None:
+            create_payload["preferred_code_length"] = preferred_code_length
 
         res = self.seam.make_request(
             "POST",
