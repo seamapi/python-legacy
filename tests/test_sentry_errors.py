@@ -5,7 +5,7 @@ from seamapi import Seam
 @responses.activate
 def test_sends_error_to_sentry(seam: Seam, fake_sentry):
     rsp = responses.Response(
-      method="GET",
+      method="POST",
       url=seam.api_url + "/devices/list",
       # Missing top-level `devices` key
       json={"foo": []},
@@ -39,7 +39,7 @@ def test_sends_error_to_sentry(seam: Seam, fake_sentry):
 @responses.activate
 def test_skips_sentry_reporting(seam: Seam, fake_sentry):
     rsp = responses.Response(
-      method="GET",
+      method="POST",
       url=seam.api_url + "/devices/list",
       # Missing top-level `devices` key
       json={"foo": []}

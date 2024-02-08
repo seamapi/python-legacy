@@ -1,5 +1,5 @@
 from seamapi.types import AbstractNetworks, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class Networks(AbstractNetworks):
@@ -8,7 +8,7 @@ class Networks(AbstractNetworks):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def get(self, network_id: Any):
+    def get(self, network_id: str) -> None:
         json_payload = {}
 
         if network_id is not None:
@@ -20,7 +20,7 @@ class Networks(AbstractNetworks):
 
     def list(
         self,
-    ):
+    ) -> None:
         json_payload = {}
 
         self.seam.make_request("POST", "/networks/list", json=json_payload)

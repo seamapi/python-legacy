@@ -3,7 +3,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     UnmanagedAccessCode,
 )
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class AccessCodesSimulate(AbstractAccessCodesSimulate):
@@ -12,7 +12,9 @@ class AccessCodesSimulate(AbstractAccessCodesSimulate):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def create_unmanaged_access_code(self, device_id: Any, name: Any, code: Any):
+    def create_unmanaged_access_code(
+        self, device_id: str, name: str, code: str
+    ) -> UnmanagedAccessCode:
         json_payload = {}
 
         if device_id is not None:

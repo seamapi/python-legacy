@@ -1,5 +1,5 @@
 from seamapi.types import AbstractPhones, AbstractSeam as Seam, Phone
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 from seamapi.phones_simulate import PhonesSimulate
 
 
@@ -14,7 +14,7 @@ class Phones(AbstractPhones):
     def simulate(self) -> PhonesSimulate:
         return self._simulate
 
-    def list(self, owner_user_identity_id: Optional[Any] = None):
+    def list(self, owner_user_identity_id: Optional[str] = None) -> List[Phone]:
         json_payload = {}
 
         if owner_user_identity_id is not None:

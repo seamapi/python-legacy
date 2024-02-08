@@ -1,5 +1,5 @@
 from seamapi.types import AbstractPhonesSimulate, AbstractSeam as Seam, Phone
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class PhonesSimulate(AbstractPhonesSimulate):
@@ -10,12 +10,12 @@ class PhonesSimulate(AbstractPhonesSimulate):
 
     def create_sandbox_phone(
         self,
-        assa_abloy_credential_service_acs_system_id: Any,
-        user_identity_id: Any,
-        custom_sdk_installation_id: Optional[Any] = None,
-        phone_metadata: Optional[Any] = None,
-        assa_abloy_metadata: Optional[Any] = None,
-    ):
+        assa_abloy_credential_service_acs_system_id: str,
+        user_identity_id: str,
+        custom_sdk_installation_id: Optional[str] = None,
+        phone_metadata: Optional[Dict[str, Any]] = None,
+        assa_abloy_metadata: Optional[Dict[str, Any]] = None,
+    ) -> Phone:
         json_payload = {}
 
         if assa_abloy_credential_service_acs_system_id is not None:

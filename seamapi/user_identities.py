@@ -1,5 +1,5 @@
 from seamapi.types import AbstractUserIdentities, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 from seamapi.user_identities_enrollment_automations import (
     UserIdentitiesEnrollmentAutomations,
 )
@@ -16,7 +16,7 @@ class UserIdentities(AbstractUserIdentities):
     def enrollment_automations(self) -> UserIdentitiesEnrollmentAutomations:
         return self._enrollment_automations
 
-    def add_acs_user(self, user_identity_id: Any, acs_user_id: Any):
+    def add_acs_user(self, user_identity_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -32,11 +32,11 @@ class UserIdentities(AbstractUserIdentities):
 
     def create(
         self,
-        user_identity_key: Optional[Any] = None,
-        email_address: Optional[Any] = None,
-        phone_number: Optional[Any] = None,
-        full_name: Optional[Any] = None,
-    ):
+        user_identity_key: Optional[str] = None,
+        email_address: Optional[str] = None,
+        phone_number: Optional[str] = None,
+        full_name: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if user_identity_key is not None:
@@ -52,7 +52,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def delete(self, user_identity_id: Any):
+    def delete(self, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -64,9 +64,9 @@ class UserIdentities(AbstractUserIdentities):
 
     def get(
         self,
-        user_identity_id: Optional[Any] = None,
-        user_identity_key: Optional[Any] = None,
-    ):
+        user_identity_id: Optional[str] = None,
+        user_identity_key: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -78,7 +78,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def grant_access_to_device(self, user_identity_id: Any, device_id: Any):
+    def grant_access_to_device(self, user_identity_id: str, device_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -94,14 +94,14 @@ class UserIdentities(AbstractUserIdentities):
 
     def list(
         self,
-    ):
+    ) -> None:
         json_payload = {}
 
         self.seam.make_request("POST", "/user_identities/list", json=json_payload)
 
         return None
 
-    def list_accessible_devices(self, user_identity_id: Any):
+    def list_accessible_devices(self, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -113,7 +113,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def list_acs_systems(self, user_identity_id: Any):
+    def list_acs_systems(self, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -125,7 +125,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def list_acs_users(self, user_identity_id: Any):
+    def list_acs_users(self, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -137,7 +137,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def remove_acs_user(self, user_identity_id: Any, acs_user_id: Any):
+    def remove_acs_user(self, user_identity_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -151,7 +151,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def revoke_access_to_device(self, user_identity_id: Any, device_id: Any):
+    def revoke_access_to_device(self, user_identity_id: str, device_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:

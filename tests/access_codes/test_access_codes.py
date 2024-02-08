@@ -40,19 +40,19 @@ def test_access_codes(seam: Seam):
     # Preferred Code Length Tests
     device_ids = [device.device_id for device in all_devices]
 
-    access_codes = seam.access_codes.create_multiple(
+    access_codes_of_preferred_length = seam.access_codes.create_multiple(
         device_ids=device_ids, 
         preferred_code_length=4
     )
 
-    for access_code in access_codes:
-        assert len(access_code.code) == 4
+    for access_codes in access_codes_of_preferred_length:
+        assert len(access_codes.code) == 4
 
-    access_codes = seam.access_codes.create_multiple(
+    access_codes_of_longer_length = seam.access_codes.create_multiple(
         device_ids=device_ids, 
         preferred_code_length=6
     )
 
-    for access_code in access_codes:
-        assert len(access_code.code) == 6
+    for access_codes in access_codes_of_longer_length:
+        assert len(access_codes.code) == 6
 

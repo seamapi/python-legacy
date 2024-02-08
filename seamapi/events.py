@@ -1,5 +1,5 @@
 from seamapi.types import AbstractEvents, AbstractSeam as Seam, Event
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class Events(AbstractEvents):
@@ -10,10 +10,10 @@ class Events(AbstractEvents):
 
     def get(
         self,
-        event_id: Optional[Any] = None,
-        event_type: Optional[Any] = None,
-        device_id: Optional[Any] = None,
-    ):
+        event_id: Optional[str] = None,
+        event_type: Optional[str] = None,
+        device_id: Optional[str] = None,
+    ) -> Event:
         json_payload = {}
 
         if event_id is not None:
@@ -29,16 +29,16 @@ class Events(AbstractEvents):
 
     def list(
         self,
-        since: Optional[Any] = None,
-        between: Optional[Any] = None,
-        device_id: Optional[Any] = None,
-        device_ids: Optional[Any] = None,
-        access_code_id: Optional[Any] = None,
-        access_code_ids: Optional[Any] = None,
-        event_type: Optional[Any] = None,
-        event_types: Optional[Any] = None,
-        connected_account_id: Optional[Any] = None,
-    ):
+        since: Optional[str] = None,
+        between: Optional[List[Any]] = None,
+        device_id: Optional[str] = None,
+        device_ids: Optional[List[str]] = None,
+        access_code_id: Optional[str] = None,
+        access_code_ids: Optional[List[str]] = None,
+        event_type: Optional[str] = None,
+        event_types: Optional[List[str]] = None,
+        connected_account_id: Optional[str] = None,
+    ) -> List[Event]:
         json_payload = {}
 
         if since is not None:

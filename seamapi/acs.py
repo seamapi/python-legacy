@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAcs, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 from seamapi.acs_access_groups import AcsAccessGroups
 from seamapi.acs_credential_pools import AcsCredentialPools
 from seamapi.acs_credential_provisioning_automations import (

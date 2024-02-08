@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAcsUsers, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class AcsUsers(AbstractAcsUsers):
@@ -10,15 +10,15 @@ class AcsUsers(AbstractAcsUsers):
 
     def create(
         self,
-        acs_system_id: Any,
-        acs_access_group_ids: Optional[Any] = None,
-        user_identity_id: Optional[Any] = None,
-        access_schedule: Optional[Any] = None,
-        full_name: Optional[Any] = None,
-        email: Optional[Any] = None,
-        phone_number: Optional[Any] = None,
-        email_address: Optional[Any] = None,
-    ):
+        acs_system_id: str,
+        acs_access_group_ids: Optional[List[str]] = None,
+        user_identity_id: Optional[str] = None,
+        access_schedule: Optional[Dict[str, Any]] = None,
+        full_name: Optional[str] = None,
+        email: Optional[str] = None,
+        phone_number: Optional[str] = None,
+        email_address: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if acs_system_id is not None:
@@ -42,7 +42,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def delete(self, acs_user_id: Any):
+    def delete(self, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -52,7 +52,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def get(self, acs_user_id: Any):
+    def get(self, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -64,11 +64,11 @@ class AcsUsers(AbstractAcsUsers):
 
     def list(
         self,
-        user_identity_id: Optional[Any] = None,
-        user_identity_phone_number: Optional[Any] = None,
-        user_identity_email_address: Optional[Any] = None,
-        acs_system_id: Optional[Any] = None,
-    ):
+        user_identity_id: Optional[str] = None,
+        user_identity_phone_number: Optional[str] = None,
+        user_identity_email_address: Optional[str] = None,
+        acs_system_id: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -84,7 +84,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def list_accessible_entrances(self, acs_user_id: Any):
+    def list_accessible_entrances(self, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -96,7 +96,19 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def suspend(self, acs_user_id: Any):
+    def revoke_access_to_all_entrances(self, acs_user_id: str) -> None:
+        json_payload = {}
+
+        if acs_user_id is not None:
+            json_payload["acs_user_id"] = acs_user_id
+
+        self.seam.make_request(
+            "POST", "/acs/users/revoke_access_to_all_entrances", json=json_payload
+        )
+
+        return None
+
+    def suspend(self, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -106,7 +118,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def unsuspend(self, acs_user_id: Any):
+    def unsuspend(self, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -118,14 +130,14 @@ class AcsUsers(AbstractAcsUsers):
 
     def update(
         self,
-        acs_user_id: Any,
-        access_schedule: Optional[Any] = None,
-        full_name: Optional[Any] = None,
-        email: Optional[Any] = None,
-        phone_number: Optional[Any] = None,
-        email_address: Optional[Any] = None,
-        hid_acs_system_id: Optional[Any] = None,
-    ):
+        acs_user_id: str,
+        access_schedule: Optional[Dict[str, Any]] = None,
+        full_name: Optional[str] = None,
+        email: Optional[str] = None,
+        phone_number: Optional[str] = None,
+        email_address: Optional[str] = None,
+        hid_acs_system_id: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if acs_user_id is not None:

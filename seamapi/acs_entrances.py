@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAcsEntrances, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class AcsEntrances(AbstractAcsEntrances):
@@ -8,7 +8,7 @@ class AcsEntrances(AbstractAcsEntrances):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def get(self, acs_entrance_id: Any):
+    def get(self, acs_entrance_id: str) -> None:
         json_payload = {}
 
         if acs_entrance_id is not None:
@@ -18,7 +18,7 @@ class AcsEntrances(AbstractAcsEntrances):
 
         return None
 
-    def grant_access(self, acs_entrance_id: Any, acs_user_id: Any):
+    def grant_access(self, acs_entrance_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_entrance_id is not None:
@@ -32,9 +32,9 @@ class AcsEntrances(AbstractAcsEntrances):
 
     def list(
         self,
-        acs_system_id: Optional[Any] = None,
-        acs_credential_id: Optional[Any] = None,
-    ):
+        acs_system_id: Optional[str] = None,
+        acs_credential_id: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if acs_system_id is not None:
@@ -47,8 +47,8 @@ class AcsEntrances(AbstractAcsEntrances):
         return None
 
     def list_credentials_with_access(
-        self, acs_entrance_id: Any, include_if: Optional[Any] = None
-    ):
+        self, acs_entrance_id: str, include_if: Optional[List[str]] = None
+    ) -> None:
         json_payload = {}
 
         if acs_entrance_id is not None:

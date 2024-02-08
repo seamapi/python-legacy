@@ -2,7 +2,7 @@ from seamapi.types import (
     AbstractAcsCredentialProvisioningAutomations,
     AbstractSeam as Seam,
 )
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class AcsCredentialProvisioningAutomations(
@@ -15,12 +15,12 @@ class AcsCredentialProvisioningAutomations(
 
     def launch(
         self,
-        user_identity_id: Any,
-        credential_manager_acs_system_id: Any,
-        acs_credential_pool_id: Optional[Any] = None,
-        create_credential_manager_user: Optional[Any] = None,
-        credential_manager_acs_user_id: Optional[Any] = None,
-    ):
+        user_identity_id: str,
+        credential_manager_acs_system_id: str,
+        acs_credential_pool_id: Optional[str] = None,
+        create_credential_manager_user: Optional[bool] = None,
+        credential_manager_acs_user_id: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if user_identity_id is not None:

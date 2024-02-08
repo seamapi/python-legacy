@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAcsCredentialPools, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class AcsCredentialPools(AbstractAcsCredentialPools):
@@ -8,7 +8,7 @@ class AcsCredentialPools(AbstractAcsCredentialPools):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def list(self, acs_system_id: Any):
+    def list(self, acs_system_id: str) -> None:
         json_payload = {}
 
         if acs_system_id is not None:

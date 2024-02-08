@@ -1,5 +1,5 @@
 from seamapi.types import AbstractDevices, AbstractSeam as Seam, Device, DeviceProvider
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 from seamapi.devices_unmanaged import DevicesUnmanaged
 
 
@@ -14,7 +14,7 @@ class Devices(AbstractDevices):
     def unmanaged(self) -> DevicesUnmanaged:
         return self._unmanaged
 
-    def delete(self, device_id: Any):
+    def delete(self, device_id: str) -> None:
         json_payload = {}
 
         if device_id is not None:
@@ -24,7 +24,9 @@ class Devices(AbstractDevices):
 
         return None
 
-    def get(self, device_id: Optional[Any] = None, name: Optional[Any] = None):
+    def get(
+        self, device_id: Optional[str] = None, name: Optional[str] = None
+    ) -> Device:
         json_payload = {}
 
         if device_id is not None:
@@ -38,18 +40,18 @@ class Devices(AbstractDevices):
 
     def list(
         self,
-        connected_account_id: Optional[Any] = None,
-        connected_account_ids: Optional[Any] = None,
-        connect_webview_id: Optional[Any] = None,
-        device_type: Optional[Any] = None,
-        device_types: Optional[Any] = None,
-        manufacturer: Optional[Any] = None,
-        device_ids: Optional[Any] = None,
-        limit: Optional[Any] = None,
-        created_before: Optional[Any] = None,
-        user_identifier_key: Optional[Any] = None,
-        custom_metadata_has: Optional[Any] = None,
-    ):
+        connected_account_id: Optional[str] = None,
+        connected_account_ids: Optional[List[str]] = None,
+        connect_webview_id: Optional[str] = None,
+        device_type: Optional[str] = None,
+        device_types: Optional[List[Any]] = None,
+        manufacturer: Optional[str] = None,
+        device_ids: Optional[List[str]] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
+        user_identifier_key: Optional[str] = None,
+        custom_metadata_has: Optional[Dict[str, Any]] = None,
+    ) -> List[Device]:
         json_payload = {}
 
         if connected_account_id is not None:
@@ -79,7 +81,9 @@ class Devices(AbstractDevices):
 
         return [Device.from_dict(item) for item in res["devices"]]
 
-    def list_device_providers(self, provider_category: Optional[Any] = None):
+    def list_device_providers(
+        self, provider_category: Optional[str] = None
+    ) -> List[DeviceProvider]:
         json_payload = {}
 
         if provider_category is not None:
@@ -93,12 +97,12 @@ class Devices(AbstractDevices):
 
     def update(
         self,
-        device_id: Any,
-        properties: Optional[Any] = None,
-        name: Optional[Any] = None,
-        is_managed: Optional[Any] = None,
-        custom_metadata: Optional[Any] = None,
-    ):
+        device_id: str,
+        properties: Optional[Dict[str, Any]] = None,
+        name: Optional[str] = None,
+        is_managed: Optional[bool] = None,
+        custom_metadata: Optional[Dict[str, Any]] = None,
+    ) -> None:
         json_payload = {}
 
         if device_id is not None:
