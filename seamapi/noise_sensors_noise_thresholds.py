@@ -4,7 +4,7 @@ from seamapi.types import (
     NoiseThreshold,
     ActionAttempt,
 )
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
@@ -15,14 +15,14 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
 
     def create(
         self,
-        device_id: Any,
-        starts_daily_at: Any,
-        ends_daily_at: Any,
-        sync: Optional[Any] = None,
-        name: Optional[Any] = None,
-        noise_threshold_decibels: Optional[Any] = None,
-        noise_threshold_nrs: Optional[Any] = None,
-    ):
+        device_id: str,
+        starts_daily_at: str,
+        ends_daily_at: str,
+        sync: Optional[bool] = None,
+        name: Optional[str] = None,
+        noise_threshold_decibels: Optional[float] = None,
+        noise_threshold_nrs: Optional[float] = None,
+    ) -> NoiseThreshold:
         json_payload = {}
 
         if device_id is not None:
@@ -48,11 +48,11 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
 
     def delete(
         self,
-        noise_threshold_id: Any,
-        device_id: Any,
-        sync: Optional[Any] = None,
+        noise_threshold_id: str,
+        device_id: str,
+        sync: Optional[bool] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ):
+    ) -> ActionAttempt:
         json_payload = {}
 
         if noise_threshold_id is not None:
@@ -75,7 +75,7 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
 
         return updated_action_attempt
 
-    def get(self, noise_threshold_id: Any):
+    def get(self, noise_threshold_id: str) -> NoiseThreshold:
         json_payload = {}
 
         if noise_threshold_id is not None:
@@ -87,7 +87,9 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
 
         return NoiseThreshold.from_dict(res["noise_threshold"])
 
-    def list(self, device_id: Any, is_programmed: Optional[Any] = None):
+    def list(
+        self, device_id: str, is_programmed: Optional[bool] = None
+    ) -> List[NoiseThreshold]:
         json_payload = {}
 
         if device_id is not None:
@@ -103,16 +105,16 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
 
     def update(
         self,
-        noise_threshold_id: Any,
-        device_id: Any,
-        sync: Optional[Any] = None,
-        name: Optional[Any] = None,
-        starts_daily_at: Optional[Any] = None,
-        ends_daily_at: Optional[Any] = None,
-        noise_threshold_decibels: Optional[Any] = None,
-        noise_threshold_nrs: Optional[Any] = None,
+        noise_threshold_id: str,
+        device_id: str,
+        sync: Optional[bool] = None,
+        name: Optional[str] = None,
+        starts_daily_at: Optional[str] = None,
+        ends_daily_at: Optional[str] = None,
+        noise_threshold_decibels: Optional[float] = None,
+        noise_threshold_nrs: Optional[float] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ):
+    ) -> ActionAttempt:
         json_payload = {}
 
         if noise_threshold_id is not None:

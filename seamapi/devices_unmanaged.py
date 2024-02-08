@@ -3,7 +3,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     UnmanagedDevice,
 )
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class DevicesUnmanaged(AbstractDevicesUnmanaged):
@@ -12,7 +12,9 @@ class DevicesUnmanaged(AbstractDevicesUnmanaged):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def get(self, device_id: Optional[Any] = None, name: Optional[Any] = None):
+    def get(
+        self, device_id: Optional[str] = None, name: Optional[str] = None
+    ) -> UnmanagedDevice:
         json_payload = {}
 
         if device_id is not None:
@@ -28,18 +30,18 @@ class DevicesUnmanaged(AbstractDevicesUnmanaged):
 
     def list(
         self,
-        connected_account_id: Optional[Any] = None,
-        connected_account_ids: Optional[Any] = None,
-        connect_webview_id: Optional[Any] = None,
-        device_type: Optional[Any] = None,
-        device_types: Optional[Any] = None,
-        manufacturer: Optional[Any] = None,
-        device_ids: Optional[Any] = None,
-        limit: Optional[Any] = None,
-        created_before: Optional[Any] = None,
-        user_identifier_key: Optional[Any] = None,
-        custom_metadata_has: Optional[Any] = None,
-    ):
+        connected_account_id: Optional[str] = None,
+        connected_account_ids: Optional[List[str]] = None,
+        connect_webview_id: Optional[str] = None,
+        device_type: Optional[str] = None,
+        device_types: Optional[List[Any]] = None,
+        manufacturer: Optional[str] = None,
+        device_ids: Optional[List[str]] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
+        user_identifier_key: Optional[str] = None,
+        custom_metadata_has: Optional[Dict[str, Any]] = None,
+    ) -> List[UnmanagedDevice]:
         json_payload = {}
 
         if connected_account_id is not None:
@@ -71,7 +73,7 @@ class DevicesUnmanaged(AbstractDevicesUnmanaged):
 
         return [UnmanagedDevice.from_dict(item) for item in res["devices"]]
 
-    def update(self, device_id: Any, is_managed: Any):
+    def update(self, device_id: str, is_managed: bool) -> None:
         json_payload = {}
 
         if device_id is not None:

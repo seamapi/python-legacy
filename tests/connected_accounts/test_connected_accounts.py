@@ -17,7 +17,6 @@ def test_connected_accounts(seam: Seam):
     assert email_account.connected_account_id == connected_account_id
 
     deleted_account = seam.connected_accounts.delete(connected_account_id=connected_account_id)
-    print(deleted_account)
     assert deleted_account == None
 
     # Assert that an Exception is raised for the .get() method when

@@ -4,7 +4,7 @@ from seamapi.types import (
     AccessCode,
     ActionAttempt,
 )
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 from seamapi.access_codes_simulate import AccessCodesSimulate
 from seamapi.access_codes_unmanaged import AccessCodesUnmanaged
 
@@ -27,23 +27,23 @@ class AccessCodes(AbstractAccessCodes):
 
     def create(
         self,
-        device_id: Any,
-        name: Optional[Any] = None,
-        starts_at: Optional[Any] = None,
-        ends_at: Optional[Any] = None,
-        code: Optional[Any] = None,
-        sync: Optional[Any] = None,
-        attempt_for_offline_device: Optional[Any] = None,
-        common_code_key: Optional[Any] = None,
-        prefer_native_scheduling: Optional[Any] = None,
-        use_backup_access_code_pool: Optional[Any] = None,
-        allow_external_modification: Optional[Any] = None,
-        is_external_modification_allowed: Optional[Any] = None,
-        use_offline_access_code: Optional[Any] = None,
-        is_offline_access_code: Optional[Any] = None,
-        is_one_time_use: Optional[Any] = None,
-        max_time_rounding: Optional[Any] = None,
-    ):
+        device_id: str,
+        name: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+        code: Optional[str] = None,
+        sync: Optional[bool] = None,
+        attempt_for_offline_device: Optional[bool] = None,
+        common_code_key: Optional[str] = None,
+        prefer_native_scheduling: Optional[bool] = None,
+        use_backup_access_code_pool: Optional[bool] = None,
+        allow_external_modification: Optional[bool] = None,
+        is_external_modification_allowed: Optional[bool] = None,
+        use_offline_access_code: Optional[bool] = None,
+        is_offline_access_code: Optional[bool] = None,
+        is_one_time_use: Optional[bool] = None,
+        max_time_rounding: Optional[str] = None,
+    ) -> AccessCode:
         json_payload = {}
 
         if device_id is not None:
@@ -87,23 +87,23 @@ class AccessCodes(AbstractAccessCodes):
 
     def create_multiple(
         self,
-        device_ids: Any,
-        behavior_when_code_cannot_be_shared: Optional[Any] = None,
-        preferred_code_length: Optional[Any] = None,
-        name: Optional[Any] = None,
-        starts_at: Optional[Any] = None,
-        ends_at: Optional[Any] = None,
-        code: Optional[Any] = None,
-        attempt_for_offline_device: Optional[Any] = None,
-        prefer_native_scheduling: Optional[Any] = None,
-        use_backup_access_code_pool: Optional[Any] = None,
-        allow_external_modification: Optional[Any] = None,
-        is_external_modification_allowed: Optional[Any] = None,
-        use_offline_access_code: Optional[Any] = None,
-        is_offline_access_code: Optional[Any] = None,
-        is_one_time_use: Optional[Any] = None,
-        max_time_rounding: Optional[Any] = None,
-    ):
+        device_ids: List[str],
+        behavior_when_code_cannot_be_shared: Optional[str] = None,
+        preferred_code_length: Optional[float] = None,
+        name: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+        code: Optional[str] = None,
+        attempt_for_offline_device: Optional[bool] = None,
+        prefer_native_scheduling: Optional[bool] = None,
+        use_backup_access_code_pool: Optional[bool] = None,
+        allow_external_modification: Optional[bool] = None,
+        is_external_modification_allowed: Optional[bool] = None,
+        use_offline_access_code: Optional[bool] = None,
+        is_offline_access_code: Optional[bool] = None,
+        is_one_time_use: Optional[bool] = None,
+        max_time_rounding: Optional[str] = None,
+    ) -> List[AccessCode]:
         json_payload = {}
 
         if device_ids is not None:
@@ -151,11 +151,11 @@ class AccessCodes(AbstractAccessCodes):
 
     def delete(
         self,
-        access_code_id: Any,
-        device_id: Optional[Any] = None,
-        sync: Optional[Any] = None,
+        access_code_id: str,
+        device_id: Optional[str] = None,
+        sync: Optional[bool] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ):
+    ) -> ActionAttempt:
         json_payload = {}
 
         if access_code_id is not None:
@@ -176,7 +176,7 @@ class AccessCodes(AbstractAccessCodes):
 
         return updated_action_attempt
 
-    def generate_code(self, device_id: Any):
+    def generate_code(self, device_id: str) -> AccessCode:
         json_payload = {}
 
         if device_id is not None:
@@ -190,10 +190,10 @@ class AccessCodes(AbstractAccessCodes):
 
     def get(
         self,
-        device_id: Optional[Any] = None,
-        access_code_id: Optional[Any] = None,
-        code: Optional[Any] = None,
-    ):
+        device_id: Optional[str] = None,
+        access_code_id: Optional[str] = None,
+        code: Optional[str] = None,
+    ) -> AccessCode:
         json_payload = {}
 
         if device_id is not None:
@@ -209,10 +209,10 @@ class AccessCodes(AbstractAccessCodes):
 
     def list(
         self,
-        device_id: Optional[Any] = None,
-        access_code_ids: Optional[Any] = None,
-        user_identifier_key: Optional[Any] = None,
-    ):
+        device_id: Optional[str] = None,
+        access_code_ids: Optional[List[str]] = None,
+        user_identifier_key: Optional[str] = None,
+    ) -> List[AccessCode]:
         json_payload = {}
 
         if device_id is not None:
@@ -226,7 +226,7 @@ class AccessCodes(AbstractAccessCodes):
 
         return [AccessCode.from_dict(item) for item in res["access_codes"]]
 
-    def pull_backup_access_code(self, access_code_id: Any):
+    def pull_backup_access_code(self, access_code_id: str) -> AccessCode:
         json_payload = {}
 
         if access_code_id is not None:
@@ -240,26 +240,26 @@ class AccessCodes(AbstractAccessCodes):
 
     def update(
         self,
-        access_code_id: Any,
-        name: Optional[Any] = None,
-        starts_at: Optional[Any] = None,
-        ends_at: Optional[Any] = None,
-        code: Optional[Any] = None,
-        sync: Optional[Any] = None,
-        attempt_for_offline_device: Optional[Any] = None,
-        prefer_native_scheduling: Optional[Any] = None,
-        use_backup_access_code_pool: Optional[Any] = None,
-        allow_external_modification: Optional[Any] = None,
-        is_external_modification_allowed: Optional[Any] = None,
-        use_offline_access_code: Optional[Any] = None,
-        is_offline_access_code: Optional[Any] = None,
-        is_one_time_use: Optional[Any] = None,
-        max_time_rounding: Optional[Any] = None,
-        device_id: Optional[Any] = None,
-        type: Optional[Any] = None,
-        is_managed: Optional[Any] = None,
+        access_code_id: str,
+        name: Optional[str] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+        code: Optional[str] = None,
+        sync: Optional[bool] = None,
+        attempt_for_offline_device: Optional[bool] = None,
+        prefer_native_scheduling: Optional[bool] = None,
+        use_backup_access_code_pool: Optional[bool] = None,
+        allow_external_modification: Optional[bool] = None,
+        is_external_modification_allowed: Optional[bool] = None,
+        use_offline_access_code: Optional[bool] = None,
+        is_offline_access_code: Optional[bool] = None,
+        is_one_time_use: Optional[bool] = None,
+        max_time_rounding: Optional[str] = None,
+        device_id: Optional[str] = None,
+        type: Optional[str] = None,
+        is_managed: Optional[bool] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ):
+    ) -> ActionAttempt:
         json_payload = {}
 
         if access_code_id is not None:

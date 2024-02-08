@@ -1,5 +1,5 @@
 from seamapi.types import AbstractConnectWebviews, AbstractSeam as Seam, ConnectWebview
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class ConnectWebviews(AbstractConnectWebviews):
@@ -10,15 +10,15 @@ class ConnectWebviews(AbstractConnectWebviews):
 
     def create(
         self,
-        device_selection_mode: Optional[Any] = None,
-        custom_redirect_url: Optional[Any] = None,
-        custom_redirect_failure_url: Optional[Any] = None,
-        accepted_providers: Optional[Any] = None,
-        provider_category: Optional[Any] = None,
-        custom_metadata: Optional[Any] = None,
-        automatically_manage_new_devices: Optional[Any] = None,
-        wait_for_device_creation: Optional[Any] = None,
-    ):
+        device_selection_mode: Optional[str] = None,
+        custom_redirect_url: Optional[str] = None,
+        custom_redirect_failure_url: Optional[str] = None,
+        accepted_providers: Optional[List[str]] = None,
+        provider_category: Optional[str] = None,
+        custom_metadata: Optional[Dict[str, Any]] = None,
+        automatically_manage_new_devices: Optional[bool] = None,
+        wait_for_device_creation: Optional[bool] = None,
+    ) -> ConnectWebview:
         json_payload = {}
 
         if device_selection_mode is not None:
@@ -46,7 +46,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         return ConnectWebview.from_dict(res["connect_webview"])
 
-    def delete(self, connect_webview_id: Any):
+    def delete(self, connect_webview_id: str) -> None:
         json_payload = {}
 
         if connect_webview_id is not None:
@@ -56,7 +56,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         return None
 
-    def get(self, connect_webview_id: Any):
+    def get(self, connect_webview_id: str) -> ConnectWebview:
         json_payload = {}
 
         if connect_webview_id is not None:
@@ -68,9 +68,9 @@ class ConnectWebviews(AbstractConnectWebviews):
 
     def list(
         self,
-        user_identifier_key: Optional[Any] = None,
-        custom_metadata_has: Optional[Any] = None,
-    ):
+        user_identifier_key: Optional[str] = None,
+        custom_metadata_has: Optional[Dict[str, Any]] = None,
+    ) -> List[ConnectWebview]:
         json_payload = {}
 
         if user_identifier_key is not None:

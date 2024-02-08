@@ -1,5 +1,5 @@
 from seamapi.types import AbstractHealth, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 from seamapi.health_service import HealthService
 
 
@@ -16,14 +16,14 @@ class Health(AbstractHealth):
 
     def get_health(
         self,
-    ):
+    ) -> None:
         json_payload = {}
 
         self.seam.make_request("POST", "/health/get_health", json=json_payload)
 
         return None
 
-    def get_service_health(self, service: Any):
+    def get_service_health(self, service: str) -> None:
         json_payload = {}
 
         if service is not None:

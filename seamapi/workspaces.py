@@ -1,5 +1,5 @@
 from seamapi.types import AbstractWorkspaces, AbstractSeam as Seam, Workspace
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class Workspaces(AbstractWorkspaces):
@@ -10,12 +10,12 @@ class Workspaces(AbstractWorkspaces):
 
     def create(
         self,
-        name: Any,
-        connect_partner_name: Any,
-        is_sandbox: Optional[Any] = None,
-        webview_primary_button_color: Optional[Any] = None,
-        webview_logo_shape: Optional[Any] = None,
-    ):
+        name: str,
+        connect_partner_name: str,
+        is_sandbox: Optional[bool] = None,
+        webview_primary_button_color: Optional[str] = None,
+        webview_logo_shape: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if name is not None:
@@ -35,7 +35,7 @@ class Workspaces(AbstractWorkspaces):
 
     def get(
         self,
-    ):
+    ) -> Workspace:
         json_payload = {}
 
         res = self.seam.make_request("POST", "/workspaces/get", json=json_payload)
@@ -44,7 +44,7 @@ class Workspaces(AbstractWorkspaces):
 
     def list(
         self,
-    ):
+    ) -> List[Workspace]:
         json_payload = {}
 
         res = self.seam.make_request("POST", "/workspaces/list", json=json_payload)
@@ -53,7 +53,7 @@ class Workspaces(AbstractWorkspaces):
 
     def reset_sandbox(
         self,
-    ):
+    ) -> None:
         json_payload = {}
 
         self.seam.make_request("POST", "/workspaces/reset_sandbox", json=json_payload)

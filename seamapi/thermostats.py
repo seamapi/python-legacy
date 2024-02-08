@@ -1,5 +1,5 @@
 from seamapi.types import AbstractThermostats, AbstractSeam as Seam, Device
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 from seamapi.thermostats_climate_setting_schedules import (
     ThermostatsClimateSettingSchedules,
 )
@@ -18,11 +18,11 @@ class Thermostats(AbstractThermostats):
 
     def cool(
         self,
-        device_id: Any,
-        cooling_set_point_celsius: Optional[Any] = None,
-        cooling_set_point_fahrenheit: Optional[Any] = None,
-        sync: Optional[Any] = None,
-    ):
+        device_id: str,
+        cooling_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        sync: Optional[bool] = None,
+    ) -> None:
         json_payload = {}
 
         if device_id is not None:
@@ -38,7 +38,9 @@ class Thermostats(AbstractThermostats):
 
         return None
 
-    def get(self, device_id: Optional[Any] = None, name: Optional[Any] = None):
+    def get(
+        self, device_id: Optional[str] = None, name: Optional[str] = None
+    ) -> Device:
         json_payload = {}
 
         if device_id is not None:
@@ -52,11 +54,11 @@ class Thermostats(AbstractThermostats):
 
     def heat(
         self,
-        device_id: Any,
-        heating_set_point_celsius: Optional[Any] = None,
-        heating_set_point_fahrenheit: Optional[Any] = None,
-        sync: Optional[Any] = None,
-    ):
+        device_id: str,
+        heating_set_point_celsius: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
+        sync: Optional[bool] = None,
+    ) -> None:
         json_payload = {}
 
         if device_id is not None:
@@ -74,13 +76,13 @@ class Thermostats(AbstractThermostats):
 
     def heat_cool(
         self,
-        device_id: Any,
-        heating_set_point_celsius: Optional[Any] = None,
-        heating_set_point_fahrenheit: Optional[Any] = None,
-        cooling_set_point_celsius: Optional[Any] = None,
-        cooling_set_point_fahrenheit: Optional[Any] = None,
-        sync: Optional[Any] = None,
-    ):
+        device_id: str,
+        heating_set_point_celsius: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
+        cooling_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        sync: Optional[bool] = None,
+    ) -> None:
         json_payload = {}
 
         if device_id is not None:
@@ -102,18 +104,18 @@ class Thermostats(AbstractThermostats):
 
     def list(
         self,
-        connected_account_id: Optional[Any] = None,
-        connected_account_ids: Optional[Any] = None,
-        connect_webview_id: Optional[Any] = None,
-        device_type: Optional[Any] = None,
-        device_types: Optional[Any] = None,
-        manufacturer: Optional[Any] = None,
-        device_ids: Optional[Any] = None,
-        limit: Optional[Any] = None,
-        created_before: Optional[Any] = None,
-        user_identifier_key: Optional[Any] = None,
-        custom_metadata_has: Optional[Any] = None,
-    ):
+        connected_account_id: Optional[str] = None,
+        connected_account_ids: Optional[List[str]] = None,
+        connect_webview_id: Optional[str] = None,
+        device_type: Optional[str] = None,
+        device_types: Optional[List[Any]] = None,
+        manufacturer: Optional[str] = None,
+        device_ids: Optional[List[str]] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
+        user_identifier_key: Optional[str] = None,
+        custom_metadata_has: Optional[Dict[str, Any]] = None,
+    ) -> List[Device]:
         json_payload = {}
 
         if connected_account_id is not None:
@@ -143,7 +145,7 @@ class Thermostats(AbstractThermostats):
 
         return [Device.from_dict(item) for item in res["thermostats"]]
 
-    def off(self, device_id: Any, sync: Optional[Any] = None):
+    def off(self, device_id: str, sync: Optional[bool] = None) -> None:
         json_payload = {}
 
         if device_id is not None:
@@ -157,11 +159,11 @@ class Thermostats(AbstractThermostats):
 
     def set_fan_mode(
         self,
-        device_id: Any,
-        fan_mode: Optional[Any] = None,
-        fan_mode_setting: Optional[Any] = None,
-        sync: Optional[Any] = None,
-    ):
+        device_id: str,
+        fan_mode: Optional[str] = None,
+        fan_mode_setting: Optional[str] = None,
+        sync: Optional[bool] = None,
+    ) -> None:
         json_payload = {}
 
         if device_id is not None:
@@ -177,7 +179,7 @@ class Thermostats(AbstractThermostats):
 
         return None
 
-    def update(self, device_id: Any, default_climate_setting: Any):
+    def update(self, device_id: str, default_climate_setting: Dict[str, Any]) -> None:
         json_payload = {}
 
         if device_id is not None:

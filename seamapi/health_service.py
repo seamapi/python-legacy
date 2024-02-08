@@ -1,5 +1,5 @@
 from seamapi.types import AbstractHealthService, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class HealthService(AbstractHealthService):
@@ -8,7 +8,7 @@ class HealthService(AbstractHealthService):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def by_service_name(self, service_name: Any):
+    def by_service_name(self, service_name: str) -> None:
         json_payload = {}
 
         if service_name is not None:

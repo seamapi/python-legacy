@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAcsCredentials, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class AcsCredentials(AbstractAcsCredentials):
@@ -8,7 +8,7 @@ class AcsCredentials(AbstractAcsCredentials):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def assign(self, acs_user_id: Any, acs_credential_id: Any):
+    def assign(self, acs_user_id: str, acs_credential_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -22,15 +22,15 @@ class AcsCredentials(AbstractAcsCredentials):
 
     def create(
         self,
-        acs_user_id: Any,
-        access_method: Any,
-        code: Optional[Any] = None,
-        is_multi_phone_sync_credential: Optional[Any] = None,
-        external_type: Optional[Any] = None,
-        visionline_metadata: Optional[Any] = None,
-        starts_at: Optional[Any] = None,
-        ends_at: Optional[Any] = None,
-    ):
+        acs_user_id: str,
+        access_method: str,
+        code: Optional[str] = None,
+        is_multi_phone_sync_credential: Optional[bool] = None,
+        external_type: Optional[str] = None,
+        visionline_metadata: Optional[Dict[str, Any]] = None,
+        starts_at: Optional[str] = None,
+        ends_at: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -56,7 +56,7 @@ class AcsCredentials(AbstractAcsCredentials):
 
         return None
 
-    def delete(self, acs_credential_id: Any):
+    def delete(self, acs_credential_id: str) -> None:
         json_payload = {}
 
         if acs_credential_id is not None:
@@ -66,7 +66,7 @@ class AcsCredentials(AbstractAcsCredentials):
 
         return None
 
-    def get(self, acs_credential_id: Any):
+    def get(self, acs_credential_id: str) -> None:
         json_payload = {}
 
         if acs_credential_id is not None:
@@ -78,10 +78,10 @@ class AcsCredentials(AbstractAcsCredentials):
 
     def list(
         self,
-        acs_user_id: Optional[Any] = None,
-        acs_system_id: Optional[Any] = None,
-        user_identity_id: Optional[Any] = None,
-    ):
+        acs_user_id: Optional[str] = None,
+        acs_system_id: Optional[str] = None,
+        user_identity_id: Optional[str] = None,
+    ) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -95,7 +95,7 @@ class AcsCredentials(AbstractAcsCredentials):
 
         return None
 
-    def unassign(self, acs_user_id: Any, acs_credential_id: Any):
+    def unassign(self, acs_user_id: str, acs_credential_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -107,7 +107,7 @@ class AcsCredentials(AbstractAcsCredentials):
 
         return None
 
-    def update(self, acs_credential_id: Any, code: Any):
+    def update(self, acs_credential_id: str, code: str) -> None:
         json_payload = {}
 
         if acs_credential_id is not None:

@@ -4,7 +4,7 @@ from seamapi.types import (
     ActionAttempt,
     UnmanagedAccessCode,
 )
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
@@ -15,12 +15,12 @@ class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
 
     def convert_to_managed(
         self,
-        access_code_id: Any,
-        is_external_modification_allowed: Optional[Any] = None,
-        allow_external_modification: Optional[Any] = None,
-        force: Optional[Any] = None,
-        sync: Optional[Any] = None,
-    ):
+        access_code_id: str,
+        is_external_modification_allowed: Optional[bool] = None,
+        allow_external_modification: Optional[bool] = None,
+        force: Optional[bool] = None,
+        sync: Optional[bool] = None,
+    ) -> None:
         json_payload = {}
 
         if access_code_id is not None:
@@ -44,10 +44,10 @@ class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
 
     def delete(
         self,
-        access_code_id: Any,
-        sync: Optional[Any] = None,
+        access_code_id: str,
+        sync: Optional[bool] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ):
+    ) -> ActionAttempt:
         json_payload = {}
 
         if access_code_id is not None:
@@ -70,10 +70,10 @@ class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
 
     def get(
         self,
-        device_id: Optional[Any] = None,
-        access_code_id: Optional[Any] = None,
-        code: Optional[Any] = None,
-    ):
+        device_id: Optional[str] = None,
+        access_code_id: Optional[str] = None,
+        code: Optional[str] = None,
+    ) -> UnmanagedAccessCode:
         json_payload = {}
 
         if device_id is not None:
@@ -89,7 +89,9 @@ class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
 
         return UnmanagedAccessCode.from_dict(res["access_code"])
 
-    def list(self, device_id: Any, user_identifier_key: Optional[Any] = None):
+    def list(
+        self, device_id: str, user_identifier_key: Optional[str] = None
+    ) -> List[UnmanagedAccessCode]:
         json_payload = {}
 
         if device_id is not None:
@@ -105,12 +107,12 @@ class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
 
     def update(
         self,
-        access_code_id: Any,
-        is_managed: Any,
-        allow_external_modification: Optional[Any] = None,
-        is_external_modification_allowed: Optional[Any] = None,
-        force: Optional[Any] = None,
-    ):
+        access_code_id: str,
+        is_managed: bool,
+        allow_external_modification: Optional[bool] = None,
+        is_external_modification_allowed: Optional[bool] = None,
+        force: Optional[bool] = None,
+    ) -> None:
         json_payload = {}
 
         if access_code_id is not None:

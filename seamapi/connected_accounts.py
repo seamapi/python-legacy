@@ -3,7 +3,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     ConnectedAccount,
 )
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class ConnectedAccounts(AbstractConnectedAccounts):
@@ -12,7 +12,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def delete(self, connected_account_id: Any, sync: Optional[Any] = None):
+    def delete(self, connected_account_id: str, sync: Optional[bool] = None) -> None:
         json_payload = {}
 
         if connected_account_id is not None:
@@ -25,8 +25,8 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         return None
 
     def get(
-        self, connected_account_id: Optional[Any] = None, email: Optional[Any] = None
-    ):
+        self, connected_account_id: Optional[str] = None, email: Optional[str] = None
+    ) -> ConnectedAccount:
         json_payload = {}
 
         if connected_account_id is not None:
@@ -40,7 +40,9 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
         return ConnectedAccount.from_dict(res["connected_account"])
 
-    def list(self, custom_metadata_has: Optional[Any] = None):
+    def list(
+        self, custom_metadata_has: Optional[Dict[str, Any]] = None
+    ) -> List[ConnectedAccount]:
         json_payload = {}
 
         if custom_metadata_has is not None:
@@ -54,10 +56,10 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
     def update(
         self,
-        connected_account_id: Any,
-        automatically_manage_new_devices: Optional[Any] = None,
-        custom_metadata: Optional[Any] = None,
-    ):
+        connected_account_id: str,
+        automatically_manage_new_devices: Optional[bool] = None,
+        custom_metadata: Optional[Dict[str, Any]] = None,
+    ) -> ConnectedAccount:
         json_payload = {}
 
         if connected_account_id is not None:

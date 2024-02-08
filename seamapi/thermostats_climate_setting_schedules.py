@@ -3,7 +3,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     ClimateSettingSchedule,
 )
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedules):
@@ -14,20 +14,20 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
     def create(
         self,
-        device_id: Any,
-        schedule_starts_at: Any,
-        schedule_ends_at: Any,
-        schedule_type: Optional[Any] = None,
-        name: Optional[Any] = None,
-        automatic_heating_enabled: Optional[Any] = None,
-        automatic_cooling_enabled: Optional[Any] = None,
-        hvac_mode_setting: Optional[Any] = None,
-        cooling_set_point_celsius: Optional[Any] = None,
-        heating_set_point_celsius: Optional[Any] = None,
-        cooling_set_point_fahrenheit: Optional[Any] = None,
-        heating_set_point_fahrenheit: Optional[Any] = None,
-        manual_override_allowed: Optional[Any] = None,
-    ):
+        device_id: str,
+        schedule_starts_at: str,
+        schedule_ends_at: str,
+        schedule_type: Optional[str] = None,
+        name: Optional[str] = None,
+        automatic_heating_enabled: Optional[bool] = None,
+        automatic_cooling_enabled: Optional[bool] = None,
+        hvac_mode_setting: Optional[str] = None,
+        cooling_set_point_celsius: Optional[float] = None,
+        heating_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
+        manual_override_allowed: Optional[bool] = None,
+    ) -> ClimateSettingSchedule:
         json_payload = {}
 
         if device_id is not None:
@@ -63,7 +63,7 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
         return ClimateSettingSchedule.from_dict(res["climate_setting_schedule"])
 
-    def delete(self, climate_setting_schedule_id: Any):
+    def delete(self, climate_setting_schedule_id: str) -> None:
         json_payload = {}
 
         if climate_setting_schedule_id is not None:
@@ -77,9 +77,9 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
     def get(
         self,
-        climate_setting_schedule_id: Optional[Any] = None,
-        device_id: Optional[Any] = None,
-    ):
+        climate_setting_schedule_id: Optional[str] = None,
+        device_id: Optional[str] = None,
+    ) -> ClimateSettingSchedule:
         json_payload = {}
 
         if climate_setting_schedule_id is not None:
@@ -93,7 +93,9 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
         return ClimateSettingSchedule.from_dict(res["climate_setting_schedule"])
 
-    def list(self, device_id: Any, user_identifier_key: Optional[Any] = None):
+    def list(
+        self, device_id: str, user_identifier_key: Optional[str] = None
+    ) -> List[ClimateSettingSchedule]:
         json_payload = {}
 
         if device_id is not None:
@@ -112,20 +114,20 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
     def update(
         self,
-        climate_setting_schedule_id: Any,
-        schedule_type: Optional[Any] = None,
-        name: Optional[Any] = None,
-        schedule_starts_at: Optional[Any] = None,
-        schedule_ends_at: Optional[Any] = None,
-        automatic_heating_enabled: Optional[Any] = None,
-        automatic_cooling_enabled: Optional[Any] = None,
-        hvac_mode_setting: Optional[Any] = None,
-        cooling_set_point_celsius: Optional[Any] = None,
-        heating_set_point_celsius: Optional[Any] = None,
-        cooling_set_point_fahrenheit: Optional[Any] = None,
-        heating_set_point_fahrenheit: Optional[Any] = None,
-        manual_override_allowed: Optional[Any] = None,
-    ):
+        climate_setting_schedule_id: str,
+        schedule_type: Optional[str] = None,
+        name: Optional[str] = None,
+        schedule_starts_at: Optional[str] = None,
+        schedule_ends_at: Optional[str] = None,
+        automatic_heating_enabled: Optional[bool] = None,
+        automatic_cooling_enabled: Optional[bool] = None,
+        hvac_mode_setting: Optional[str] = None,
+        cooling_set_point_celsius: Optional[float] = None,
+        heating_set_point_celsius: Optional[float] = None,
+        cooling_set_point_fahrenheit: Optional[float] = None,
+        heating_set_point_fahrenheit: Optional[float] = None,
+        manual_override_allowed: Optional[bool] = None,
+    ) -> ClimateSettingSchedule:
         json_payload = {}
 
         if climate_setting_schedule_id is not None:

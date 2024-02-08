@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAcsAccessGroups, AbstractSeam as Seam
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class AcsAccessGroups(AbstractAcsAccessGroups):
@@ -8,7 +8,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def add_user(self, acs_access_group_id: Any, acs_user_id: Any):
+    def add_user(self, acs_access_group_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_access_group_id is not None:
@@ -20,7 +20,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
 
         return None
 
-    def get(self, acs_access_group_id: Any):
+    def get(self, acs_access_group_id: str) -> None:
         json_payload = {}
 
         if acs_access_group_id is not None:
@@ -31,8 +31,8 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
         return None
 
     def list(
-        self, acs_system_id: Optional[Any] = None, acs_user_id: Optional[Any] = None
-    ):
+        self, acs_system_id: Optional[str] = None, acs_user_id: Optional[str] = None
+    ) -> None:
         json_payload = {}
 
         if acs_system_id is not None:
@@ -44,7 +44,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
 
         return None
 
-    def list_users(self, acs_access_group_id: Any):
+    def list_users(self, acs_access_group_id: str) -> None:
         json_payload = {}
 
         if acs_access_group_id is not None:
@@ -56,7 +56,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
 
         return None
 
-    def remove_user(self, acs_access_group_id: Any, acs_user_id: Any):
+    def remove_user(self, acs_access_group_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_access_group_id is not None:

@@ -1,5 +1,5 @@
 from seamapi.types import AbstractLocks, AbstractSeam as Seam, Device, ActionAttempt
-from typing import Optional, Any
+from typing import Optional, Any, List, Dict
 
 
 class Locks(AbstractLocks):
@@ -8,7 +8,9 @@ class Locks(AbstractLocks):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def get(self, device_id: Optional[Any] = None, name: Optional[Any] = None):
+    def get(
+        self, device_id: Optional[str] = None, name: Optional[str] = None
+    ) -> Device:
         json_payload = {}
 
         if device_id is not None:
@@ -22,18 +24,18 @@ class Locks(AbstractLocks):
 
     def list(
         self,
-        connected_account_id: Optional[Any] = None,
-        connected_account_ids: Optional[Any] = None,
-        connect_webview_id: Optional[Any] = None,
-        device_type: Optional[Any] = None,
-        device_types: Optional[Any] = None,
-        manufacturer: Optional[Any] = None,
-        device_ids: Optional[Any] = None,
-        limit: Optional[Any] = None,
-        created_before: Optional[Any] = None,
-        user_identifier_key: Optional[Any] = None,
-        custom_metadata_has: Optional[Any] = None,
-    ):
+        connected_account_id: Optional[str] = None,
+        connected_account_ids: Optional[List[str]] = None,
+        connect_webview_id: Optional[str] = None,
+        device_type: Optional[str] = None,
+        device_types: Optional[List[Any]] = None,
+        manufacturer: Optional[str] = None,
+        device_ids: Optional[List[str]] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
+        user_identifier_key: Optional[str] = None,
+        custom_metadata_has: Optional[Dict[str, Any]] = None,
+    ) -> List[Device]:
         json_payload = {}
 
         if connected_account_id is not None:
@@ -65,10 +67,10 @@ class Locks(AbstractLocks):
 
     def lock_door(
         self,
-        device_id: Any,
-        sync: Optional[Any] = None,
+        device_id: str,
+        sync: Optional[bool] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ):
+    ) -> ActionAttempt:
         json_payload = {}
 
         if device_id is not None:
@@ -89,10 +91,10 @@ class Locks(AbstractLocks):
 
     def unlock_door(
         self,
-        device_id: Any,
-        sync: Optional[Any] = None,
+        device_id: str,
+        sync: Optional[bool] = None,
         wait_for_action_attempt: Optional[bool] = True,
-    ):
+    ) -> ActionAttempt:
         json_payload = {}
 
         if device_id is not None:
