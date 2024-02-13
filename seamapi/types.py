@@ -1331,6 +1331,10 @@ class AbstractPhones(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
+    def deactivate(self, device_id: str):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
     def list(self, owner_user_identity_id: Optional[str] = None):
         raise NotImplementedError()
 

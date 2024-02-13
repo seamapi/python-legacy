@@ -127,7 +127,7 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
         cooling_set_point_fahrenheit: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
         manual_override_allowed: Optional[bool] = None,
-    ) -> ClimateSettingSchedule:
+    ) -> None:
         json_payload = {}
 
         if climate_setting_schedule_id is not None:
@@ -157,8 +157,8 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
         if manual_override_allowed is not None:
             json_payload["manual_override_allowed"] = manual_override_allowed
 
-        res = self.seam.make_request(
+        self.seam.make_request(
             "POST", "/thermostats/climate_setting_schedules/update", json=json_payload
         )
 
-        return ClimateSettingSchedule.from_dict(res["climate_setting_schedule"])
+        return None
