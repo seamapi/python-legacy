@@ -1,7 +1,6 @@
 from seamapi.types import (
     AbstractAccessCodesUnmanaged,
     AbstractSeam as Seam,
-    ActionAttempt,
     UnmanagedAccessCode,
 )
 from typing import Optional, Any, List, Dict
@@ -42,12 +41,7 @@ class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
 
         return None
 
-    def delete(
-        self,
-        access_code_id: str,
-        sync: Optional[bool] = None,
-        wait_for_action_attempt: Optional[bool] = True,
-    ) -> ActionAttempt:
+    def delete(self, access_code_id: str, sync: Optional[bool] = None) -> None:
         json_payload = {}
 
         if access_code_id is not None:
@@ -55,18 +49,11 @@ class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):
         if sync is not None:
             json_payload["sync"] = sync
 
-        res = self.seam.make_request(
+        self.seam.make_request(
             "POST", "/access_codes/unmanaged/delete", json=json_payload
         )
 
-        if not wait_for_action_attempt:
-            return ActionAttempt.from_dict(res["action_attempt"])
-
-        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
-
-        return updated_action_attempt
+        return None
 
     def get(
         self,

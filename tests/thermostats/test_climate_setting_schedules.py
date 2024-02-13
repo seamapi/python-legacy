@@ -36,24 +36,28 @@ def test_climate_setting_schedules(seam: Seam):
         device_id=thermostat.device_id)
     assert len(climate_setting_schedules) == 1
 
-    # Test Update
-    updated_climate_setting_schedule = seam.thermostats.climate_setting_schedules.update(
-        climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
-        name="Vacation Setting 2",
-    )
-
-    assert updated_climate_setting_schedule.name == "Vacation Setting 2"
-
     # Test Get
     climate_setting_schedule = seam.thermostats.climate_setting_schedules.get(
         climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
     )
 
-    assert climate_setting_schedule.name == "Vacation Setting 2"
+    assert climate_setting_schedule.name == "Vacation Setting"
 
-    # Test Delete
-    result = seam.thermostats.climate_setting_schedules.delete(
+    # Test Update
+    seam.thermostats.climate_setting_schedules.update(
+        climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
+        name="Vacation Setting 2",
+    )
+
+    updated_climate_setting_schedule = seam.thermostats.climate_setting_schedules.get(
         climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
     )
 
-    assert result == None
+    assert updated_climate_setting_schedule.name == "Vacation Setting 2"
+
+    # Test Delete
+    deleted_climate_setting_schedule = seam.thermostats.climate_setting_schedules.delete(
+        climate_setting_schedule_id=climate_setting_schedule.climate_setting_schedule_id,
+    )
+
+    assert deleted_climate_setting_schedule == None

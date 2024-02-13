@@ -2,7 +2,6 @@ from seamapi.types import (
     AbstractNoiseSensorsNoiseThresholds,
     AbstractSeam as Seam,
     NoiseThreshold,
-    ActionAttempt,
 )
 from typing import Optional, Any, List, Dict
 
@@ -47,12 +46,8 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
         return NoiseThreshold.from_dict(res["noise_threshold"])
 
     def delete(
-        self,
-        noise_threshold_id: str,
-        device_id: str,
-        sync: Optional[bool] = None,
-        wait_for_action_attempt: Optional[bool] = True,
-    ) -> ActionAttempt:
+        self, noise_threshold_id: str, device_id: str, sync: Optional[bool] = None
+    ) -> None:
         json_payload = {}
 
         if noise_threshold_id is not None:
@@ -62,18 +57,11 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
         if sync is not None:
             json_payload["sync"] = sync
 
-        res = self.seam.make_request(
+        self.seam.make_request(
             "POST", "/noise_sensors/noise_thresholds/delete", json=json_payload
         )
 
-        if not wait_for_action_attempt:
-            return ActionAttempt.from_dict(res["action_attempt"])
-
-        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
-
-        return updated_action_attempt
+        return None
 
     def get(self, noise_threshold_id: str) -> NoiseThreshold:
         json_payload = {}
@@ -113,8 +101,7 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
         ends_daily_at: Optional[str] = None,
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
-        wait_for_action_attempt: Optional[bool] = True,
-    ) -> ActionAttempt:
+    ) -> None:
         json_payload = {}
 
         if noise_threshold_id is not None:
@@ -134,15 +121,8 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
         if noise_threshold_nrs is not None:
             json_payload["noise_threshold_nrs"] = noise_threshold_nrs
 
-        res = self.seam.make_request(
+        self.seam.make_request(
             "POST", "/noise_sensors/noise_thresholds/update", json=json_payload
         )
 
-        if not wait_for_action_attempt:
-            return ActionAttempt.from_dict(res["action_attempt"])
-
-        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
-
-        return updated_action_attempt
+        return None

@@ -32,7 +32,7 @@ def test_access_codes(seam: Seam):
         )
 
     delete_action_attempt = seam.access_codes.delete(access_code_id=created_access_code.access_code_id)
-    assert delete_action_attempt.status == "success"
+    assert delete_action_attempt == None
 
     access_codes = seam.access_codes.create_multiple(device_ids=[device.device_id for device in all_devices])
     assert len(set([ac.common_code_key for ac in access_codes])) == 1

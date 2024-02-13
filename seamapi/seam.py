@@ -73,6 +73,15 @@ class Seam(AbstractSeam):
             workspace_id = os.environ.get("SEAM_WORKSPACE_ID", None)
         self.api_key = api_key
         self.workspace_id = workspace_id
+
+        if os.environ.get("SEAM_API_URL", None) is not None:
+            print(
+                "\n"
+                "\033[93m"
+                "Using the SEAM_API_URL environment variable is deprecated. "
+                "Support will be removed in a later major version. Use SEAM_ENDPOINT instead."
+                "\033[0m"
+            )
         api_url = (
             os.environ.get("SEAM_API_URL", None)
             or os.environ.get("SEAM_ENDPOINT", None)
@@ -80,6 +89,7 @@ class Seam(AbstractSeam):
         )
         if api_url is not None:
             self.api_url = cast(str, api_url)
+
         self.should_report_exceptions = should_report_exceptions
 
         if self.should_report_exceptions:
@@ -112,12 +122,15 @@ class Seam(AbstractSeam):
         """
 
         url = self.api_url + path
+        sdk_version = pkg_resources.get_distribution("seamapi").version
         headers = {
             "Authorization": "Bearer " + self.api_key,
             "Content-Type": "application/json",
             "User-Agent": "Python SDK v"
-            + pkg_resources.get_distribution("seamapi").version
+            + sdk_version
             + " (https://github.com/seamapi/python)",
+            "seam-sdk-name": "seamapi/python",
+            "seam-sdk-version": sdk_version,
         }
         if self.workspace_id is not None:
             headers["seam-workspace"] = self.workspace_id

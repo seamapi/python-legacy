@@ -1,9 +1,4 @@
-from seamapi.types import (
-    AbstractAccessCodes,
-    AbstractSeam as Seam,
-    AccessCode,
-    ActionAttempt,
-)
+from seamapi.types import AbstractAccessCodes, AbstractSeam as Seam, AccessCode
 from typing import Optional, Any, List, Dict
 from seamapi.access_codes_simulate import AccessCodesSimulate
 from seamapi.access_codes_unmanaged import AccessCodesUnmanaged
@@ -154,8 +149,7 @@ class AccessCodes(AbstractAccessCodes):
         access_code_id: str,
         device_id: Optional[str] = None,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Optional[bool] = True,
-    ) -> ActionAttempt:
+    ) -> None:
         json_payload = {}
 
         if access_code_id is not None:
@@ -165,16 +159,9 @@ class AccessCodes(AbstractAccessCodes):
         if sync is not None:
             json_payload["sync"] = sync
 
-        res = self.seam.make_request("POST", "/access_codes/delete", json=json_payload)
+        self.seam.make_request("POST", "/access_codes/delete", json=json_payload)
 
-        if not wait_for_action_attempt:
-            return ActionAttempt.from_dict(res["action_attempt"])
-
-        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
-
-        return updated_action_attempt
+        return None
 
     def generate_code(self, device_id: str) -> AccessCode:
         json_payload = {}
@@ -258,8 +245,7 @@ class AccessCodes(AbstractAccessCodes):
         device_id: Optional[str] = None,
         type: Optional[str] = None,
         is_managed: Optional[bool] = None,
-        wait_for_action_attempt: Optional[bool] = True,
-    ) -> ActionAttempt:
+    ) -> None:
         json_payload = {}
 
         if access_code_id is not None:
@@ -301,13 +287,6 @@ class AccessCodes(AbstractAccessCodes):
         if is_managed is not None:
             json_payload["is_managed"] = is_managed
 
-        res = self.seam.make_request("POST", "/access_codes/update", json=json_payload)
+        self.seam.make_request("POST", "/access_codes/update", json=json_payload)
 
-        if not wait_for_action_attempt:
-            return ActionAttempt.from_dict(res["action_attempt"])
-
-        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
-
-        return updated_action_attempt
+        return None

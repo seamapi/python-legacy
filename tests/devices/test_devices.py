@@ -31,24 +31,24 @@ def test_devices(seam: Seam):
     assert len(locks) > 0
 
     some_device = seam.devices.get(name="Fake August Lock 1")
-    assert some_device.properties['name'] == "Fake August Lock 1"
+    assert some_device.properties.name == "Fake August Lock 1"
 
     some_lock = seam.locks.get(device_id=(some_device.device_id))
     assert some_lock.device_id == some_device.device_id
 
-    assert some_lock.properties['locked'] == True
+    assert some_lock.properties.locked == True
 
     seam.locks.unlock_door(device_id=(some_device.device_id))
     some_unlocked_lock = seam.locks.get(device_id=(some_device.device_id))
-    assert some_unlocked_lock.properties['locked'] == False
+    assert some_unlocked_lock.properties.locked == False
 
     seam.locks.lock_door(device_id=(some_device.device_id))
     some_locked_lock = seam.locks.get(device_id=(some_device.device_id))
-    assert some_locked_lock.properties['locked'] == True
+    assert some_locked_lock.properties.locked == True
 
     seam.devices.update(device_id=(some_device.device_id), name="Updated lock")
     some_updated_lock = seam.locks.get(device_id=(some_device.device_id))
-    assert some_updated_lock.properties['name'] == "Updated lock"
+    assert some_updated_lock.properties.name == "Updated lock"
 
     devices = seam.devices.list()
     seam.devices.delete(device_id=(some_updated_lock.device_id))
