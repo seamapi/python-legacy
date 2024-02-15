@@ -1,5 +1,5 @@
 from seamapi.types import AbstractActionAttempts, AbstractSeam as Seam, ActionAttempt
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 import time
 
@@ -10,7 +10,11 @@ class ActionAttempts(AbstractActionAttempts):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def get(self, action_attempt_id: str) -> ActionAttempt:
+    def get(
+        self,
+        action_attempt_id: str,
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = True,
+    ) -> ActionAttempt:
         json_payload = {}
 
         if action_attempt_id is not None:
@@ -18,7 +22,20 @@ class ActionAttempts(AbstractActionAttempts):
 
         res = self.seam.make_request("POST", "/action_attempts/get", json=json_payload)
 
-        return ActionAttempt.from_dict(res["action_attempt"])
+        if isinstance(wait_for_action_attempt, dict):
+            updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+                res["action_attempt"]["action_attempt_id"],
+                timeout=wait_for_action_attempt.get("timeout", None),
+                polling_interval=wait_for_action_attempt.get("polling_interval", None),
+            )
+        elif wait_for_action_attempt is True:
+            updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+                res["action_attempt"]["action_attempt_id"]
+            )
+        else:
+            return ActionAttempt.from_dict(res["action_attempt"])
+
+        return updated_action_attempt
 
     def list(self, action_attempt_ids: List[str]) -> List[ActionAttempt]:
         json_payload = {}
@@ -33,13 +50,15 @@ class ActionAttempts(AbstractActionAttempts):
     def poll_until_ready(
         self,
         action_attempt_id: str,
-        timeout: float = 5.0,
-        polling_interval: float = 0.5,
+        timeout: Optional[float] = 5.0,
+        polling_interval: Optional[float] = 0.5,
     ) -> ActionAttempt:
         seam = self.seam
         time_waiting = 0.0
 
-        action_attempt = seam.action_attempts.get(action_attempt_id)
+        action_attempt = seam.action_attempts.get(
+            action_attempt_id, wait_for_action_attempt=False
+        )
 
         while action_attempt.status == "pending":
             time.sleep(polling_interval)
@@ -48,7 +67,9 @@ class ActionAttempts(AbstractActionAttempts):
             if time_waiting > timeout:
                 raise Exception("Timed out waiting for action attempt to be ready")
 
-            action_attempt = seam.action_attempts.get(action_attempt.action_attempt_id)
+            action_attempt = seam.action_attempts.get(
+                action_attempt.action_attempt_id, wait_for_action_attempt=False
+            )
 
         if action_attempt.status == "failed":
             raise Exception(f"Action Attempt failed: {action_attempt.error.message}")

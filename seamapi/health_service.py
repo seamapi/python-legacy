@@ -1,5 +1,5 @@
 from seamapi.types import AbstractHealthService, AbstractSeam as Seam
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class HealthService(AbstractHealthService):

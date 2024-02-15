@@ -1,5 +1,5 @@
 from seamapi.types import AbstractPhones, AbstractSeam as Seam, Phone
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 from seamapi.phones_simulate import PhonesSimulate
 
 

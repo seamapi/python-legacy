@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAccessCodes, AbstractSeam as Seam, AccessCode
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 from seamapi.access_codes_simulate import AccessCodesSimulate
 from seamapi.access_codes_unmanaged import AccessCodesUnmanaged
 

@@ -1,5 +1,5 @@
 from seamapi.types import AbstractNoiseSensors, AbstractSeam as Seam
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 from seamapi.noise_sensors_noise_thresholds import NoiseSensorsNoiseThresholds
 from seamapi.noise_sensors_simulate import NoiseSensorsSimulate
 

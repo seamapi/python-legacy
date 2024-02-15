@@ -610,7 +610,12 @@ class AbstractActionAttempts(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def poll_until_ready(self, action_attempt_id: Optional[str] = None):
+    def poll_until_ready(
+        self,
+        action_attempt_id: str,
+        timeout: Optional[float] = 5.0,
+        polling_interval: Optional[float] = 0.5,
+    ):
         raise NotImplementedError()
 
 
@@ -1027,6 +1032,10 @@ class AbstractAcsSystems(abc.ABC):
 
 class AbstractAcsUsers(abc.ABC):
     @abc.abstractmethod
+    def add_to_access_group(self, acs_user_id: str, acs_access_group_id: str):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
     def create(
         self,
         acs_system_id: str,
@@ -1060,6 +1069,10 @@ class AbstractAcsUsers(abc.ABC):
 
     @abc.abstractmethod
     def list_accessible_entrances(self, acs_user_id: str):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def remove_from_access_group(self, acs_user_id: str, acs_access_group_id: str):
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -1170,19 +1183,6 @@ class AbstractNoiseSensorsSimulate(abc.ABC):
         raise NotImplementedError()
 
 
-class AbstractPhonesSimulate(abc.ABC):
-    @abc.abstractmethod
-    def create_sandbox_phone(
-        self,
-        assa_abloy_credential_service_acs_system_id: str,
-        user_identity_id: str,
-        custom_sdk_installation_id: Optional[str] = None,
-        phone_metadata: Optional[Dict[str, Any]] = None,
-        assa_abloy_metadata: Optional[Dict[str, Any]] = None,
-    ):
-        raise NotImplementedError()
-
-
 class AbstractThermostatsClimateSettingSchedules(abc.ABC):
     @abc.abstractmethod
     def create(
@@ -1235,6 +1235,19 @@ class AbstractThermostatsClimateSettingSchedules(abc.ABC):
         cooling_set_point_fahrenheit: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
         manual_override_allowed: Optional[bool] = None,
+    ):
+        raise NotImplementedError()
+
+
+class AbstractPhonesSimulate(abc.ABC):
+    @abc.abstractmethod
+    def create_sandbox_phone(
+        self,
+        assa_abloy_credential_service_acs_system_id: str,
+        user_identity_id: str,
+        custom_sdk_installation_id: Optional[str] = None,
+        phone_metadata: Optional[Dict[str, Any]] = None,
+        assa_abloy_metadata: Optional[Dict[str, Any]] = None,
     ):
         raise NotImplementedError()
 

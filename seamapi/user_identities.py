@@ -1,5 +1,5 @@
 from seamapi.types import AbstractUserIdentities, AbstractSeam as Seam
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 from seamapi.user_identities_enrollment_automations import (
     UserIdentitiesEnrollmentAutomations,
 )

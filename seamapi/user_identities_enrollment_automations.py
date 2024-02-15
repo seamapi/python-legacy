@@ -2,7 +2,7 @@ from seamapi.types import (
     AbstractUserIdentitiesEnrollmentAutomations,
     AbstractSeam as Seam,
 )
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class UserIdentitiesEnrollmentAutomations(AbstractUserIdentitiesEnrollmentAutomations):

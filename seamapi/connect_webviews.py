@@ -1,5 +1,5 @@
 from seamapi.types import AbstractConnectWebviews, AbstractSeam as Seam, ConnectWebview
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class ConnectWebviews(AbstractConnectWebviews):

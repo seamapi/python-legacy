@@ -3,7 +3,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     ClimateSettingSchedule,
 )
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedules):

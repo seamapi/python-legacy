@@ -3,7 +3,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     UnmanagedDevice,
 )
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class DevicesUnmanaged(AbstractDevicesUnmanaged):
