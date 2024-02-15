@@ -1,5 +1,5 @@
 from seamapi.types import AbstractWorkspaces, AbstractSeam as Seam, Workspace
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class Workspaces(AbstractWorkspaces):

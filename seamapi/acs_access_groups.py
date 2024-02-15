@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAcsAccessGroups, AbstractSeam as Seam
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class AcsAccessGroups(AbstractAcsAccessGroups):

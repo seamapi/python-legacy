@@ -1,5 +1,5 @@
 from seamapi.types import AbstractClientSessions, AbstractSeam as Seam, ClientSession
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class ClientSessions(AbstractClientSessions):

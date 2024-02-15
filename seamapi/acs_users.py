@@ -1,5 +1,5 @@
 from seamapi.types import AbstractAcsUsers, AbstractSeam as Seam
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class AcsUsers(AbstractAcsUsers):
@@ -7,6 +7,20 @@ class AcsUsers(AbstractAcsUsers):
 
     def __init__(self, seam: Seam):
         self.seam = seam
+
+    def add_to_access_group(self, acs_user_id: str, acs_access_group_id: str) -> None:
+        json_payload = {}
+
+        if acs_user_id is not None:
+            json_payload["acs_user_id"] = acs_user_id
+        if acs_access_group_id is not None:
+            json_payload["acs_access_group_id"] = acs_access_group_id
+
+        self.seam.make_request(
+            "POST", "/acs/users/add_to_access_group", json=json_payload
+        )
+
+        return None
 
     def create(
         self,
@@ -92,6 +106,22 @@ class AcsUsers(AbstractAcsUsers):
 
         self.seam.make_request(
             "POST", "/acs/users/list_accessible_entrances", json=json_payload
+        )
+
+        return None
+
+    def remove_from_access_group(
+        self, acs_user_id: str, acs_access_group_id: str
+    ) -> None:
+        json_payload = {}
+
+        if acs_user_id is not None:
+            json_payload["acs_user_id"] = acs_user_id
+        if acs_access_group_id is not None:
+            json_payload["acs_access_group_id"] = acs_access_group_id
+
+        self.seam.make_request(
+            "POST", "/acs/users/remove_from_access_group", json=json_payload
         )
 
         return None

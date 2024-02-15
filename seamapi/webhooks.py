@@ -1,5 +1,5 @@
 from seamapi.types import AbstractWebhooks, AbstractSeam as Seam, Webhook
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class Webhooks(AbstractWebhooks):

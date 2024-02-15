@@ -1,5 +1,5 @@
 from seamapi.types import AbstractLocks, AbstractSeam as Seam, Device, ActionAttempt
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class Locks(AbstractLocks):
@@ -69,7 +69,7 @@ class Locks(AbstractLocks):
         self,
         device_id: str,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Optional[bool] = True,
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = True,
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -80,12 +80,18 @@ class Locks(AbstractLocks):
 
         res = self.seam.make_request("POST", "/locks/lock_door", json=json_payload)
 
-        if not wait_for_action_attempt:
+        if isinstance(wait_for_action_attempt, dict):
+            updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+                res["action_attempt"]["action_attempt_id"],
+                timeout=wait_for_action_attempt.get("timeout", None),
+                polling_interval=wait_for_action_attempt.get("polling_interval", None),
+            )
+        elif wait_for_action_attempt is True:
+            updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+                res["action_attempt"]["action_attempt_id"]
+            )
+        else:
             return ActionAttempt.from_dict(res["action_attempt"])
-
-        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
 
         return updated_action_attempt
 
@@ -93,7 +99,7 @@ class Locks(AbstractLocks):
         self,
         device_id: str,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Optional[bool] = True,
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = True,
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -104,11 +110,17 @@ class Locks(AbstractLocks):
 
         res = self.seam.make_request("POST", "/locks/unlock_door", json=json_payload)
 
-        if not wait_for_action_attempt:
+        if isinstance(wait_for_action_attempt, dict):
+            updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+                res["action_attempt"]["action_attempt_id"],
+                timeout=wait_for_action_attempt.get("timeout", None),
+                polling_interval=wait_for_action_attempt.get("polling_interval", None),
+            )
+        elif wait_for_action_attempt is True:
+            updated_action_attempt = self.seam.action_attempts.poll_until_ready(
+                res["action_attempt"]["action_attempt_id"]
+            )
+        else:
             return ActionAttempt.from_dict(res["action_attempt"])
-
-        updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-            res["action_attempt"]["action_attempt_id"]
-        )
 
         return updated_action_attempt

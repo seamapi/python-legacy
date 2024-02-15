@@ -1,5 +1,5 @@
 from seamapi.types import AbstractEvents, AbstractSeam as Seam, Event
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class Events(AbstractEvents):

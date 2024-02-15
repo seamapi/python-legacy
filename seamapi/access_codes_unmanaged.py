@@ -3,7 +3,7 @@ from seamapi.types import (
     AbstractSeam as Seam,
     UnmanagedAccessCode,
 )
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 
 
 class AccessCodesUnmanaged(AbstractAccessCodesUnmanaged):

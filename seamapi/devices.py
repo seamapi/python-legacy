@@ -1,5 +1,5 @@
 from seamapi.types import AbstractDevices, AbstractSeam as Seam, Device, DeviceProvider
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 from seamapi.devices_unmanaged import DevicesUnmanaged
 
 

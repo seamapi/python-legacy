@@ -1,5 +1,5 @@
 from seamapi.types import AbstractThermostats, AbstractSeam as Seam, Device
-from typing import Optional, Any, List, Dict
+from typing import Optional, Any, List, Dict, Union
 from seamapi.thermostats_climate_setting_schedules import (
     ThermostatsClimateSettingSchedules,
 )
