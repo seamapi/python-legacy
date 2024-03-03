@@ -273,6 +273,8 @@ class Device:
     created_at: str
     is_managed: bool
     custom_metadata: Dict[str, Any]
+    can_remotely_unlock: bool
+    can_program_online_access_codes: bool
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -289,6 +291,10 @@ class Device:
             created_at=d.get("created_at", None),
             is_managed=d.get("is_managed", None),
             custom_metadata=DeepAttrDict(d.get("custom_metadata", None)),
+            can_remotely_unlock=d.get("can_remotely_unlock", None),
+            can_program_online_access_codes=d.get(
+                "can_program_online_access_codes", None
+            ),
         )
 
 
@@ -304,6 +310,8 @@ class UnmanagedDevice:
     created_at: str
     is_managed: bool
     properties: Dict[str, Any]
+    can_remotely_unlock: bool
+    can_program_online_access_codes: bool
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -318,6 +326,10 @@ class UnmanagedDevice:
             created_at=d.get("created_at", None),
             is_managed=d.get("is_managed", None),
             properties=DeepAttrDict(d.get("properties", None)),
+            can_remotely_unlock=d.get("can_remotely_unlock", None),
+            can_program_online_access_codes=d.get(
+                "can_program_online_access_codes", None
+            ),
         )
 
 
@@ -442,6 +454,8 @@ class AcsSystem:
     created_at: str
     workspace_id: str
     connected_account_ids: List[str]
+    image_url: str
+    image_alt_text: str
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -455,6 +469,8 @@ class AcsSystem:
             created_at=d.get("created_at", None),
             workspace_id=d.get("workspace_id", None),
             connected_account_ids=d.get("connected_account_ids", None),
+            image_url=d.get("image_url", None),
+            image_alt_text=d.get("image_alt_text", None),
         )
 
 
@@ -564,6 +580,8 @@ class Phone:
     created_at: str
     is_managed: bool
     custom_metadata: Dict[str, Any]
+    can_remotely_unlock: bool
+    can_program_online_access_codes: bool
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -579,6 +597,10 @@ class Phone:
             created_at=d.get("created_at", None),
             is_managed=d.get("is_managed", None),
             custom_metadata=DeepAttrDict(d.get("custom_metadata", None)),
+            can_remotely_unlock=d.get("can_remotely_unlock", None),
+            can_program_online_access_codes=d.get(
+                "can_program_online_access_codes", None
+            ),
         )
 
 
@@ -672,6 +694,7 @@ class AbstractClientSessions(abc.ABC):
         user_identifier_key: Optional[str] = None,
         connect_webview_id: Optional[str] = None,
         without_user_identifier_key: Optional[bool] = None,
+        user_identity_id: Optional[str] = None,
     ):
         raise NotImplementedError()
 
@@ -979,15 +1002,6 @@ class AbstractAcsCredentials(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(
-        self,
-        acs_user_id: Optional[str] = None,
-        acs_system_id: Optional[str] = None,
-        user_identity_id: Optional[str] = None,
-    ):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
     def unassign(self, acs_user_id: str, acs_credential_id: str):
         raise NotImplementedError()
 
@@ -1183,6 +1197,18 @@ class AbstractNoiseSensorsSimulate(abc.ABC):
         raise NotImplementedError()
 
 
+class AbstractPhonesSimulate(abc.ABC):
+    @abc.abstractmethod
+    def create_sandbox_phone(
+        self,
+        user_identity_id: str,
+        custom_sdk_installation_id: Optional[str] = None,
+        phone_metadata: Optional[Dict[str, Any]] = None,
+        assa_abloy_metadata: Optional[Dict[str, Any]] = None,
+    ):
+        raise NotImplementedError()
+
+
 class AbstractThermostatsClimateSettingSchedules(abc.ABC):
     @abc.abstractmethod
     def create(
@@ -1239,20 +1265,11 @@ class AbstractThermostatsClimateSettingSchedules(abc.ABC):
         raise NotImplementedError()
 
 
-class AbstractPhonesSimulate(abc.ABC):
+class AbstractUserIdentitiesEnrollmentAutomations(abc.ABC):
     @abc.abstractmethod
-    def create_sandbox_phone(
-        self,
-        assa_abloy_credential_service_acs_system_id: str,
-        user_identity_id: str,
-        custom_sdk_installation_id: Optional[str] = None,
-        phone_metadata: Optional[Dict[str, Any]] = None,
-        assa_abloy_metadata: Optional[Dict[str, Any]] = None,
-    ):
+    def delete(self, enrollment_automation_id: str):
         raise NotImplementedError()
 
-
-class AbstractUserIdentitiesEnrollmentAutomations(abc.ABC):
     @abc.abstractmethod
     def get(self, enrollment_automation_id: str):
         raise NotImplementedError()
@@ -1467,9 +1484,7 @@ class AbstractUserIdentities(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(
-        self,
-    ):
+    def list(self, credential_manager_acs_system_id: Optional[str] = None):
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -1490,6 +1505,17 @@ class AbstractUserIdentities(abc.ABC):
 
     @abc.abstractmethod
     def revoke_access_to_device(self, user_identity_id: str, device_id: str):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def update(
+        self,
+        user_identity_id: str,
+        user_identity_key: Optional[str] = None,
+        email_address: Optional[str] = None,
+        phone_number: Optional[str] = None,
+        full_name: Optional[str] = None,
+    ):
         raise NotImplementedError()
 
 

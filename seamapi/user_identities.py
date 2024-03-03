@@ -92,10 +92,13 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def list(
-        self,
-    ) -> None:
+    def list(self, credential_manager_acs_system_id: Optional[str] = None) -> None:
         json_payload = {}
+
+        if credential_manager_acs_system_id is not None:
+            json_payload[
+                "credential_manager_acs_system_id"
+            ] = credential_manager_acs_system_id
 
         self.seam.make_request("POST", "/user_identities/list", json=json_payload)
 
@@ -162,5 +165,30 @@ class UserIdentities(AbstractUserIdentities):
         self.seam.make_request(
             "POST", "/user_identities/revoke_access_to_device", json=json_payload
         )
+
+        return None
+
+    def update(
+        self,
+        user_identity_id: str,
+        user_identity_key: Optional[str] = None,
+        email_address: Optional[str] = None,
+        phone_number: Optional[str] = None,
+        full_name: Optional[str] = None,
+    ) -> None:
+        json_payload = {}
+
+        if user_identity_id is not None:
+            json_payload["user_identity_id"] = user_identity_id
+        if user_identity_key is not None:
+            json_payload["user_identity_key"] = user_identity_key
+        if email_address is not None:
+            json_payload["email_address"] = email_address
+        if phone_number is not None:
+            json_payload["phone_number"] = phone_number
+        if full_name is not None:
+            json_payload["full_name"] = full_name
+
+        self.seam.make_request("POST", "/user_identities/update", json=json_payload)
 
         return None
