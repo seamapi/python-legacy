@@ -11,6 +11,18 @@ class UserIdentitiesEnrollmentAutomations(AbstractUserIdentitiesEnrollmentAutoma
     def __init__(self, seam: Seam):
         self.seam = seam
 
+    def delete(self, enrollment_automation_id: str) -> None:
+        json_payload = {}
+
+        if enrollment_automation_id is not None:
+            json_payload["enrollment_automation_id"] = enrollment_automation_id
+
+        self.seam.make_request(
+            "POST", "/user_identities/enrollment_automations/delete", json=json_payload
+        )
+
+        return None
+
     def get(self, enrollment_automation_id: str) -> None:
         json_payload = {}
 

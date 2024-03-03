@@ -121,6 +121,7 @@ class ClientSessions(AbstractClientSessions):
         user_identifier_key: Optional[str] = None,
         connect_webview_id: Optional[str] = None,
         without_user_identifier_key: Optional[bool] = None,
+        user_identity_id: Optional[str] = None,
     ) -> List[ClientSession]:
         json_payload = {}
 
@@ -132,6 +133,8 @@ class ClientSessions(AbstractClientSessions):
             json_payload["connect_webview_id"] = connect_webview_id
         if without_user_identifier_key is not None:
             json_payload["without_user_identifier_key"] = without_user_identifier_key
+        if user_identity_id is not None:
+            json_payload["user_identity_id"] = user_identity_id
 
         res = self.seam.make_request("POST", "/client_sessions/list", json=json_payload)
 

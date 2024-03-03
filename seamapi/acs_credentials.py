@@ -76,25 +76,6 @@ class AcsCredentials(AbstractAcsCredentials):
 
         return None
 
-    def list(
-        self,
-        acs_user_id: Optional[str] = None,
-        acs_system_id: Optional[str] = None,
-        user_identity_id: Optional[str] = None,
-    ) -> None:
-        json_payload = {}
-
-        if acs_user_id is not None:
-            json_payload["acs_user_id"] = acs_user_id
-        if acs_system_id is not None:
-            json_payload["acs_system_id"] = acs_system_id
-        if user_identity_id is not None:
-            json_payload["user_identity_id"] = user_identity_id
-
-        self.seam.make_request("POST", "/acs/credentials/list", json=json_payload)
-
-        return None
-
     def unassign(self, acs_user_id: str, acs_credential_id: str) -> None:
         json_payload = {}
 
