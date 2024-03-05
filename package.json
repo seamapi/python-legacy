@@ -8,7 +8,8 @@
     "test": "tests"
   },
   "scripts": {
-    "generate": "nextlove-sdk-generator generate python ./seamapi2",
+    "generate": "./generate.sh",
+    "generate:dev": "./generate.sh --dev",
     "prerelease": "npm run generate"
   },
   "repository": {
@@ -26,6 +27,8 @@
     "@seamapi/nextlove-sdk-generator": "^1.1.1"
   },
   "dependencies": {
-    "@seamapi/types": "^1.22.1"
+    "@seamapi/types": "^1.22.1",
+    "seamapi": "^8.20.0",
+    "tsx": "^4.6.1"
   }
 }
