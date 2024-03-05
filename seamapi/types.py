@@ -641,6 +641,63 @@ class AbstractActionAttempts(abc.ABC):
         raise NotImplementedError()
 
 
+class AbstractConnectWebviews(abc.ABC):
+    @abc.abstractmethod
+    def create(
+        self,
+        device_selection_mode: Optional[str] = None,
+        custom_redirect_url: Optional[str] = None,
+        custom_redirect_failure_url: Optional[str] = None,
+        accepted_providers: Optional[List[str]] = None,
+        provider_category: Optional[str] = None,
+        custom_metadata: Optional[Dict[str, Any]] = None,
+        automatically_manage_new_devices: Optional[bool] = None,
+        wait_for_device_creation: Optional[bool] = None,
+    ):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def delete(self, connect_webview_id: str):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def get(self, connect_webview_id: str):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def list(
+        self,
+        user_identifier_key: Optional[str] = None,
+        custom_metadata_has: Optional[Dict[str, Any]] = None,
+    ):
+        raise NotImplementedError()
+
+
+class AbstractConnectedAccounts(abc.ABC):
+    @abc.abstractmethod
+    def delete(self, connected_account_id: str, sync: Optional[bool] = None):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def get(
+        self, connected_account_id: Optional[str] = None, email: Optional[str] = None
+    ):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def list(self, custom_metadata_has: Optional[Dict[str, Any]] = None):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def update(
+        self,
+        connected_account_id: str,
+        automatically_manage_new_devices: Optional[bool] = None,
+        custom_metadata: Optional[Dict[str, Any]] = None,
+    ):
+        raise NotImplementedError()
+
+
 class AbstractClientSessions(abc.ABC):
     @abc.abstractmethod
     def create(
@@ -700,63 +757,6 @@ class AbstractClientSessions(abc.ABC):
 
     @abc.abstractmethod
     def revoke(self, client_session_id: str):
-        raise NotImplementedError()
-
-
-class AbstractConnectWebviews(abc.ABC):
-    @abc.abstractmethod
-    def create(
-        self,
-        device_selection_mode: Optional[str] = None,
-        custom_redirect_url: Optional[str] = None,
-        custom_redirect_failure_url: Optional[str] = None,
-        accepted_providers: Optional[List[str]] = None,
-        provider_category: Optional[str] = None,
-        custom_metadata: Optional[Dict[str, Any]] = None,
-        automatically_manage_new_devices: Optional[bool] = None,
-        wait_for_device_creation: Optional[bool] = None,
-    ):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def delete(self, connect_webview_id: str):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def get(self, connect_webview_id: str):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def list(
-        self,
-        user_identifier_key: Optional[str] = None,
-        custom_metadata_has: Optional[Dict[str, Any]] = None,
-    ):
-        raise NotImplementedError()
-
-
-class AbstractConnectedAccounts(abc.ABC):
-    @abc.abstractmethod
-    def delete(self, connected_account_id: str, sync: Optional[bool] = None):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def get(
-        self, connected_account_id: Optional[str] = None, email: Optional[str] = None
-    ):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def list(self, custom_metadata_has: Optional[Dict[str, Any]] = None):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def update(
-        self,
-        connected_account_id: str,
-        automatically_manage_new_devices: Optional[bool] = None,
-        custom_metadata: Optional[Dict[str, Any]] = None,
-    ):
         raise NotImplementedError()
 
 
@@ -1693,10 +1693,10 @@ class AbstractAcs(abc.ABC):
 class AbstractRoutes(abc.ABC):
     access_codes: AbstractAccessCodes
     action_attempts: AbstractActionAttempts
-    client_sessions: AbstractClientSessions
     connect_webviews: AbstractConnectWebviews
     connected_accounts: AbstractConnectedAccounts
     devices: AbstractDevices
+    client_sessions: AbstractClientSessions
     events: AbstractEvents
     health: AbstractHealth
     locks: AbstractLocks

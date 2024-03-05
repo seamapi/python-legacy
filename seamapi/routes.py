@@ -1,10 +1,10 @@
 from .types import AbstractRoutes
 from .access_codes import AccessCodes
 from .action_attempts import ActionAttempts
-from .client_sessions import ClientSessions
 from .connect_webviews import ConnectWebviews
 from .connected_accounts import ConnectedAccounts
 from .devices import Devices
+from .client_sessions import ClientSessions
 from .events import Events
 from .health import Health
 from .locks import Locks
@@ -22,10 +22,10 @@ class Routes(AbstractRoutes):
     def __init__(self):
         self.access_codes = AccessCodes(seam=self)
         self.action_attempts = ActionAttempts(seam=self)
-        self.client_sessions = ClientSessions(seam=self)
         self.connect_webviews = ConnectWebviews(seam=self)
         self.connected_accounts = ConnectedAccounts(seam=self)
         self.devices = Devices(seam=self)
+        self.client_sessions = ClientSessions(seam=self)
         self.events = Events(seam=self)
         self.health = Health(seam=self)
         self.locks = Locks(seam=self)
