@@ -7,9 +7,10 @@ updates:
     target-branch: "main"
     versioning-strategy: "auto"
     allow:
-      - dependency-name: "@seamapi*"
+      - dependency-name: "@seamapi/*"
+      - dependency-type: "all"
     ignore:
-      - dependency-name: "@seamapi*"
+      - dependency-name: "@seamapi/*"
         update-types: ["version-update:semver-major"]
     groups:
       seam:
