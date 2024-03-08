@@ -8,7 +8,7 @@ updates:
     versioning-strategy: "auto"
     allow:
       - dependency-name: "@seamapi/*"
-      - dependency-type: "all"
+        dependency-type: "all"
     ignore:
       - dependency-name: "@seamapi/*"
         update-types: ["version-update:semver-major"]
