@@ -18,8 +18,7 @@ jobs:
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Enable auto-merge for Dependabot PRs
-        # TODO: make sure pattern used as a dependency name can be used inside this workflow
-        if: contains(steps.metadata.outputs.dependency-names, '@seamapi/*') && steps.metadata.outputs.update-type == 'version-update:semver-patch'
+        if: contains(steps.metadata.outputs.dependency-names, '@seamapi/') && steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: gh pr merge --auto --merge "$PR_URL"
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
