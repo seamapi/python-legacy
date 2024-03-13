@@ -27,7 +27,7 @@
     "@seamapi/nextlove-sdk-generator": "^1.5.5"
   },
   "dependencies": {
-    "@seamapi/types": "^1.22.1",
+    "@seamapi/types": "^1.135.0",
     "seamapi": "^8.20.0",
     "tsx": "^4.6.1"
   }
