@@ -73,30 +73,39 @@ class Seam(AbstractSeam):
             workspace_id = os.environ.get("SEAM_WORKSPACE_ID", None)
         self.api_key = api_key
         self.workspace_id = workspace_id
-        
+
         if os.environ.get("SEAM_API_URL", None) is not None:
-          print(
-            '\n'
-            '\033[93m'
-            'Using the SEAM_API_URL environment variable is deprecated. '
-            'Support will be removed in a later major version. Use SEAM_ENDPOINT instead.'
-            '\033[0m'
-          )
-        api_url = os.environ.get("SEAM_API_URL", None) or os.environ.get("SEAM_ENDPOINT", None) or api_url
+            print(
+                "\n"
+                "\033[93m"
+                "Using the SEAM_API_URL environment variable is deprecated. "
+                "Support will be removed in a later major version. Use SEAM_ENDPOINT instead."
+                "\033[0m"
+            )
+        api_url = (
+            os.environ.get("SEAM_API_URL", None)
+            or os.environ.get("SEAM_ENDPOINT", None)
+            or api_url
+        )
         if api_url is not None:
             self.api_url = cast(str, api_url)
 
         self.should_report_exceptions = should_report_exceptions
 
         if self.should_report_exceptions:
-            self.sentry_client = sentry_sdk.Hub(sentry_sdk.Client(
-                dsn=get_sentry_dsn(),
-            ))
-            self.sentry_client.scope.set_context("sdk_info", {
-                "repository": "https://github.com/seamapi/python",
-                "version": pkg_resources.get_distribution("seamapi").version,
-                "endpoint": self.api_url,
-            })
+            self.sentry_client = sentry_sdk.Hub(
+                sentry_sdk.Client(
+                    dsn=get_sentry_dsn(),
+                )
+            )
+            self.sentry_client.scope.set_context(
+                "sdk_info",
+                {
+                    "repository": "https://github.com/seamapi/python",
+                    "version": pkg_resources.get_distribution("seamapi").version,
+                    "endpoint": self.api_url,
+                },
+            )
 
     def make_request(self, method: str, path: str, **kwargs):
         """
@@ -117,7 +126,9 @@ class Seam(AbstractSeam):
         headers = {
             "Authorization": "Bearer " + self.api_key,
             "Content-Type": "application/json",
-            "User-Agent": "Python SDK v" + sdk_version + " (https://github.com/seamapi/python)",
+            "User-Agent": "Python SDK v"
+            + sdk_version
+            + " (https://github.com/seamapi/python)",
             "seam-sdk-name": "seamapi/python",
             "seam-sdk-version": sdk_version,
         }
@@ -137,7 +148,6 @@ class Seam(AbstractSeam):
                     "request_id": response.headers.get("seam-request-id", "unknown"),
                 },
             )
-
 
         if response.status_code != 200:
             raise SeamApiException(response)
