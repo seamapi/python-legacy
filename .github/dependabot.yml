@@ -8,13 +8,13 @@ updates:
     versioning-strategy: "auto"
     allow:
       - dependency-name: "@seamapi/*"
-        dependency-type: "all"
+        dependency-type: "development"
     ignore:
       - dependency-name: "@seamapi/*"
         update-types: ["version-update:semver-major"]
     groups:
       seam:
-        dependency-type: production
+        dependency-type: development
         update-types:
           - patch
           - minor
