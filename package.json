@@ -9,7 +9,7 @@
   },
   "scripts": {
     "generate": "./scripts/generate.sh",
-    "postgenerate": "black ./seamapi"
+    "format": "black ./seamapi"
   },
   "repository": {
     "type": "git",
