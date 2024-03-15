@@ -1003,7 +1003,6 @@ class AbstractAcsCredentials(abc.ABC):
         access_method: str,
         code: Optional[str] = None,
         is_multi_phone_sync_credential: Optional[bool] = None,
-        external_type: Optional[str] = None,
         visionline_metadata: Optional[Dict[str, Any]] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
@@ -1133,6 +1132,12 @@ class AbstractAcsUsers(abc.ABC):
         email_address: Optional[str] = None,
         hid_acs_system_id: Optional[str] = None,
     ):
+        raise NotImplementedError()
+
+
+class AbstractDevicesSimulate(abc.ABC):
+    @abc.abstractmethod
+    def remove(self, device_id: str):
         raise NotImplementedError()
 
 
@@ -1308,53 +1313,6 @@ class AbstractUserIdentitiesEnrollmentAutomations(abc.ABC):
 
     @abc.abstractmethod
     def list(self, user_identity_id: str):
-        raise NotImplementedError()
-
-
-class AbstractDevices(abc.ABC):
-    @property
-    @abc.abstractmethod
-    def unmanaged(self) -> AbstractDevicesUnmanaged:
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def delete(self, device_id: str):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def get(self, device_id: Optional[str] = None, name: Optional[str] = None):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def list(
-        self,
-        connected_account_id: Optional[str] = None,
-        connected_account_ids: Optional[List[str]] = None,
-        connect_webview_id: Optional[str] = None,
-        device_type: Optional[str] = None,
-        device_types: Optional[List[Any]] = None,
-        manufacturer: Optional[str] = None,
-        device_ids: Optional[List[str]] = None,
-        limit: Optional[float] = None,
-        created_before: Optional[str] = None,
-        user_identifier_key: Optional[str] = None,
-        custom_metadata_has: Optional[Dict[str, Any]] = None,
-    ):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def list_device_providers(self, provider_category: Optional[str] = None):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def update(
-        self,
-        device_id: str,
-        properties: Optional[Dict[str, Any]] = None,
-        name: Optional[str] = None,
-        is_managed: Optional[bool] = None,
-        custom_metadata: Optional[Dict[str, Any]] = None,
-    ):
         raise NotImplementedError()
 
 
@@ -1651,6 +1609,58 @@ class AbstractAccessCodes(abc.ABC):
         device_id: Optional[str] = None,
         type: Optional[str] = None,
         is_managed: Optional[bool] = None,
+    ):
+        raise NotImplementedError()
+
+
+class AbstractDevices(abc.ABC):
+    @property
+    @abc.abstractmethod
+    def simulate(self) -> AbstractDevicesSimulate:
+        raise NotImplementedError()
+
+    @property
+    @abc.abstractmethod
+    def unmanaged(self) -> AbstractDevicesUnmanaged:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def delete(self, device_id: str):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def get(self, device_id: Optional[str] = None, name: Optional[str] = None):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def list(
+        self,
+        connected_account_id: Optional[str] = None,
+        connected_account_ids: Optional[List[str]] = None,
+        connect_webview_id: Optional[str] = None,
+        device_type: Optional[str] = None,
+        device_types: Optional[List[Any]] = None,
+        manufacturer: Optional[str] = None,
+        device_ids: Optional[List[str]] = None,
+        limit: Optional[float] = None,
+        created_before: Optional[str] = None,
+        user_identifier_key: Optional[str] = None,
+        custom_metadata_has: Optional[Dict[str, Any]] = None,
+    ):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def list_device_providers(self, provider_category: Optional[str] = None):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def update(
+        self,
+        device_id: str,
+        properties: Optional[Dict[str, Any]] = None,
+        name: Optional[str] = None,
+        is_managed: Optional[bool] = None,
+        custom_metadata: Optional[Dict[str, Any]] = None,
     ):
         raise NotImplementedError()
 
