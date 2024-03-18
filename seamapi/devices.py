@@ -1,5 +1,6 @@
 from seamapi.types import AbstractDevices, AbstractSeam as Seam, Device, DeviceProvider
 from typing import Optional, Any, List, Dict, Union
+from seamapi.devices_simulate import DevicesSimulate
 from seamapi.devices_unmanaged import DevicesUnmanaged
 
 
@@ -8,7 +9,12 @@ class Devices(AbstractDevices):
 
     def __init__(self, seam: Seam):
         self.seam = seam
+        self._simulate = DevicesSimulate(seam=seam)
         self._unmanaged = DevicesUnmanaged(seam=seam)
+
+    @property
+    def simulate(self) -> DevicesSimulate:
+        return self._simulate
 
     @property
     def unmanaged(self) -> DevicesUnmanaged:
