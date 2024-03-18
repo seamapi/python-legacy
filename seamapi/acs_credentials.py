@@ -26,7 +26,6 @@ class AcsCredentials(AbstractAcsCredentials):
         access_method: str,
         code: Optional[str] = None,
         is_multi_phone_sync_credential: Optional[bool] = None,
-        external_type: Optional[str] = None,
         visionline_metadata: Optional[Dict[str, Any]] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
@@ -43,8 +42,6 @@ class AcsCredentials(AbstractAcsCredentials):
             json_payload[
                 "is_multi_phone_sync_credential"
             ] = is_multi_phone_sync_credential
-        if external_type is not None:
-            json_payload["external_type"] = external_type
         if visionline_metadata is not None:
             json_payload["visionline_metadata"] = visionline_metadata
         if starts_at is not None:
