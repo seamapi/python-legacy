@@ -17,25 +17,26 @@ from .workspaces import Workspaces
 from .acs import Acs
 from .noise_sensors import NoiseSensors
 
-class Routes(AbstractRoutes):
-  def __init__(self):
-    self.access_codes = AccessCodes(seam=self)
-    self.action_attempts = ActionAttempts(seam=self)
-    self.client_sessions = ClientSessions(seam=self)
-    self.connect_webviews = ConnectWebviews(seam=self)
-    self.connected_accounts = ConnectedAccounts(seam=self)
-    self.devices = Devices(seam=self)
-    self.events = Events(seam=self)
-    self.health = Health(seam=self)
-    self.locks = Locks(seam=self)
-    self.networks = Networks(seam=self)
-    self.phones = Phones(seam=self)
-    self.thermostats = Thermostats(seam=self)
-    self.user_identities = UserIdentities(seam=self)
-    self.webhooks = Webhooks(seam=self)
-    self.workspaces = Workspaces(seam=self)
-    self.acs = Acs(seam=self)
-    self.noise_sensors = NoiseSensors(seam=self)
 
-  def make_request(self):
-    raise NotImplementedError()
+class Routes(AbstractRoutes):
+    def __init__(self):
+        self.access_codes = AccessCodes(seam=self)
+        self.action_attempts = ActionAttempts(seam=self)
+        self.client_sessions = ClientSessions(seam=self)
+        self.connect_webviews = ConnectWebviews(seam=self)
+        self.connected_accounts = ConnectedAccounts(seam=self)
+        self.devices = Devices(seam=self)
+        self.events = Events(seam=self)
+        self.health = Health(seam=self)
+        self.locks = Locks(seam=self)
+        self.networks = Networks(seam=self)
+        self.phones = Phones(seam=self)
+        self.thermostats = Thermostats(seam=self)
+        self.user_identities = UserIdentities(seam=self)
+        self.webhooks = Webhooks(seam=self)
+        self.workspaces = Workspaces(seam=self)
+        self.acs = Acs(seam=self)
+        self.noise_sensors = NoiseSensors(seam=self)
+
+    def make_request(self):
+        raise NotImplementedError()
