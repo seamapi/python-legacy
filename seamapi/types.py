@@ -901,6 +901,53 @@ class AbstractWorkspaces(abc.ABC):
         raise NotImplementedError()
 
 
+class AbstractAccessCodesSimulate(abc.ABC):
+    @abc.abstractmethod
+    def create_unmanaged_access_code(self, device_id: str, name: str, code: str):
+        raise NotImplementedError()
+
+
+class AbstractAccessCodesUnmanaged(abc.ABC):
+    @abc.abstractmethod
+    def convert_to_managed(
+        self,
+        access_code_id: str,
+        is_external_modification_allowed: Optional[bool] = None,
+        allow_external_modification: Optional[bool] = None,
+        force: Optional[bool] = None,
+        sync: Optional[bool] = None,
+    ):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def delete(self, access_code_id: str, sync: Optional[bool] = None):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def get(
+        self,
+        device_id: Optional[str] = None,
+        access_code_id: Optional[str] = None,
+        code: Optional[str] = None,
+    ):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def list(self, device_id: str, user_identifier_key: Optional[str] = None):
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def update(
+        self,
+        access_code_id: str,
+        is_managed: bool,
+        allow_external_modification: Optional[bool] = None,
+        is_external_modification_allowed: Optional[bool] = None,
+        force: Optional[bool] = None,
+    ):
+        raise NotImplementedError()
+
+
 class AbstractAcsAccessGroups(abc.ABC):
     @abc.abstractmethod
     def add_user(self, acs_access_group_id: str, acs_user_id: str):
@@ -971,7 +1018,13 @@ class AbstractAcsCredentials(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, is_multi_phone_sync_credential: Optional[bool] = None):
+    def list(
+        self,
+        acs_user_id: Optional[str] = None,
+        acs_system_id: Optional[str] = None,
+        user_identity_id: Optional[str] = None,
+        is_multi_phone_sync_credential: Optional[bool] = None,
+    ):
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -1084,53 +1137,6 @@ class AbstractAcsUsers(abc.ABC):
         phone_number: Optional[str] = None,
         email_address: Optional[str] = None,
         hid_acs_system_id: Optional[str] = None,
-    ):
-        raise NotImplementedError()
-
-
-class AbstractAccessCodesSimulate(abc.ABC):
-    @abc.abstractmethod
-    def create_unmanaged_access_code(self, device_id: str, name: str, code: str):
-        raise NotImplementedError()
-
-
-class AbstractAccessCodesUnmanaged(abc.ABC):
-    @abc.abstractmethod
-    def convert_to_managed(
-        self,
-        access_code_id: str,
-        is_external_modification_allowed: Optional[bool] = None,
-        allow_external_modification: Optional[bool] = None,
-        force: Optional[bool] = None,
-        sync: Optional[bool] = None,
-    ):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def delete(self, access_code_id: str, sync: Optional[bool] = None):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def get(
-        self,
-        device_id: Optional[str] = None,
-        access_code_id: Optional[str] = None,
-        code: Optional[str] = None,
-    ):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def list(self, device_id: str, user_identifier_key: Optional[str] = None):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def update(
-        self,
-        access_code_id: str,
-        is_managed: bool,
-        allow_external_modification: Optional[bool] = None,
-        is_external_modification_allowed: Optional[bool] = None,
-        force: Optional[bool] = None,
     ):
         raise NotImplementedError()
 

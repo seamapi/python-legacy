@@ -73,9 +73,21 @@ class AcsCredentials(AbstractAcsCredentials):
 
         return None
 
-    def list(self, is_multi_phone_sync_credential: Optional[bool] = None) -> None:
+    def list(
+        self,
+        acs_user_id: Optional[str] = None,
+        acs_system_id: Optional[str] = None,
+        user_identity_id: Optional[str] = None,
+        is_multi_phone_sync_credential: Optional[bool] = None,
+    ) -> None:
         json_payload = {}
 
+        if acs_user_id is not None:
+            json_payload["acs_user_id"] = acs_user_id
+        if acs_system_id is not None:
+            json_payload["acs_system_id"] = acs_system_id
+        if user_identity_id is not None:
+            json_payload["user_identity_id"] = user_identity_id
         if is_multi_phone_sync_credential is not None:
             json_payload[
                 "is_multi_phone_sync_credential"
