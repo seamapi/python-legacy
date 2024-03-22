@@ -278,6 +278,7 @@ class Device:
     can_remotely_unlock: bool
     can_remotely_lock: bool
     can_program_online_access_codes: bool
+    can_simulate_removal: bool
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -301,6 +302,7 @@ class Device:
             can_program_online_access_codes=d.get(
                 "can_program_online_access_codes", None
             ),
+            can_simulate_removal=d.get("can_simulate_removal", None),
         )
 
 
@@ -319,6 +321,7 @@ class UnmanagedDevice:
     can_remotely_unlock: bool
     can_remotely_lock: bool
     can_program_online_access_codes: bool
+    can_simulate_removal: bool
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -338,6 +341,7 @@ class UnmanagedDevice:
             can_program_online_access_codes=d.get(
                 "can_program_online_access_codes", None
             ),
+            can_simulate_removal=d.get("can_simulate_removal", None),
         )
 
 
@@ -595,6 +599,7 @@ class Phone:
     can_remotely_unlock: bool
     can_remotely_lock: bool
     can_program_online_access_codes: bool
+    can_simulate_removal: bool
 
     @staticmethod
     def from_dict(d: Dict[str, Any]):
@@ -617,6 +622,7 @@ class Phone:
             can_program_online_access_codes=d.get(
                 "can_program_online_access_codes", None
             ),
+            can_simulate_removal=d.get("can_simulate_removal", None),
         )
 
 

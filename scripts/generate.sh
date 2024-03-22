@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e # Exit immediately if a command exits with a non-zero status.
 
 # Save the current script directory
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
