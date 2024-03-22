@@ -644,15 +644,6 @@ class SeamApiException(Exception):
         )
 
 
-@dataclass_json
-@dataclass
-class Webhook:
-    webhook_id: str
-    url: str
-    event_types: List[str] = None
-    secret: str = None
-
-
 class AbstractActionAttempts(abc.ABC):
     @abc.abstractmethod
     def get(self, action_attempt_id: str):
@@ -1739,34 +1730,6 @@ class AbstractAcs(abc.ABC):
     @abc.abstractmethod
     def users(self) -> AbstractAcsUsers:
         raise NotImplementedError()
-
-
-class AbstractWebhooks(abc.ABC):
-    @abc.abstractmethod
-    def create(
-        self,
-        url: str,
-        event_types: Optional[list] = None,
-    ) -> Webhook:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def delete(
-        self,
-        webhook: Union[WebhookId, Webhook],
-    ) -> bool:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def get(
-        self,
-        webhook: Union[WebhookId, Webhook],
-    ) -> Webhook:
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def list(self) -> List[Webhook]:
-        raise NotImplementedError
 
 
 @dataclass
