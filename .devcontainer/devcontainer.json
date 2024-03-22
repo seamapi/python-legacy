@@ -1,0 +1,27 @@
+{
+  "name": "Python",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      "POETRY_VERSION": "1.3.1",
+      "VARIANT": "3.10"
+    }
+  },
+  "hostRequirements": {
+    "memory": "8gb"
+  },
+  "remoteEnv": {
+    "POETRY_VIRTUALENVS_IN_PROJECT": "true",
+    "PATH": "${containerEnv:PATH}:/home/vscode/.local/bin"
+  },
+  "extensions": [
+    "ms-vsliveshare.vsliveshare",
+    "ms-azuretools.vscode-docker",
+    "ms-python.python",
+    "EditorConfig.EditorConfig"
+  ],
+  "runArgs": ["--volume=/var/lib/docker", "--privileged"],
+  "postCreateCommand": "poetry install",
+  "postAttachCommand": "sudo service docker start",
+  "remoteUser": "vscode"
+}
