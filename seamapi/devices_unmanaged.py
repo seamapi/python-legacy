@@ -1,38 +1,20 @@
-from seamapi.types import AbstractDevices, AbstractSeam as Seam, Device, DeviceProvider
+from seamapi.types import (
+    AbstractDevicesUnmanaged,
+    AbstractSeam as Seam,
+    UnmanagedDevice,
+)
 from typing import Optional, Any, List, Dict, Union
-from seamapi.devices_simulate import DevicesSimulate
-from seamapi.devices_unmanaged import DevicesUnmanaged
 
 
-class Devices(AbstractDevices):
+class DevicesUnmanaged(AbstractDevicesUnmanaged):
     seam: Seam
 
     def __init__(self, seam: Seam):
         self.seam = seam
-        self._simulate = DevicesSimulate(seam=seam)
-        self._unmanaged = DevicesUnmanaged(seam=seam)
-
-    @property
-    def simulate(self) -> DevicesSimulate:
-        return self._simulate
-
-    @property
-    def unmanaged(self) -> DevicesUnmanaged:
-        return self._unmanaged
-
-    def delete(self, device_id: str) -> None:
-        json_payload = {}
-
-        if device_id is not None:
-            json_payload["device_id"] = device_id
-
-        self.seam.make_request("POST", "/devices/delete", json=json_payload)
-
-        return None
 
     def get(
         self, device_id: Optional[str] = None, name: Optional[str] = None
-    ) -> Device:
+    ) -> UnmanagedDevice:
         json_payload = {}
 
         if device_id is not None:
@@ -40,9 +22,11 @@ class Devices(AbstractDevices):
         if name is not None:
             json_payload["name"] = name
 
-        res = self.seam.make_request("POST", "/devices/get", json=json_payload)
+        res = self.seam.make_request(
+            "POST", "/devices/unmanaged/get", json=json_payload
+        )
 
-        return Device.from_dict(res["device"])
+        return UnmanagedDevice.from_dict(res["device"])
 
     def list(
         self,
@@ -57,7 +41,7 @@ class Devices(AbstractDevices):
         created_before: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
-    ) -> List[Device]:
+    ) -> List[UnmanagedDevice]:
         json_payload = {}
 
         if connected_account_id is not None:
@@ -83,45 +67,20 @@ class Devices(AbstractDevices):
         if custom_metadata_has is not None:
             json_payload["custom_metadata_has"] = custom_metadata_has
 
-        res = self.seam.make_request("POST", "/devices/list", json=json_payload)
-
-        return [Device.from_dict(item) for item in res["devices"]]
-
-    def list_device_providers(
-        self, provider_category: Optional[str] = None
-    ) -> List[DeviceProvider]:
-        json_payload = {}
-
-        if provider_category is not None:
-            json_payload["provider_category"] = provider_category
-
         res = self.seam.make_request(
-            "POST", "/devices/list_device_providers", json=json_payload
+            "POST", "/devices/unmanaged/list", json=json_payload
         )
 
-        return [DeviceProvider.from_dict(item) for item in res["device_providers"]]
+        return [UnmanagedDevice.from_dict(item) for item in res["devices"]]
 
-    def update(
-        self,
-        device_id: str,
-        properties: Optional[Dict[str, Any]] = None,
-        name: Optional[str] = None,
-        is_managed: Optional[bool] = None,
-        custom_metadata: Optional[Dict[str, Any]] = None,
-    ) -> None:
+    def update(self, device_id: str, is_managed: bool) -> None:
         json_payload = {}
 
         if device_id is not None:
             json_payload["device_id"] = device_id
-        if properties is not None:
-            json_payload["properties"] = properties
-        if name is not None:
-            json_payload["name"] = name
         if is_managed is not None:
             json_payload["is_managed"] = is_managed
-        if custom_metadata is not None:
-            json_payload["custom_metadata"] = custom_metadata
 
-        self.seam.make_request("POST", "/devices/update", json=json_payload)
+        self.seam.make_request("POST", "/devices/unmanaged/update", json=json_payload)
 
         return None
