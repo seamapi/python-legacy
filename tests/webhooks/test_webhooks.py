@@ -7,12 +7,12 @@ def test_webhooks(seam: Seam):
     )
     assert webhook.url == "https://example.com"
 
-    webhook = seam.webhooks.get(webhook)
+    webhook = seam.webhooks.get(webhook_id=webhook.webhook_id)
     assert webhook is not None
 
     webhook_list = seam.webhooks.list()
     assert len(webhook_list) > 0
 
-    seam.webhooks.delete(webhook)
+    seam.webhooks.delete(webhook_id=webhook.webhook_id)
     webhook_list = seam.webhooks.list()
     assert len(webhook_list) == 0
