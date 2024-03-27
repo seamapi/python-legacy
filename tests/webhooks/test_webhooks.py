@@ -1,7 +1,7 @@
 from seamapi import Seam
 
 
-def test_workspaces(seam: Seam):
+def test_webhooks(seam: Seam):
     webhook = seam.webhooks.create(
         url="https://example.com", event_types=["connected_account.connected"]
     )
