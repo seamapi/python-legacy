@@ -828,6 +828,8 @@ class AbstractLocks(abc.ABC):
         created_before: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
+        include_if: Optional[List[str]] = None,
+        exclude_if: Optional[List[str]] = None,
     ):
         raise NotImplementedError()
 
@@ -1172,6 +1174,8 @@ class AbstractDevicesUnmanaged(abc.ABC):
         created_before: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
+        include_if: Optional[List[str]] = None,
+        exclude_if: Optional[List[str]] = None,
     ):
         raise NotImplementedError()
 
@@ -1416,6 +1420,8 @@ class AbstractThermostats(abc.ABC):
         created_before: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
+        include_if: Optional[List[str]] = None,
+        exclude_if: Optional[List[str]] = None,
     ):
         raise NotImplementedError()
 
@@ -1658,6 +1664,8 @@ class AbstractDevices(abc.ABC):
         created_before: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
+        include_if: Optional[List[str]] = None,
+        exclude_if: Optional[List[str]] = None,
     ):
         raise NotImplementedError()
 

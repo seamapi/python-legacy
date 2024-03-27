@@ -35,6 +35,8 @@ class Locks(AbstractLocks):
         created_before: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
+        include_if: Optional[List[str]] = None,
+        exclude_if: Optional[List[str]] = None,
     ) -> List[Device]:
         json_payload = {}
 
@@ -60,6 +62,10 @@ class Locks(AbstractLocks):
             json_payload["user_identifier_key"] = user_identifier_key
         if custom_metadata_has is not None:
             json_payload["custom_metadata_has"] = custom_metadata_has
+        if include_if is not None:
+            json_payload["include_if"] = include_if
+        if exclude_if is not None:
+            json_payload["exclude_if"] = exclude_if
 
         res = self.seam.make_request("POST", "/locks/list", json=json_payload)
 
