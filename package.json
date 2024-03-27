@@ -21,7 +21,8 @@
   "bugs": {
     "url": "https://github.com/seamapi/python/issues"
   },
-  "homepage": "https://github.com/seamapi/python#readme",
+  "private": true,
+  "homepage": "https://github.com/seamapi/python",
   "devDependencies": {
     "@seamapi/types": "^1.141.0",
     "@seamapi/nextlove-sdk-generator": "^1.5.7"
