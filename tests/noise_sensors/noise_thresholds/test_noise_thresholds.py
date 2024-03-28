@@ -7,7 +7,7 @@ import pytest
 def test_noise_thresholds(seam: Seam):
 
     # Get "minut_device_1" because it's seeded with a noise threshold
-    device = seam.devices.get("minut_device_1")
+    device = seam.devices.get(device_id="minut_device_1")
     
     def get_minut_device_noise_thresholds():
         return seam.noise_sensors.noise_thresholds.list(
