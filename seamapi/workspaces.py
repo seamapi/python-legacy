@@ -10,11 +10,12 @@ class Workspaces(AbstractWorkspaces):
 
     def create(
         self,
+        *,
         name: str,
         connect_partner_name: str,
         is_sandbox: Optional[bool] = None,
         webview_primary_button_color: Optional[str] = None,
-        webview_logo_shape: Optional[str] = None,
+        webview_logo_shape: Optional[str] = None
     ) -> None:
         json_payload = {}
 

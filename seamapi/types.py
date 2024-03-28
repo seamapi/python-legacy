@@ -646,20 +646,21 @@ class SeamApiException(Exception):
 
 class AbstractActionAttempts(abc.ABC):
     @abc.abstractmethod
-    def get(self, action_attempt_id: str):
+    def get(self, *, action_attempt_id: str) -> ActionAttempt:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, action_attempt_ids: List[str]):
+    def list(self, *, action_attempt_ids: List[str]) -> List[ActionAttempt]:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def poll_until_ready(
         self,
+        *,
         action_attempt_id: str,
         timeout: Optional[float] = 5.0,
         polling_interval: Optional[float] = 0.5,
-    ):
+    ) -> ActionAttempt:
         raise NotImplementedError()
 
 
@@ -667,61 +668,66 @@ class AbstractClientSessions(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
+        *,
         user_identifier_key: Optional[str] = None,
         connect_webview_ids: Optional[List[str]] = None,
         connected_account_ids: Optional[List[str]] = None,
         user_identity_ids: Optional[List[str]] = None,
         expires_at: Optional[str] = None,
-    ):
+    ) -> ClientSession:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def delete(self, client_session_id: str):
+    def delete(self, *, client_session_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def get(
         self,
+        *,
         client_session_id: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
-    ):
+    ) -> ClientSession:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def get_or_create(
         self,
+        *,
         user_identifier_key: Optional[str] = None,
         connect_webview_ids: Optional[List[str]] = None,
         connected_account_ids: Optional[List[str]] = None,
         user_identity_ids: Optional[List[str]] = None,
         expires_at: Optional[str] = None,
-    ):
+    ) -> ClientSession:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def grant_access(
         self,
+        *,
         client_session_id: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_ids: Optional[List[str]] = None,
         user_identity_ids: Optional[List[str]] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         client_session_id: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         connect_webview_id: Optional[str] = None,
         without_user_identifier_key: Optional[bool] = None,
         user_identity_id: Optional[str] = None,
-    ):
+    ) -> List[ClientSession]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def revoke(self, client_session_id: str):
+    def revoke(self, *, client_session_id: str) -> None:
         raise NotImplementedError()
 
 
@@ -729,6 +735,7 @@ class AbstractConnectWebviews(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
+        *,
         device_selection_mode: Optional[str] = None,
         custom_redirect_url: Optional[str] = None,
         custom_redirect_failure_url: Optional[str] = None,
@@ -737,48 +744,52 @@ class AbstractConnectWebviews(abc.ABC):
         custom_metadata: Optional[Dict[str, Any]] = None,
         automatically_manage_new_devices: Optional[bool] = None,
         wait_for_device_creation: Optional[bool] = None,
-    ):
+    ) -> ConnectWebview:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def delete(self, connect_webview_id: str):
+    def delete(self, *, connect_webview_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, connect_webview_id: str):
+    def get(self, *, connect_webview_id: str) -> ConnectWebview:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> List[ConnectWebview]:
         raise NotImplementedError()
 
 
 class AbstractConnectedAccounts(abc.ABC):
     @abc.abstractmethod
-    def delete(self, connected_account_id: str, sync: Optional[bool] = None):
+    def delete(self, *, connected_account_id: str, sync: Optional[bool] = None) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def get(
-        self, connected_account_id: Optional[str] = None, email: Optional[str] = None
-    ):
+        self, *, connected_account_id: Optional[str] = None, email: Optional[str] = None
+    ) -> ConnectedAccount:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, custom_metadata_has: Optional[Dict[str, Any]] = None):
+    def list(
+        self, *, custom_metadata_has: Optional[Dict[str, Any]] = None
+    ) -> List[ConnectedAccount]:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def update(
         self,
+        *,
         connected_account_id: str,
         automatically_manage_new_devices: Optional[bool] = None,
         custom_metadata: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> ConnectedAccount:
         raise NotImplementedError()
 
 
@@ -786,15 +797,17 @@ class AbstractEvents(abc.ABC):
     @abc.abstractmethod
     def get(
         self,
+        *,
         event_id: Optional[str] = None,
         event_type: Optional[str] = None,
         device_id: Optional[str] = None,
-    ):
+    ) -> Event:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         since: Optional[str] = None,
         between: Optional[List[Any]] = None,
         device_id: Optional[str] = None,
@@ -805,18 +818,21 @@ class AbstractEvents(abc.ABC):
         event_types: Optional[List[str]] = None,
         connected_account_id: Optional[str] = None,
         limit: Optional[float] = None,
-    ):
+    ) -> List[Event]:
         raise NotImplementedError()
 
 
 class AbstractLocks(abc.ABC):
     @abc.abstractmethod
-    def get(self, device_id: Optional[str] = None, name: Optional[str] = None):
+    def get(
+        self, *, device_id: Optional[str] = None, name: Optional[str] = None
+    ) -> Device:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         connected_account_id: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_id: Optional[str] = None,
@@ -830,51 +846,55 @@ class AbstractLocks(abc.ABC):
         custom_metadata_has: Optional[Dict[str, Any]] = None,
         include_if: Optional[List[str]] = None,
         exclude_if: Optional[List[str]] = None,
-    ):
+    ) -> List[Device]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def lock_door(self, device_id: str, sync: Optional[bool] = None):
+    def lock_door(
+        self, *, device_id: str, sync: Optional[bool] = None
+    ) -> ActionAttempt:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def unlock_door(self, device_id: str, sync: Optional[bool] = None):
+    def unlock_door(
+        self, *, device_id: str, sync: Optional[bool] = None
+    ) -> ActionAttempt:
         raise NotImplementedError()
 
 
 class AbstractNetworks(abc.ABC):
     @abc.abstractmethod
-    def get(self, network_id: str):
+    def get(self, *, network_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
 
 class AbstractWebhooks(abc.ABC):
     @abc.abstractmethod
-    def create(self, url: str, event_types: Optional[List[str]] = None):
+    def create(self, *, url: str, event_types: Optional[List[str]] = None) -> Webhook:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def delete(self, webhook_id: str):
+    def delete(self, *, webhook_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, webhook_id: str):
+    def get(self, *, webhook_id: str) -> Webhook:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
-    ):
+    ) -> List[Webhook]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def update(self, webhook_id: str, event_types: List[str]):
+    def update(self, *, webhook_id: str, event_types: List[str]) -> None:
         raise NotImplementedError()
 
 
@@ -882,107 +902,61 @@ class AbstractWorkspaces(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
+        *,
         name: str,
         connect_partner_name: str,
         is_sandbox: Optional[bool] = None,
         webview_primary_button_color: Optional[str] = None,
         webview_logo_shape: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def get(
         self,
-    ):
+    ) -> Workspace:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
-    ):
+    ) -> List[Workspace]:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def reset_sandbox(
         self,
-    ):
-        raise NotImplementedError()
-
-
-class AbstractAccessCodesSimulate(abc.ABC):
-    @abc.abstractmethod
-    def create_unmanaged_access_code(self, device_id: str, name: str, code: str):
-        raise NotImplementedError()
-
-
-class AbstractAccessCodesUnmanaged(abc.ABC):
-    @abc.abstractmethod
-    def convert_to_managed(
-        self,
-        access_code_id: str,
-        is_external_modification_allowed: Optional[bool] = None,
-        allow_external_modification: Optional[bool] = None,
-        force: Optional[bool] = None,
-        sync: Optional[bool] = None,
-    ):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def delete(self, access_code_id: str, sync: Optional[bool] = None):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def get(
-        self,
-        device_id: Optional[str] = None,
-        access_code_id: Optional[str] = None,
-        code: Optional[str] = None,
-    ):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def list(self, device_id: str, user_identifier_key: Optional[str] = None):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def update(
-        self,
-        access_code_id: str,
-        is_managed: bool,
-        allow_external_modification: Optional[bool] = None,
-        is_external_modification_allowed: Optional[bool] = None,
-        force: Optional[bool] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
 
 class AbstractAcsAccessGroups(abc.ABC):
     @abc.abstractmethod
-    def add_user(self, acs_access_group_id: str, acs_user_id: str):
+    def add_user(self, *, acs_access_group_id: str, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, acs_access_group_id: str):
+    def get(self, *, acs_access_group_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
-        self, acs_system_id: Optional[str] = None, acs_user_id: Optional[str] = None
-    ):
+        self, *, acs_system_id: Optional[str] = None, acs_user_id: Optional[str] = None
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list_users(self, acs_access_group_id: str):
+    def list_users(self, *, acs_access_group_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def remove_user(self, acs_access_group_id: str, acs_user_id: str):
+    def remove_user(self, *, acs_access_group_id: str, acs_user_id: str) -> None:
         raise NotImplementedError()
 
 
 class AbstractAcsCredentialPools(abc.ABC):
     @abc.abstractmethod
-    def list(self, acs_system_id: str):
+    def list(self, *, acs_system_id: str) -> None:
         raise NotImplementedError()
 
 
@@ -990,23 +964,25 @@ class AbstractAcsCredentialProvisioningAutomations(abc.ABC):
     @abc.abstractmethod
     def launch(
         self,
+        *,
         user_identity_id: str,
         credential_manager_acs_system_id: str,
         acs_credential_pool_id: Optional[str] = None,
         create_credential_manager_user: Optional[bool] = None,
         credential_manager_acs_user_id: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
 
 class AbstractAcsCredentials(abc.ABC):
     @abc.abstractmethod
-    def assign(self, acs_user_id: str, acs_credential_id: str):
+    def assign(self, *, acs_user_id: str, acs_credential_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def create(
         self,
+        *,
         acs_user_id: str,
         access_method: str,
         code: Optional[str] = None,
@@ -1014,78 +990,83 @@ class AbstractAcsCredentials(abc.ABC):
         visionline_metadata: Optional[Dict[str, Any]] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def delete(self, acs_credential_id: str):
+    def delete(self, *, acs_credential_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, acs_credential_id: str):
+    def get(self, *, acs_credential_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         acs_user_id: Optional[str] = None,
         acs_system_id: Optional[str] = None,
         user_identity_id: Optional[str] = None,
         is_multi_phone_sync_credential: Optional[bool] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def unassign(self, acs_user_id: str, acs_credential_id: str):
+    def unassign(self, *, acs_user_id: str, acs_credential_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def update(self, acs_credential_id: str, code: str):
+    def update(self, *, acs_credential_id: str, code: str) -> None:
         raise NotImplementedError()
 
 
 class AbstractAcsEntrances(abc.ABC):
     @abc.abstractmethod
-    def get(self, acs_entrance_id: str):
+    def get(self, *, acs_entrance_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def grant_access(self, acs_entrance_id: str, acs_user_id: str):
+    def grant_access(self, *, acs_entrance_id: str, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         acs_system_id: Optional[str] = None,
         acs_credential_id: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list_credentials_with_access(
-        self, acs_entrance_id: str, include_if: Optional[List[str]] = None
-    ):
+        self, *, acs_entrance_id: str, include_if: Optional[List[str]] = None
+    ) -> None:
         raise NotImplementedError()
 
 
 class AbstractAcsSystems(abc.ABC):
     @abc.abstractmethod
-    def get(self, acs_system_id: str):
+    def get(self, *, acs_system_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, connected_account_id: Optional[str] = None):
+    def list(self, *, connected_account_id: Optional[str] = None) -> None:
         raise NotImplementedError()
 
 
 class AbstractAcsUsers(abc.ABC):
     @abc.abstractmethod
-    def add_to_access_group(self, acs_user_id: str, acs_access_group_id: str):
+    def add_to_access_group(
+        self, *, acs_user_id: str, acs_access_group_id: str
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def create(
         self,
+        *,
         acs_system_id: str,
         acs_access_group_ids: Optional[List[str]] = None,
         user_identity_id: Optional[str] = None,
@@ -1094,50 +1075,54 @@ class AbstractAcsUsers(abc.ABC):
         email: Optional[str] = None,
         phone_number: Optional[str] = None,
         email_address: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def delete(self, acs_user_id: str):
+    def delete(self, *, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, acs_user_id: str):
+    def get(self, *, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         user_identity_id: Optional[str] = None,
         user_identity_phone_number: Optional[str] = None,
         user_identity_email_address: Optional[str] = None,
         acs_system_id: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list_accessible_entrances(self, acs_user_id: str):
+    def list_accessible_entrances(self, *, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def remove_from_access_group(self, acs_user_id: str, acs_access_group_id: str):
+    def remove_from_access_group(
+        self, *, acs_user_id: str, acs_access_group_id: str
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def revoke_access_to_all_entrances(self, acs_user_id: str):
+    def revoke_access_to_all_entrances(self, *, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def suspend(self, acs_user_id: str):
+    def suspend(self, *, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def unsuspend(self, acs_user_id: str):
+    def unsuspend(self, *, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def update(
         self,
+        *,
         acs_user_id: str,
         access_schedule: Optional[Dict[str, Any]] = None,
         full_name: Optional[str] = None,
@@ -1145,24 +1130,81 @@ class AbstractAcsUsers(abc.ABC):
         phone_number: Optional[str] = None,
         email_address: Optional[str] = None,
         hid_acs_system_id: Optional[str] = None,
-    ):
+    ) -> None:
+        raise NotImplementedError()
+
+
+class AbstractAccessCodesSimulate(abc.ABC):
+    @abc.abstractmethod
+    def create_unmanaged_access_code(
+        self, *, device_id: str, name: str, code: str
+    ) -> UnmanagedAccessCode:
+        raise NotImplementedError()
+
+
+class AbstractAccessCodesUnmanaged(abc.ABC):
+    @abc.abstractmethod
+    def convert_to_managed(
+        self,
+        *,
+        access_code_id: str,
+        is_external_modification_allowed: Optional[bool] = None,
+        allow_external_modification: Optional[bool] = None,
+        force: Optional[bool] = None,
+        sync: Optional[bool] = None,
+    ) -> None:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def delete(self, *, access_code_id: str, sync: Optional[bool] = None) -> None:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def get(
+        self,
+        *,
+        device_id: Optional[str] = None,
+        access_code_id: Optional[str] = None,
+        code: Optional[str] = None,
+    ) -> UnmanagedAccessCode:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def list(
+        self, *, device_id: str, user_identifier_key: Optional[str] = None
+    ) -> List[UnmanagedAccessCode]:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def update(
+        self,
+        *,
+        access_code_id: str,
+        is_managed: bool,
+        allow_external_modification: Optional[bool] = None,
+        is_external_modification_allowed: Optional[bool] = None,
+        force: Optional[bool] = None,
+    ) -> None:
         raise NotImplementedError()
 
 
 class AbstractDevicesSimulate(abc.ABC):
     @abc.abstractmethod
-    def remove(self, device_id: str):
+    def remove(self, *, device_id: str) -> None:
         raise NotImplementedError()
 
 
 class AbstractDevicesUnmanaged(abc.ABC):
     @abc.abstractmethod
-    def get(self, device_id: Optional[str] = None, name: Optional[str] = None):
+    def get(
+        self, *, device_id: Optional[str] = None, name: Optional[str] = None
+    ) -> UnmanagedDevice:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         connected_account_id: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_id: Optional[str] = None,
@@ -1176,17 +1218,17 @@ class AbstractDevicesUnmanaged(abc.ABC):
         custom_metadata_has: Optional[Dict[str, Any]] = None,
         include_if: Optional[List[str]] = None,
         exclude_if: Optional[List[str]] = None,
-    ):
+    ) -> List[UnmanagedDevice]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def update(self, device_id: str, is_managed: bool):
+    def update(self, *, device_id: str, is_managed: bool) -> None:
         raise NotImplementedError()
 
 
 class AbstractHealthService(abc.ABC):
     @abc.abstractmethod
-    def by_service_name(self, service_name: str):
+    def by_service_name(self, *, service_name: str) -> None:
         raise NotImplementedError()
 
 
@@ -1194,6 +1236,7 @@ class AbstractNoiseSensorsNoiseThresholds(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
+        *,
         device_id: str,
         starts_daily_at: str,
         ends_daily_at: str,
@@ -1201,26 +1244,29 @@ class AbstractNoiseSensorsNoiseThresholds(abc.ABC):
         name: Optional[str] = None,
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
-    ):
+    ) -> NoiseThreshold:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def delete(
-        self, noise_threshold_id: str, device_id: str, sync: Optional[bool] = None
-    ):
+        self, *, noise_threshold_id: str, device_id: str, sync: Optional[bool] = None
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, noise_threshold_id: str):
+    def get(self, *, noise_threshold_id: str) -> NoiseThreshold:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, device_id: str, is_programmed: Optional[bool] = None):
+    def list(
+        self, *, device_id: str, is_programmed: Optional[bool] = None
+    ) -> List[NoiseThreshold]:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def update(
         self,
+        *,
         noise_threshold_id: str,
         device_id: str,
         sync: Optional[bool] = None,
@@ -1229,13 +1275,13 @@ class AbstractNoiseSensorsNoiseThresholds(abc.ABC):
         ends_daily_at: Optional[str] = None,
         noise_threshold_decibels: Optional[float] = None,
         noise_threshold_nrs: Optional[float] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
 
 class AbstractNoiseSensorsSimulate(abc.ABC):
     @abc.abstractmethod
-    def trigger_noise_threshold(self, device_id: str):
+    def trigger_noise_threshold(self, *, device_id: str) -> None:
         raise NotImplementedError()
 
 
@@ -1243,11 +1289,12 @@ class AbstractPhonesSimulate(abc.ABC):
     @abc.abstractmethod
     def create_sandbox_phone(
         self,
+        *,
         user_identity_id: str,
         custom_sdk_installation_id: Optional[str] = None,
         phone_metadata: Optional[Dict[str, Any]] = None,
         assa_abloy_metadata: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> Phone:
         raise NotImplementedError()
 
 
@@ -1255,6 +1302,7 @@ class AbstractThermostatsClimateSettingSchedules(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
+        *,
         device_id: str,
         schedule_starts_at: str,
         schedule_ends_at: str,
@@ -1268,28 +1316,32 @@ class AbstractThermostatsClimateSettingSchedules(abc.ABC):
         cooling_set_point_fahrenheit: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
         manual_override_allowed: Optional[bool] = None,
-    ):
+    ) -> ClimateSettingSchedule:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def delete(self, climate_setting_schedule_id: str):
+    def delete(self, *, climate_setting_schedule_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def get(
         self,
+        *,
         climate_setting_schedule_id: Optional[str] = None,
         device_id: Optional[str] = None,
-    ):
+    ) -> ClimateSettingSchedule:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, device_id: str, user_identifier_key: Optional[str] = None):
+    def list(
+        self, *, device_id: str, user_identifier_key: Optional[str] = None
+    ) -> List[ClimateSettingSchedule]:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def update(
         self,
+        *,
         climate_setting_schedule_id: str,
         schedule_type: Optional[str] = None,
         name: Optional[str] = None,
@@ -1303,32 +1355,33 @@ class AbstractThermostatsClimateSettingSchedules(abc.ABC):
         cooling_set_point_fahrenheit: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
         manual_override_allowed: Optional[bool] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
 
 class AbstractUserIdentitiesEnrollmentAutomations(abc.ABC):
     @abc.abstractmethod
-    def delete(self, enrollment_automation_id: str):
+    def delete(self, *, enrollment_automation_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, enrollment_automation_id: str):
+    def get(self, *, enrollment_automation_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def launch(
         self,
+        *,
         user_identity_id: str,
         credential_manager_acs_system_id: str,
         acs_credential_pool_id: Optional[str] = None,
         create_credential_manager_user: Optional[bool] = None,
         credential_manager_acs_user_id: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, user_identity_id: str):
+    def list(self, *, user_identity_id: str) -> None:
         raise NotImplementedError()
 
 
@@ -1341,11 +1394,11 @@ class AbstractHealth(abc.ABC):
     @abc.abstractmethod
     def get_health(
         self,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get_service_health(self, service: str):
+    def get_service_health(self, *, service: str) -> None:
         raise NotImplementedError()
 
 
@@ -1356,11 +1409,11 @@ class AbstractPhones(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def deactivate(self, device_id: str):
+    def deactivate(self, *, device_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, owner_user_identity_id: Optional[str] = None):
+    def list(self, *, owner_user_identity_id: Optional[str] = None) -> List[Phone]:
         raise NotImplementedError()
 
 
@@ -1373,42 +1426,48 @@ class AbstractThermostats(abc.ABC):
     @abc.abstractmethod
     def cool(
         self,
+        *,
         device_id: str,
         cooling_set_point_celsius: Optional[float] = None,
         cooling_set_point_fahrenheit: Optional[float] = None,
         sync: Optional[bool] = None,
-    ):
+    ) -> ActionAttempt:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, device_id: Optional[str] = None, name: Optional[str] = None):
+    def get(
+        self, *, device_id: Optional[str] = None, name: Optional[str] = None
+    ) -> Device:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def heat(
         self,
+        *,
         device_id: str,
         heating_set_point_celsius: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
         sync: Optional[bool] = None,
-    ):
+    ) -> ActionAttempt:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def heat_cool(
         self,
+        *,
         device_id: str,
         heating_set_point_celsius: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
         cooling_set_point_celsius: Optional[float] = None,
         cooling_set_point_fahrenheit: Optional[float] = None,
         sync: Optional[bool] = None,
-    ):
+    ) -> ActionAttempt:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         connected_account_id: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_id: Optional[str] = None,
@@ -1422,25 +1481,28 @@ class AbstractThermostats(abc.ABC):
         custom_metadata_has: Optional[Dict[str, Any]] = None,
         include_if: Optional[List[str]] = None,
         exclude_if: Optional[List[str]] = None,
-    ):
+    ) -> List[Device]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def off(self, device_id: str, sync: Optional[bool] = None):
+    def off(self, *, device_id: str, sync: Optional[bool] = None) -> ActionAttempt:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def set_fan_mode(
         self,
+        *,
         device_id: str,
         fan_mode: Optional[str] = None,
         fan_mode_setting: Optional[str] = None,
         sync: Optional[bool] = None,
-    ):
+    ) -> ActionAttempt:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def update(self, device_id: str, default_climate_setting: Dict[str, Any]):
+    def update(
+        self, *, device_id: str, default_climate_setting: Dict[str, Any]
+    ) -> None:
         raise NotImplementedError()
 
 
@@ -1451,68 +1513,71 @@ class AbstractUserIdentities(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def add_acs_user(self, user_identity_id: str, acs_user_id: str):
+    def add_acs_user(self, *, user_identity_id: str, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def create(
         self,
+        *,
         user_identity_key: Optional[str] = None,
         email_address: Optional[str] = None,
         phone_number: Optional[str] = None,
         full_name: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def delete(self, user_identity_id: str):
+    def delete(self, *, user_identity_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def get(
         self,
+        *,
         user_identity_id: Optional[str] = None,
         user_identity_key: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def grant_access_to_device(self, user_identity_id: str, device_id: str):
+    def grant_access_to_device(self, *, user_identity_id: str, device_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list(self, credential_manager_acs_system_id: Optional[str] = None):
+    def list(self, *, credential_manager_acs_system_id: Optional[str] = None) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list_accessible_devices(self, user_identity_id: str):
+    def list_accessible_devices(self, *, user_identity_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list_acs_systems(self, user_identity_id: str):
+    def list_acs_systems(self, *, user_identity_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list_acs_users(self, user_identity_id: str):
+    def list_acs_users(self, *, user_identity_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def remove_acs_user(self, user_identity_id: str, acs_user_id: str):
+    def remove_acs_user(self, *, user_identity_id: str, acs_user_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def revoke_access_to_device(self, user_identity_id: str, device_id: str):
+    def revoke_access_to_device(self, *, user_identity_id: str, device_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def update(
         self,
+        *,
         user_identity_id: str,
         user_identity_key: Optional[str] = None,
         email_address: Optional[str] = None,
         phone_number: Optional[str] = None,
         full_name: Optional[str] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
 
@@ -1530,6 +1595,7 @@ class AbstractAccessCodes(abc.ABC):
     @abc.abstractmethod
     def create(
         self,
+        *,
         device_id: str,
         name: Optional[str] = None,
         starts_at: Optional[str] = None,
@@ -1546,12 +1612,13 @@ class AbstractAccessCodes(abc.ABC):
         is_offline_access_code: Optional[bool] = None,
         is_one_time_use: Optional[bool] = None,
         max_time_rounding: Optional[str] = None,
-    ):
+    ) -> AccessCode:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def create_multiple(
         self,
+        *,
         device_ids: List[str],
         behavior_when_code_cannot_be_shared: Optional[str] = None,
         preferred_code_length: Optional[float] = None,
@@ -1568,47 +1635,51 @@ class AbstractAccessCodes(abc.ABC):
         is_offline_access_code: Optional[bool] = None,
         is_one_time_use: Optional[bool] = None,
         max_time_rounding: Optional[str] = None,
-    ):
+    ) -> List[AccessCode]:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def delete(
         self,
+        *,
         access_code_id: str,
         device_id: Optional[str] = None,
         sync: Optional[bool] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def generate_code(self, device_id: str):
+    def generate_code(self, *, device_id: str) -> AccessCode:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def get(
         self,
+        *,
         device_id: Optional[str] = None,
         access_code_id: Optional[str] = None,
         code: Optional[str] = None,
-    ):
+    ) -> AccessCode:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         device_id: Optional[str] = None,
         access_code_ids: Optional[List[str]] = None,
         user_identifier_key: Optional[str] = None,
-    ):
+    ) -> List[AccessCode]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def pull_backup_access_code(self, access_code_id: str):
+    def pull_backup_access_code(self, *, access_code_id: str) -> AccessCode:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def update(
         self,
+        *,
         access_code_id: str,
         name: Optional[str] = None,
         starts_at: Optional[str] = None,
@@ -1627,7 +1698,7 @@ class AbstractAccessCodes(abc.ABC):
         device_id: Optional[str] = None,
         type: Optional[str] = None,
         is_managed: Optional[bool] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
 
@@ -1643,16 +1714,19 @@ class AbstractDevices(abc.ABC):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def delete(self, device_id: str):
+    def delete(self, *, device_id: str) -> None:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def get(self, device_id: Optional[str] = None, name: Optional[str] = None):
+    def get(
+        self, *, device_id: Optional[str] = None, name: Optional[str] = None
+    ) -> Device:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def list(
         self,
+        *,
         connected_account_id: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_id: Optional[str] = None,
@@ -1666,22 +1740,25 @@ class AbstractDevices(abc.ABC):
         custom_metadata_has: Optional[Dict[str, Any]] = None,
         include_if: Optional[List[str]] = None,
         exclude_if: Optional[List[str]] = None,
-    ):
+    ) -> List[Device]:
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def list_device_providers(self, provider_category: Optional[str] = None):
+    def list_device_providers(
+        self, *, provider_category: Optional[str] = None
+    ) -> List[DeviceProvider]:
         raise NotImplementedError()
 
     @abc.abstractmethod
     def update(
         self,
+        *,
         device_id: str,
         properties: Optional[Dict[str, Any]] = None,
         name: Optional[str] = None,
         is_managed: Optional[bool] = None,
         custom_metadata: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> None:
         raise NotImplementedError()
 
 
@@ -1770,6 +1847,7 @@ class AbstractSeam(AbstractRoutes):
     api_key: str
     workspace_id: str
     api_url: str
+    lts_version: str
 
     @abc.abstractmethod
     def __init__(

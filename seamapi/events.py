@@ -10,9 +10,10 @@ class Events(AbstractEvents):
 
     def get(
         self,
+        *,
         event_id: Optional[str] = None,
         event_type: Optional[str] = None,
-        device_id: Optional[str] = None,
+        device_id: Optional[str] = None
     ) -> Event:
         json_payload = {}
 
@@ -29,6 +30,7 @@ class Events(AbstractEvents):
 
     def list(
         self,
+        *,
         since: Optional[str] = None,
         between: Optional[List[Any]] = None,
         device_id: Optional[str] = None,
@@ -38,7 +40,7 @@ class Events(AbstractEvents):
         event_type: Optional[str] = None,
         event_types: Optional[List[str]] = None,
         connected_account_id: Optional[str] = None,
-        limit: Optional[float] = None,
+        limit: Optional[float] = None
     ) -> List[Event]:
         json_payload = {}
 

@@ -22,6 +22,7 @@ class AccessCodes(AbstractAccessCodes):
 
     def create(
         self,
+        *,
         device_id: str,
         name: Optional[str] = None,
         starts_at: Optional[str] = None,
@@ -37,7 +38,7 @@ class AccessCodes(AbstractAccessCodes):
         use_offline_access_code: Optional[bool] = None,
         is_offline_access_code: Optional[bool] = None,
         is_one_time_use: Optional[bool] = None,
-        max_time_rounding: Optional[str] = None,
+        max_time_rounding: Optional[str] = None
     ) -> AccessCode:
         json_payload = {}
 
@@ -82,6 +83,7 @@ class AccessCodes(AbstractAccessCodes):
 
     def create_multiple(
         self,
+        *,
         device_ids: List[str],
         behavior_when_code_cannot_be_shared: Optional[str] = None,
         preferred_code_length: Optional[float] = None,
@@ -97,7 +99,7 @@ class AccessCodes(AbstractAccessCodes):
         use_offline_access_code: Optional[bool] = None,
         is_offline_access_code: Optional[bool] = None,
         is_one_time_use: Optional[bool] = None,
-        max_time_rounding: Optional[str] = None,
+        max_time_rounding: Optional[str] = None
     ) -> List[AccessCode]:
         json_payload = {}
 
@@ -146,9 +148,10 @@ class AccessCodes(AbstractAccessCodes):
 
     def delete(
         self,
+        *,
         access_code_id: str,
         device_id: Optional[str] = None,
-        sync: Optional[bool] = None,
+        sync: Optional[bool] = None
     ) -> None:
         json_payload = {}
 
@@ -163,7 +166,7 @@ class AccessCodes(AbstractAccessCodes):
 
         return None
 
-    def generate_code(self, device_id: str) -> AccessCode:
+    def generate_code(self, *, device_id: str) -> AccessCode:
         json_payload = {}
 
         if device_id is not None:
@@ -177,9 +180,10 @@ class AccessCodes(AbstractAccessCodes):
 
     def get(
         self,
+        *,
         device_id: Optional[str] = None,
         access_code_id: Optional[str] = None,
-        code: Optional[str] = None,
+        code: Optional[str] = None
     ) -> AccessCode:
         json_payload = {}
 
@@ -196,9 +200,10 @@ class AccessCodes(AbstractAccessCodes):
 
     def list(
         self,
+        *,
         device_id: Optional[str] = None,
         access_code_ids: Optional[List[str]] = None,
-        user_identifier_key: Optional[str] = None,
+        user_identifier_key: Optional[str] = None
     ) -> List[AccessCode]:
         json_payload = {}
 
@@ -213,7 +218,7 @@ class AccessCodes(AbstractAccessCodes):
 
         return [AccessCode.from_dict(item) for item in res["access_codes"]]
 
-    def pull_backup_access_code(self, access_code_id: str) -> AccessCode:
+    def pull_backup_access_code(self, *, access_code_id: str) -> AccessCode:
         json_payload = {}
 
         if access_code_id is not None:
@@ -227,6 +232,7 @@ class AccessCodes(AbstractAccessCodes):
 
     def update(
         self,
+        *,
         access_code_id: str,
         name: Optional[str] = None,
         starts_at: Optional[str] = None,
@@ -244,7 +250,7 @@ class AccessCodes(AbstractAccessCodes):
         max_time_rounding: Optional[str] = None,
         device_id: Optional[str] = None,
         type: Optional[str] = None,
-        is_managed: Optional[bool] = None,
+        is_managed: Optional[bool] = None
     ) -> None:
         json_payload = {}
 

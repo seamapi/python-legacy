@@ -8,7 +8,7 @@ class NoiseSensorsSimulate(AbstractNoiseSensorsSimulate):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def trigger_noise_threshold(self, device_id: str) -> None:
+    def trigger_noise_threshold(self, *, device_id: str) -> None:
         json_payload = {}
 
         if device_id is not None:

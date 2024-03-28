@@ -11,7 +11,7 @@ class UserIdentitiesEnrollmentAutomations(AbstractUserIdentitiesEnrollmentAutoma
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def delete(self, enrollment_automation_id: str) -> None:
+    def delete(self, *, enrollment_automation_id: str) -> None:
         json_payload = {}
 
         if enrollment_automation_id is not None:
@@ -23,7 +23,7 @@ class UserIdentitiesEnrollmentAutomations(AbstractUserIdentitiesEnrollmentAutoma
 
         return None
 
-    def get(self, enrollment_automation_id: str) -> None:
+    def get(self, *, enrollment_automation_id: str) -> None:
         json_payload = {}
 
         if enrollment_automation_id is not None:
@@ -37,11 +37,12 @@ class UserIdentitiesEnrollmentAutomations(AbstractUserIdentitiesEnrollmentAutoma
 
     def launch(
         self,
+        *,
         user_identity_id: str,
         credential_manager_acs_system_id: str,
         acs_credential_pool_id: Optional[str] = None,
         create_credential_manager_user: Optional[bool] = None,
-        credential_manager_acs_user_id: Optional[str] = None,
+        credential_manager_acs_user_id: Optional[str] = None
     ) -> None:
         json_payload = {}
 
@@ -68,7 +69,7 @@ class UserIdentitiesEnrollmentAutomations(AbstractUserIdentitiesEnrollmentAutoma
 
         return None
 
-    def list(self, user_identity_id: str) -> None:
+    def list(self, *, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:

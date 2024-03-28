@@ -8,7 +8,7 @@ class HealthService(AbstractHealthService):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def by_service_name(self, service_name: str) -> None:
+    def by_service_name(self, *, service_name: str) -> None:
         json_payload = {}
 
         if service_name is not None:

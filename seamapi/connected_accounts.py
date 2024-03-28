@@ -12,7 +12,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def delete(self, connected_account_id: str, sync: Optional[bool] = None) -> None:
+    def delete(self, *, connected_account_id: str, sync: Optional[bool] = None) -> None:
         json_payload = {}
 
         if connected_account_id is not None:
@@ -25,7 +25,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         return None
 
     def get(
-        self, connected_account_id: Optional[str] = None, email: Optional[str] = None
+        self, *, connected_account_id: Optional[str] = None, email: Optional[str] = None
     ) -> ConnectedAccount:
         json_payload = {}
 
@@ -41,7 +41,7 @@ class ConnectedAccounts(AbstractConnectedAccounts):
         return ConnectedAccount.from_dict(res["connected_account"])
 
     def list(
-        self, custom_metadata_has: Optional[Dict[str, Any]] = None
+        self, *, custom_metadata_has: Optional[Dict[str, Any]] = None
     ) -> List[ConnectedAccount]:
         json_payload = {}
 
@@ -56,9 +56,10 @@ class ConnectedAccounts(AbstractConnectedAccounts):
 
     def update(
         self,
+        *,
         connected_account_id: str,
         automatically_manage_new_devices: Optional[bool] = None,
-        custom_metadata: Optional[Dict[str, Any]] = None,
+        custom_metadata: Optional[Dict[str, Any]] = None
     ) -> ConnectedAccount:
         json_payload = {}
 

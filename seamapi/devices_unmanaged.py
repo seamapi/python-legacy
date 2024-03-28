@@ -13,7 +13,7 @@ class DevicesUnmanaged(AbstractDevicesUnmanaged):
         self.seam = seam
 
     def get(
-        self, device_id: Optional[str] = None, name: Optional[str] = None
+        self, *, device_id: Optional[str] = None, name: Optional[str] = None
     ) -> UnmanagedDevice:
         json_payload = {}
 
@@ -30,6 +30,7 @@ class DevicesUnmanaged(AbstractDevicesUnmanaged):
 
     def list(
         self,
+        *,
         connected_account_id: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_id: Optional[str] = None,
@@ -42,7 +43,7 @@ class DevicesUnmanaged(AbstractDevicesUnmanaged):
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
         include_if: Optional[List[str]] = None,
-        exclude_if: Optional[List[str]] = None,
+        exclude_if: Optional[List[str]] = None
     ) -> List[UnmanagedDevice]:
         json_payload = {}
 
@@ -79,7 +80,7 @@ class DevicesUnmanaged(AbstractDevicesUnmanaged):
 
         return [UnmanagedDevice.from_dict(item) for item in res["devices"]]
 
-    def update(self, device_id: str, is_managed: bool) -> None:
+    def update(self, *, device_id: str, is_managed: bool) -> None:
         json_payload = {}
 
         if device_id is not None:

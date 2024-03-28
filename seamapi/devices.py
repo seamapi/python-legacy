@@ -20,7 +20,7 @@ class Devices(AbstractDevices):
     def unmanaged(self) -> DevicesUnmanaged:
         return self._unmanaged
 
-    def delete(self, device_id: str) -> None:
+    def delete(self, *, device_id: str) -> None:
         json_payload = {}
 
         if device_id is not None:
@@ -31,7 +31,7 @@ class Devices(AbstractDevices):
         return None
 
     def get(
-        self, device_id: Optional[str] = None, name: Optional[str] = None
+        self, *, device_id: Optional[str] = None, name: Optional[str] = None
     ) -> Device:
         json_payload = {}
 
@@ -46,6 +46,7 @@ class Devices(AbstractDevices):
 
     def list(
         self,
+        *,
         connected_account_id: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_id: Optional[str] = None,
@@ -58,7 +59,7 @@ class Devices(AbstractDevices):
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
         include_if: Optional[List[str]] = None,
-        exclude_if: Optional[List[str]] = None,
+        exclude_if: Optional[List[str]] = None
     ) -> List[Device]:
         json_payload = {}
 
@@ -94,7 +95,7 @@ class Devices(AbstractDevices):
         return [Device.from_dict(item) for item in res["devices"]]
 
     def list_device_providers(
-        self, provider_category: Optional[str] = None
+        self, *, provider_category: Optional[str] = None
     ) -> List[DeviceProvider]:
         json_payload = {}
 
@@ -109,11 +110,12 @@ class Devices(AbstractDevices):
 
     def update(
         self,
+        *,
         device_id: str,
         properties: Optional[Dict[str, Any]] = None,
         name: Optional[str] = None,
         is_managed: Optional[bool] = None,
-        custom_metadata: Optional[Dict[str, Any]] = None,
+        custom_metadata: Optional[Dict[str, Any]] = None
     ) -> None:
         json_payload = {}
 

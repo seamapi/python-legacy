@@ -14,13 +14,14 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
 
     def create(
         self,
+        *,
         device_id: str,
         starts_daily_at: str,
         ends_daily_at: str,
         sync: Optional[bool] = None,
         name: Optional[str] = None,
         noise_threshold_decibels: Optional[float] = None,
-        noise_threshold_nrs: Optional[float] = None,
+        noise_threshold_nrs: Optional[float] = None
     ) -> NoiseThreshold:
         json_payload = {}
 
@@ -46,7 +47,7 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
         return NoiseThreshold.from_dict(res["noise_threshold"])
 
     def delete(
-        self, noise_threshold_id: str, device_id: str, sync: Optional[bool] = None
+        self, *, noise_threshold_id: str, device_id: str, sync: Optional[bool] = None
     ) -> None:
         json_payload = {}
 
@@ -63,7 +64,7 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
 
         return None
 
-    def get(self, noise_threshold_id: str) -> NoiseThreshold:
+    def get(self, *, noise_threshold_id: str) -> NoiseThreshold:
         json_payload = {}
 
         if noise_threshold_id is not None:
@@ -76,7 +77,7 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
         return NoiseThreshold.from_dict(res["noise_threshold"])
 
     def list(
-        self, device_id: str, is_programmed: Optional[bool] = None
+        self, *, device_id: str, is_programmed: Optional[bool] = None
     ) -> List[NoiseThreshold]:
         json_payload = {}
 
@@ -93,6 +94,7 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
 
     def update(
         self,
+        *,
         noise_threshold_id: str,
         device_id: str,
         sync: Optional[bool] = None,
@@ -100,7 +102,7 @@ class NoiseSensorsNoiseThresholds(AbstractNoiseSensorsNoiseThresholds):
         starts_daily_at: Optional[str] = None,
         ends_daily_at: Optional[str] = None,
         noise_threshold_decibels: Optional[float] = None,
-        noise_threshold_nrs: Optional[float] = None,
+        noise_threshold_nrs: Optional[float] = None
     ) -> None:
         json_payload = {}
 

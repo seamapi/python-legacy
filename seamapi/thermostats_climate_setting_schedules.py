@@ -14,6 +14,7 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
     def create(
         self,
+        *,
         device_id: str,
         schedule_starts_at: str,
         schedule_ends_at: str,
@@ -26,7 +27,7 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
         heating_set_point_celsius: Optional[float] = None,
         cooling_set_point_fahrenheit: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
-        manual_override_allowed: Optional[bool] = None,
+        manual_override_allowed: Optional[bool] = None
     ) -> ClimateSettingSchedule:
         json_payload = {}
 
@@ -63,7 +64,7 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
         return ClimateSettingSchedule.from_dict(res["climate_setting_schedule"])
 
-    def delete(self, climate_setting_schedule_id: str) -> None:
+    def delete(self, *, climate_setting_schedule_id: str) -> None:
         json_payload = {}
 
         if climate_setting_schedule_id is not None:
@@ -77,8 +78,9 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
     def get(
         self,
+        *,
         climate_setting_schedule_id: Optional[str] = None,
-        device_id: Optional[str] = None,
+        device_id: Optional[str] = None
     ) -> ClimateSettingSchedule:
         json_payload = {}
 
@@ -94,7 +96,7 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
         return ClimateSettingSchedule.from_dict(res["climate_setting_schedule"])
 
     def list(
-        self, device_id: str, user_identifier_key: Optional[str] = None
+        self, *, device_id: str, user_identifier_key: Optional[str] = None
     ) -> List[ClimateSettingSchedule]:
         json_payload = {}
 
@@ -114,6 +116,7 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
 
     def update(
         self,
+        *,
         climate_setting_schedule_id: str,
         schedule_type: Optional[str] = None,
         name: Optional[str] = None,
@@ -126,7 +129,7 @@ class ThermostatsClimateSettingSchedules(AbstractThermostatsClimateSettingSchedu
         heating_set_point_celsius: Optional[float] = None,
         cooling_set_point_fahrenheit: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
-        manual_override_allowed: Optional[bool] = None,
+        manual_override_allowed: Optional[bool] = None
     ) -> None:
         json_payload = {}
 

@@ -23,7 +23,7 @@ class Health(AbstractHealth):
 
         return None
 
-    def get_service_health(self, service: str) -> None:
+    def get_service_health(self, *, service: str) -> None:
         json_payload = {}
 
         if service is not None:

@@ -13,7 +13,7 @@ class AccessCodesSimulate(AbstractAccessCodesSimulate):
         self.seam = seam
 
     def create_unmanaged_access_code(
-        self, device_id: str, name: str, code: str
+        self, *, device_id: str, name: str, code: str
     ) -> UnmanagedAccessCode:
         json_payload = {}
 

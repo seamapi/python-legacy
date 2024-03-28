@@ -8,7 +8,7 @@ class Networks(AbstractNetworks):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def get(self, network_id: str) -> None:
+    def get(self, *, network_id: str) -> None:
         json_payload = {}
 
         if network_id is not None:

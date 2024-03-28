@@ -8,7 +8,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def add_user(self, acs_access_group_id: str, acs_user_id: str) -> None:
+    def add_user(self, *, acs_access_group_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_access_group_id is not None:
@@ -20,7 +20,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
 
         return None
 
-    def get(self, acs_access_group_id: str) -> None:
+    def get(self, *, acs_access_group_id: str) -> None:
         json_payload = {}
 
         if acs_access_group_id is not None:
@@ -31,7 +31,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
         return None
 
     def list(
-        self, acs_system_id: Optional[str] = None, acs_user_id: Optional[str] = None
+        self, *, acs_system_id: Optional[str] = None, acs_user_id: Optional[str] = None
     ) -> None:
         json_payload = {}
 
@@ -44,7 +44,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
 
         return None
 
-    def list_users(self, acs_access_group_id: str) -> None:
+    def list_users(self, *, acs_access_group_id: str) -> None:
         json_payload = {}
 
         if acs_access_group_id is not None:
@@ -56,7 +56,7 @@ class AcsAccessGroups(AbstractAcsAccessGroups):
 
         return None
 
-    def remove_user(self, acs_access_group_id: str, acs_user_id: str) -> None:
+    def remove_user(self, *, acs_access_group_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_access_group_id is not None:

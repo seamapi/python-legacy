@@ -10,6 +10,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
     def create(
         self,
+        *,
         device_selection_mode: Optional[str] = None,
         custom_redirect_url: Optional[str] = None,
         custom_redirect_failure_url: Optional[str] = None,
@@ -17,7 +18,7 @@ class ConnectWebviews(AbstractConnectWebviews):
         provider_category: Optional[str] = None,
         custom_metadata: Optional[Dict[str, Any]] = None,
         automatically_manage_new_devices: Optional[bool] = None,
-        wait_for_device_creation: Optional[bool] = None,
+        wait_for_device_creation: Optional[bool] = None
     ) -> ConnectWebview:
         json_payload = {}
 
@@ -46,7 +47,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         return ConnectWebview.from_dict(res["connect_webview"])
 
-    def delete(self, connect_webview_id: str) -> None:
+    def delete(self, *, connect_webview_id: str) -> None:
         json_payload = {}
 
         if connect_webview_id is not None:
@@ -56,7 +57,7 @@ class ConnectWebviews(AbstractConnectWebviews):
 
         return None
 
-    def get(self, connect_webview_id: str) -> ConnectWebview:
+    def get(self, *, connect_webview_id: str) -> ConnectWebview:
         json_payload = {}
 
         if connect_webview_id is not None:
@@ -68,8 +69,9 @@ class ConnectWebviews(AbstractConnectWebviews):
 
     def list(
         self,
+        *,
         user_identifier_key: Optional[str] = None,
-        custom_metadata_has: Optional[Dict[str, Any]] = None,
+        custom_metadata_has: Optional[Dict[str, Any]] = None
     ) -> List[ConnectWebview]:
         json_payload = {}
 

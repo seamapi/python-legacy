@@ -16,7 +16,7 @@ class UserIdentities(AbstractUserIdentities):
     def enrollment_automations(self) -> UserIdentitiesEnrollmentAutomations:
         return self._enrollment_automations
 
-    def add_acs_user(self, user_identity_id: str, acs_user_id: str) -> None:
+    def add_acs_user(self, *, user_identity_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -32,10 +32,11 @@ class UserIdentities(AbstractUserIdentities):
 
     def create(
         self,
+        *,
         user_identity_key: Optional[str] = None,
         email_address: Optional[str] = None,
         phone_number: Optional[str] = None,
-        full_name: Optional[str] = None,
+        full_name: Optional[str] = None
     ) -> None:
         json_payload = {}
 
@@ -52,7 +53,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def delete(self, user_identity_id: str) -> None:
+    def delete(self, *, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -64,8 +65,9 @@ class UserIdentities(AbstractUserIdentities):
 
     def get(
         self,
+        *,
         user_identity_id: Optional[str] = None,
-        user_identity_key: Optional[str] = None,
+        user_identity_key: Optional[str] = None
     ) -> None:
         json_payload = {}
 
@@ -78,7 +80,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def grant_access_to_device(self, user_identity_id: str, device_id: str) -> None:
+    def grant_access_to_device(self, *, user_identity_id: str, device_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -92,7 +94,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def list(self, credential_manager_acs_system_id: Optional[str] = None) -> None:
+    def list(self, *, credential_manager_acs_system_id: Optional[str] = None) -> None:
         json_payload = {}
 
         if credential_manager_acs_system_id is not None:
@@ -104,7 +106,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def list_accessible_devices(self, user_identity_id: str) -> None:
+    def list_accessible_devices(self, *, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -116,7 +118,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def list_acs_systems(self, user_identity_id: str) -> None:
+    def list_acs_systems(self, *, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -128,7 +130,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def list_acs_users(self, user_identity_id: str) -> None:
+    def list_acs_users(self, *, user_identity_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -140,7 +142,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def remove_acs_user(self, user_identity_id: str, acs_user_id: str) -> None:
+    def remove_acs_user(self, *, user_identity_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -154,7 +156,7 @@ class UserIdentities(AbstractUserIdentities):
 
         return None
 
-    def revoke_access_to_device(self, user_identity_id: str, device_id: str) -> None:
+    def revoke_access_to_device(self, *, user_identity_id: str, device_id: str) -> None:
         json_payload = {}
 
         if user_identity_id is not None:
@@ -170,11 +172,12 @@ class UserIdentities(AbstractUserIdentities):
 
     def update(
         self,
+        *,
         user_identity_id: str,
         user_identity_key: Optional[str] = None,
         email_address: Optional[str] = None,
         phone_number: Optional[str] = None,
-        full_name: Optional[str] = None,
+        full_name: Optional[str] = None
     ) -> None:
         json_payload = {}
 

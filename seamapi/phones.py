@@ -14,7 +14,7 @@ class Phones(AbstractPhones):
     def simulate(self) -> PhonesSimulate:
         return self._simulate
 
-    def deactivate(self, device_id: str) -> None:
+    def deactivate(self, *, device_id: str) -> None:
         json_payload = {}
 
         if device_id is not None:
@@ -24,7 +24,7 @@ class Phones(AbstractPhones):
 
         return None
 
-    def list(self, owner_user_identity_id: Optional[str] = None) -> List[Phone]:
+    def list(self, *, owner_user_identity_id: Optional[str] = None) -> List[Phone]:
         json_payload = {}
 
         if owner_user_identity_id is not None:

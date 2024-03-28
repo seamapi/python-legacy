@@ -10,11 +10,12 @@ class ClientSessions(AbstractClientSessions):
 
     def create(
         self,
+        *,
         user_identifier_key: Optional[str] = None,
         connect_webview_ids: Optional[List[str]] = None,
         connected_account_ids: Optional[List[str]] = None,
         user_identity_ids: Optional[List[str]] = None,
-        expires_at: Optional[str] = None,
+        expires_at: Optional[str] = None
     ) -> ClientSession:
         json_payload = {}
 
@@ -35,7 +36,7 @@ class ClientSessions(AbstractClientSessions):
 
         return ClientSession.from_dict(res["client_session"])
 
-    def delete(self, client_session_id: str) -> None:
+    def delete(self, *, client_session_id: str) -> None:
         json_payload = {}
 
         if client_session_id is not None:
@@ -47,8 +48,9 @@ class ClientSessions(AbstractClientSessions):
 
     def get(
         self,
+        *,
         client_session_id: Optional[str] = None,
-        user_identifier_key: Optional[str] = None,
+        user_identifier_key: Optional[str] = None
     ) -> ClientSession:
         json_payload = {}
 
@@ -63,11 +65,12 @@ class ClientSessions(AbstractClientSessions):
 
     def get_or_create(
         self,
+        *,
         user_identifier_key: Optional[str] = None,
         connect_webview_ids: Optional[List[str]] = None,
         connected_account_ids: Optional[List[str]] = None,
         user_identity_ids: Optional[List[str]] = None,
-        expires_at: Optional[str] = None,
+        expires_at: Optional[str] = None
     ) -> ClientSession:
         json_payload = {}
 
@@ -90,11 +93,12 @@ class ClientSessions(AbstractClientSessions):
 
     def grant_access(
         self,
+        *,
         client_session_id: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_ids: Optional[List[str]] = None,
-        user_identity_ids: Optional[List[str]] = None,
+        user_identity_ids: Optional[List[str]] = None
     ) -> None:
         json_payload = {}
 
@@ -117,11 +121,12 @@ class ClientSessions(AbstractClientSessions):
 
     def list(
         self,
+        *,
         client_session_id: Optional[str] = None,
         user_identifier_key: Optional[str] = None,
         connect_webview_id: Optional[str] = None,
         without_user_identifier_key: Optional[bool] = None,
-        user_identity_id: Optional[str] = None,
+        user_identity_id: Optional[str] = None
     ) -> List[ClientSession]:
         json_payload = {}
 
@@ -140,7 +145,7 @@ class ClientSessions(AbstractClientSessions):
 
         return [ClientSession.from_dict(item) for item in res["client_sessions"]]
 
-    def revoke(self, client_session_id: str) -> None:
+    def revoke(self, *, client_session_id: str) -> None:
         json_payload = {}
 
         if client_session_id is not None:

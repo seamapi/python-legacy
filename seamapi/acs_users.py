@@ -8,7 +8,9 @@ class AcsUsers(AbstractAcsUsers):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def add_to_access_group(self, acs_user_id: str, acs_access_group_id: str) -> None:
+    def add_to_access_group(
+        self, *, acs_user_id: str, acs_access_group_id: str
+    ) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -24,6 +26,7 @@ class AcsUsers(AbstractAcsUsers):
 
     def create(
         self,
+        *,
         acs_system_id: str,
         acs_access_group_ids: Optional[List[str]] = None,
         user_identity_id: Optional[str] = None,
@@ -31,7 +34,7 @@ class AcsUsers(AbstractAcsUsers):
         full_name: Optional[str] = None,
         email: Optional[str] = None,
         phone_number: Optional[str] = None,
-        email_address: Optional[str] = None,
+        email_address: Optional[str] = None
     ) -> None:
         json_payload = {}
 
@@ -56,7 +59,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def delete(self, acs_user_id: str) -> None:
+    def delete(self, *, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -66,7 +69,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def get(self, acs_user_id: str) -> None:
+    def get(self, *, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -78,10 +81,11 @@ class AcsUsers(AbstractAcsUsers):
 
     def list(
         self,
+        *,
         user_identity_id: Optional[str] = None,
         user_identity_phone_number: Optional[str] = None,
         user_identity_email_address: Optional[str] = None,
-        acs_system_id: Optional[str] = None,
+        acs_system_id: Optional[str] = None
     ) -> None:
         json_payload = {}
 
@@ -98,7 +102,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def list_accessible_entrances(self, acs_user_id: str) -> None:
+    def list_accessible_entrances(self, *, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -111,7 +115,7 @@ class AcsUsers(AbstractAcsUsers):
         return None
 
     def remove_from_access_group(
-        self, acs_user_id: str, acs_access_group_id: str
+        self, *, acs_user_id: str, acs_access_group_id: str
     ) -> None:
         json_payload = {}
 
@@ -126,7 +130,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def revoke_access_to_all_entrances(self, acs_user_id: str) -> None:
+    def revoke_access_to_all_entrances(self, *, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -138,7 +142,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def suspend(self, acs_user_id: str) -> None:
+    def suspend(self, *, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -148,7 +152,7 @@ class AcsUsers(AbstractAcsUsers):
 
         return None
 
-    def unsuspend(self, acs_user_id: str) -> None:
+    def unsuspend(self, *, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_user_id is not None:
@@ -160,13 +164,14 @@ class AcsUsers(AbstractAcsUsers):
 
     def update(
         self,
+        *,
         acs_user_id: str,
         access_schedule: Optional[Dict[str, Any]] = None,
         full_name: Optional[str] = None,
         email: Optional[str] = None,
         phone_number: Optional[str] = None,
         email_address: Optional[str] = None,
-        hid_acs_system_id: Optional[str] = None,
+        hid_acs_system_id: Optional[str] = None
     ) -> None:
         json_payload = {}
 

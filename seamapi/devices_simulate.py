@@ -8,7 +8,7 @@ class DevicesSimulate(AbstractDevicesSimulate):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def remove(self, device_id: str) -> None:
+    def remove(self, *, device_id: str) -> None:
         json_payload = {}
 
         if device_id is not None:

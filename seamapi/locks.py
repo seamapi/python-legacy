@@ -9,7 +9,7 @@ class Locks(AbstractLocks):
         self.seam = seam
 
     def get(
-        self, device_id: Optional[str] = None, name: Optional[str] = None
+        self, *, device_id: Optional[str] = None, name: Optional[str] = None
     ) -> Device:
         json_payload = {}
 
@@ -24,6 +24,7 @@ class Locks(AbstractLocks):
 
     def list(
         self,
+        *,
         connected_account_id: Optional[str] = None,
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_id: Optional[str] = None,
@@ -36,7 +37,7 @@ class Locks(AbstractLocks):
         user_identifier_key: Optional[str] = None,
         custom_metadata_has: Optional[Dict[str, Any]] = None,
         include_if: Optional[List[str]] = None,
-        exclude_if: Optional[List[str]] = None,
+        exclude_if: Optional[List[str]] = None
     ) -> List[Device]:
         json_payload = {}
 
@@ -73,9 +74,10 @@ class Locks(AbstractLocks):
 
     def lock_door(
         self,
+        *,
         device_id: str,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True,
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -88,13 +90,13 @@ class Locks(AbstractLocks):
 
         if isinstance(wait_for_action_attempt, dict):
             updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-                res["action_attempt"]["action_attempt_id"],
+                action_attempt_id=res["action_attempt"]["action_attempt_id"],
                 timeout=wait_for_action_attempt.get("timeout", None),
                 polling_interval=wait_for_action_attempt.get("polling_interval", None),
             )
         elif wait_for_action_attempt is True:
             updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-                res["action_attempt"]["action_attempt_id"]
+                action_attempt_id=res["action_attempt"]["action_attempt_id"]
             )
         else:
             return ActionAttempt.from_dict(res["action_attempt"])
@@ -103,9 +105,10 @@ class Locks(AbstractLocks):
 
     def unlock_door(
         self,
+        *,
         device_id: str,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True,
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -118,13 +121,13 @@ class Locks(AbstractLocks):
 
         if isinstance(wait_for_action_attempt, dict):
             updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-                res["action_attempt"]["action_attempt_id"],
+                action_attempt_id=res["action_attempt"]["action_attempt_id"],
                 timeout=wait_for_action_attempt.get("timeout", None),
                 polling_interval=wait_for_action_attempt.get("polling_interval", None),
             )
         elif wait_for_action_attempt is True:
             updated_action_attempt = self.seam.action_attempts.poll_until_ready(
-                res["action_attempt"]["action_attempt_id"]
+                action_attempt_id=res["action_attempt"]["action_attempt_id"]
             )
         else:
             return ActionAttempt.from_dict(res["action_attempt"])

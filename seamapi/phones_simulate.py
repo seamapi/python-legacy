@@ -10,10 +10,11 @@ class PhonesSimulate(AbstractPhonesSimulate):
 
     def create_sandbox_phone(
         self,
+        *,
         user_identity_id: str,
         custom_sdk_installation_id: Optional[str] = None,
         phone_metadata: Optional[Dict[str, Any]] = None,
-        assa_abloy_metadata: Optional[Dict[str, Any]] = None,
+        assa_abloy_metadata: Optional[Dict[str, Any]] = None
     ) -> Phone:
         json_payload = {}
 

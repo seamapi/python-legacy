@@ -20,7 +20,9 @@ class Seam(AbstractSeam):
     api_key : str
         API key (default None)
     api_url : str
-        API url (default None)
+        API url (default "https://connect.getseam.com")
+    lts_version : str
+        LTS version
     workspaces : Workspaces
         Workspaces class
     connected_accounts : ConnectedAccounts
@@ -41,10 +43,12 @@ class Seam(AbstractSeam):
 
     api_key: str
     api_url: str = "https://connect.getseam.com"
+    lts_version: str = "1.0.0"
 
     def __init__(
         self,
         api_key: Optional[str] = None,
+        *,
         workspace_id: Optional[str] = None,
         api_url: Optional[str] = None,
         should_report_exceptions: Optional[bool] = False,
@@ -73,6 +77,7 @@ class Seam(AbstractSeam):
             workspace_id = os.environ.get("SEAM_WORKSPACE_ID", None)
         self.api_key = api_key
         self.workspace_id = workspace_id
+        self.lts_version = Seam.lts_version
 
         if os.environ.get("SEAM_API_URL", None) is not None:
             print(
@@ -131,6 +136,7 @@ class Seam(AbstractSeam):
             + " (https://github.com/seamapi/python)",
             "seam-sdk-name": "seamapi/python",
             "seam-sdk-version": sdk_version,
+            "seam-lts-version": self.lts_version,
         }
         if self.workspace_id is not None:
             headers["seam-workspace"] = self.workspace_id

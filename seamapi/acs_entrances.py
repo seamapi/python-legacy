@@ -8,7 +8,7 @@ class AcsEntrances(AbstractAcsEntrances):
     def __init__(self, seam: Seam):
         self.seam = seam
 
-    def get(self, acs_entrance_id: str) -> None:
+    def get(self, *, acs_entrance_id: str) -> None:
         json_payload = {}
 
         if acs_entrance_id is not None:
@@ -18,7 +18,7 @@ class AcsEntrances(AbstractAcsEntrances):
 
         return None
 
-    def grant_access(self, acs_entrance_id: str, acs_user_id: str) -> None:
+    def grant_access(self, *, acs_entrance_id: str, acs_user_id: str) -> None:
         json_payload = {}
 
         if acs_entrance_id is not None:
@@ -32,8 +32,9 @@ class AcsEntrances(AbstractAcsEntrances):
 
     def list(
         self,
+        *,
         acs_system_id: Optional[str] = None,
-        acs_credential_id: Optional[str] = None,
+        acs_credential_id: Optional[str] = None
     ) -> None:
         json_payload = {}
 
@@ -47,7 +48,7 @@ class AcsEntrances(AbstractAcsEntrances):
         return None
 
     def list_credentials_with_access(
-        self, acs_entrance_id: str, include_if: Optional[List[str]] = None
+        self, *, acs_entrance_id: str, include_if: Optional[List[str]] = None
     ) -> None:
         json_payload = {}
 
