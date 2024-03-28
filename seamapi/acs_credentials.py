@@ -25,8 +25,10 @@ class AcsCredentials(AbstractAcsCredentials):
         *,
         acs_user_id: str,
         access_method: str,
+        credential_manager_acs_system_id: Optional[str] = None,
         code: Optional[str] = None,
         is_multi_phone_sync_credential: Optional[bool] = None,
+        allowed_acs_entrance_ids: Optional[List[str]] = None,
         visionline_metadata: Optional[Dict[str, Any]] = None,
         starts_at: Optional[str] = None,
         ends_at: Optional[str] = None
@@ -37,12 +39,18 @@ class AcsCredentials(AbstractAcsCredentials):
             json_payload["acs_user_id"] = acs_user_id
         if access_method is not None:
             json_payload["access_method"] = access_method
+        if credential_manager_acs_system_id is not None:
+            json_payload[
+                "credential_manager_acs_system_id"
+            ] = credential_manager_acs_system_id
         if code is not None:
             json_payload["code"] = code
         if is_multi_phone_sync_credential is not None:
             json_payload[
                 "is_multi_phone_sync_credential"
             ] = is_multi_phone_sync_credential
+        if allowed_acs_entrance_ids is not None:
+            json_payload["allowed_acs_entrance_ids"] = allowed_acs_entrance_ids
         if visionline_metadata is not None:
             json_payload["visionline_metadata"] = visionline_metadata
         if starts_at is not None:
