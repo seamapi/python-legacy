@@ -1857,6 +1857,5 @@ class AbstractSeam(AbstractRoutes):
         api_key: Optional[str] = None,
         workspace_id: Optional[str] = None,
         api_url: Optional[str] = None,
-        should_report_exceptions: Optional[bool] = False,
     ):
         raise NotImplementedError
