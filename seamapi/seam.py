@@ -1,9 +1,7 @@
 import os
 
-from seamapi.utils.get_sentry_dsn import get_sentry_dsn
 from .routes import Routes
 import requests
-import sentry_sdk
 import pkg_resources
 from typing import Optional, cast
 from .types import AbstractSeam, SeamApiException
@@ -97,20 +95,6 @@ class Seam(AbstractSeam):
 
         self.should_report_exceptions = should_report_exceptions
 
-        if self.should_report_exceptions:
-            self.sentry_client = sentry_sdk.Hub(
-                sentry_sdk.Client(
-                    dsn=get_sentry_dsn(),
-                )
-            )
-            self.sentry_client.scope.set_context(
-                "sdk_info",
-                {
-                    "repository": "https://github.com/seamapi/python",
-                    "version": pkg_resources.get_distribution("seamapi").version,
-                    "endpoint": self.api_url,
-                },
-            )
 
     def make_request(self, method: str, path: str, **kwargs):
         """
@@ -141,19 +125,6 @@ class Seam(AbstractSeam):
         if self.workspace_id is not None:
             headers["seam-workspace"] = self.workspace_id
         response = requests.request(method, url, headers=headers, **kwargs)
-
-        if self.should_report_exceptions and response.status_code:
-            # Add breadcrumb
-            self.sentry_client.add_breadcrumb(
-                category="http",
-                level="info",
-                data={
-                    "method": method,
-                    "url": url,
-                    "status_code": response.status_code,
-                    "request_id": response.headers.get("seam-request-id", "unknown"),
-                },
-            )
 
         if response.status_code != 200:
             raise SeamApiException(response)

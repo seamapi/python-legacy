@@ -1,5 +1,4 @@
 dist
-seamapi/utils/get_sentry_dsn.py
 .env
 __pycache__
 */__pycache__
