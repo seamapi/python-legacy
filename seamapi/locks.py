@@ -77,7 +77,7 @@ class Locks(AbstractLocks):
         *,
         device_id: str,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = False
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -108,7 +108,7 @@ class Locks(AbstractLocks):
         *,
         device_id: str,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = False
     ) -> ActionAttempt:
         json_payload = {}
 

@@ -28,7 +28,7 @@ class Thermostats(AbstractThermostats):
         cooling_set_point_celsius: Optional[float] = None,
         cooling_set_point_fahrenheit: Optional[float] = None,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = False
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -79,7 +79,7 @@ class Thermostats(AbstractThermostats):
         heating_set_point_celsius: Optional[float] = None,
         heating_set_point_fahrenheit: Optional[float] = None,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = False
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -118,7 +118,7 @@ class Thermostats(AbstractThermostats):
         cooling_set_point_celsius: Optional[float] = None,
         cooling_set_point_fahrenheit: Optional[float] = None,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = False
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -209,7 +209,7 @@ class Thermostats(AbstractThermostats):
         *,
         device_id: str,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = False
     ) -> ActionAttempt:
         json_payload = {}
 
@@ -242,7 +242,7 @@ class Thermostats(AbstractThermostats):
         fan_mode: Optional[str] = None,
         fan_mode_setting: Optional[str] = None,
         sync: Optional[bool] = None,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = False
     ) -> ActionAttempt:
         json_payload = {}
 

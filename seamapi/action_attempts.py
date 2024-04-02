@@ -14,7 +14,7 @@ class ActionAttempts(AbstractActionAttempts):
         self,
         *,
         action_attempt_id: str,
-        wait_for_action_attempt: Union[bool, Dict[str, float]] = True,
+        wait_for_action_attempt: Union[bool, Dict[str, float]] = False,
     ) -> ActionAttempt:
         json_payload = {}
 

@@ -24,7 +24,7 @@
   "private": true,
   "homepage": "https://github.com/seamapi/python",
   "devDependencies": {
-    "@seamapi/nextlove-sdk-generator": "^1.7.1",
+    "@seamapi/nextlove-sdk-generator": "^1.7.2",
     "@seamapi/types": "^1.141.0"
   }
 }
