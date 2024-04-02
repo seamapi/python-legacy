@@ -6,7 +6,7 @@ authors = ["Severin Ibarluzea <seveibar@gmail.com>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 requests = "^2.26.0"
 dataclasses-json = "^0.5.6"
 
