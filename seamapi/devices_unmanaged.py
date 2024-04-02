@@ -35,7 +35,7 @@ class DevicesUnmanaged(AbstractDevicesUnmanaged):
         connected_account_ids: Optional[List[str]] = None,
         connect_webview_id: Optional[str] = None,
         device_type: Optional[str] = None,
-        device_types: Optional[List[Any]] = None,
+        device_types: Optional[List[str]] = None,
         manufacturer: Optional[str] = None,
         device_ids: Optional[List[str]] = None,
         limit: Optional[float] = None,

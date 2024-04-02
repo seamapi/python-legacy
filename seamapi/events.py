@@ -32,7 +32,7 @@ class Events(AbstractEvents):
         self,
         *,
         since: Optional[str] = None,
-        between: Optional[List[Any]] = None,
+        between: Optional[List[str]] = None,
         device_id: Optional[str] = None,
         device_ids: Optional[List[str]] = None,
         access_code_id: Optional[str] = None,
